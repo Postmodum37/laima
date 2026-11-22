@@ -1,0 +1,50 @@
+# local/work/: task records
+
+One file per task, `<id>.md`, with id `YYYY-MM-DD-slug` (the day it was opened, a slug of two to five words,
+different from every existing id). Create it when the task opens. The Answer workflow gets a record only when
+it produced a decision or a follow-up.
+
+```markdown
+---
+id: 2026-01-31-fix-login
+project: <name from the registry, or none for a task of no project>
+workflow: build
+opened: 2026-01-31 14:05
+not_before:         # act, or look again at what it waits on, from then: 2026-02-07 or 2026-02-07 09:30
+due:                # a deadline someone set; most tasks have none
+waiting_on:         # who or what other than the user: a reviewer, a release
+closed:
+outcome:
+branch:             # where the project uses them; one per repository when the task changes several; the same for pr
+pr:
+worktree:           # a worktree or copy made for this task alone, while it exists; one per repository when the task changes several
+sessions: []        # each "claude:<session id>", "codex:<session id>" or "agy:<session id>"
+source: <where the ask came from: the user, an issue link, a follow-up of [[other-id]]>
+---
+## Asked
+The request, in the user's words where short.
+## Done when
+What must be true and how it will be shown: the workflow's "Done when", made specific to this task; for a
+change, the project's definition of done. The user's own words win.
+## Timeline
+- 14:05 opened
+- 14:12 builder launched (claude:<id>, address t7)
+## Questions and answers
+- 15:02 Q: <what you asked>  A (15:40): "<the user's words>"
+## Decisions
+- <decision>, because <reason>
+## Outcome
+What happened, with evidence: commands and their results, and where the change is (files, commit, pull request).
+## Follow-ups
+```
+
+- **Status is read, never stored.** Empty `closed` means open; a question without an answer means waiting on the
+  user; what a session is doing comes from the multiplexer.
+- **A date or a wait is a field,** so that it can be listed: `.agents/skills/wrap-up/scripts/open-tasks` prints
+  the open records as overdue, due today, arrived, open, waiting or later, and no written list of them is kept.
+  A wait gets a `not_before` for the next look. Take a date from `date`, not from arithmetic in your head; when
+  the look or the wait is over, clear the field or set the next one.
+- `outcome` is one of `delivered`, `answered`, `dropped`, `failed` (ended without its result), set with
+  `closed` by the `finish` skill.
+- Session ids are kept because they resume a session and find its transcript. Paths are leads that break.
+- `wrap-up` moves a closed record to `archive/<YYYY-MM>/` by its `closed` month. Records are kept for good.

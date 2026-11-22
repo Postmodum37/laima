@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Wait until a terminal's turn has ended, for any agent that reports status (Claude Code, Codex).
+#   turn-wait <t> "<text>"   send the text and wait for the turn it starts
+#   turn-wait <t>            wait for the turn running now; when none starts within 3 s, report the status
+# It goes by `turn`, which hc counts up each time the agent stops working (done, idle or blocked), because the
+# status a turn ends on differs by harness, and `hc wait` alone also returns on any message to you. Messages to
+# you do not end this wait; they still arrive as your input. Prints `hc get <t> --json` when it ends.
+# Exit 0: the turn ended, or without text no turn was running. 9: the terminal is blocked on a dialog. 1: error
+# status, finished, unreadable, no status, or the text started no turn in 30 s; a text is not sent to a terminal
+# that is working, in error or without status. 124: still running after TURN_WAIT_MAX seconds (default 1800).
+# 2: usage, or hc or jq is missing. Another code: hc refused the send. Every exit but 0 says why on stderr.
+# Callers: the Herdr adapter, gotchas.md and SKILL.md beside this folder, and docs/testing.md; change its arguments or
+# exits together with them.
+t=$1
+max=${TURN_WAIT_MAX:-1800}
+die() { echo "turn-wait: $2" >&2; exit "$1"; }
+[ $# -eq 1 ] || [ $# -eq 2 ] || die 2 'usage: turn-wait <terminal> ["<text>"]'
+for c in hc jq; do command -v "$c" >/dev/null || die 2 "$c is not on PATH"; done
+case $max in '' | *[!0-9]*) die 2 "TURN_WAIT_MAX must be a whole number of seconds" ;; esac
+max=$((10#$max))
+
+# snap: sets state, status ("none" when the terminal reports none) and turn.
+snap() {
+  read -r state status turn < <(hc get "$t" --json 2>/dev/null |
+    jq -r '"\(.state) \(.status.state // "none") \(.turn // 0)"')
+  [ -n "$turn" ] || die 1 "hc get cannot read $t"
+}
+# finish <code> [<reason>]: print the terminal as it stands, the reason on stderr, and exit.
+finish() { hc get "$t" --json; [ -n "$2" ] && echo "turn-wait: $2" >&2; exit "$1"; }
+deadline=$((SECONDS + max))
+# step: seconds for one `hc wait`, so that the deadline is looked at every minute at least.
+step() { local r=$((deadline - SECONDS)); [ $r -gt 60 ] && r=60; [ $r -lt 1 ] && r=1; echo $r; }
+
+start=   # the turn count the wait has to pass; without text it is set when the terminal is seen working
+if [ $# -eq 2 ]; then
+  snap
+  case $status in
+    working) die 1 "$t is working, so the text would join the turn running now; nothing was sent. Run turn-wait $t first" ;;
+    none) die 1 "$t reports no status, so no agent is at rest there to take the text; nothing was sent. Read its screen" ;;
+    error) die 1 "$t is in error; nothing was sent. Read its screen" ;;
+  esac
+  out=$(hc send --json "$t" "$2") || { rc=$?; [ -n "$out" ] && echo "$out" >&2; exit $rc; }
+  start=$(jq -r '.turn // 0' <<<"$out")
+  [ -n "$start" ] || die 1 "hc send printed no turn count; the text was sent. Read the screen of $t"
+fi
+
+idle_since=$SECONDS
+settle=$((SECONDS + 3))
+while :; do
+  snap
+  [ "$state" = finished ] && finish 1 "$t has exited"
+  if [ -z "$start" ]; then
+    # No text. Just after a dialog is answered or a text is sent, the status takes up to a second to turn to
+    # working, so a reading that shows no work is believed only once 3 s have passed.
+    if [ "$status" = working ]; then
+      start=$turn
+    elif [ $SECONDS -lt $settle ]; then
+      sleep 0.3
+      continue
+    fi
+  fi
+  case $status in
+    blocked) finish 9 "$t is blocked on a dialog; read its screen" ;;
+    error) finish 1 "$t is in error; read its screen" ;;
+  esac
+  if [ -z "$start" ]; then   # nothing running: report the status as it is
+    [ "$status" = none ] && finish 1 "$t reports no status; read its screen"
+    finish 0
+  fi
+  [ "$turn" -gt "$start" ] && finish 0
+  [ $SECONDS -ge $deadline ] && finish 124 "$t is still working after $max s"
+  if [ "$status" = working ]; then
+    idle_since=$SECONDS
+    hc wait --json --timeout "$(step)" "$t" >/dev/null 2>&1
+  elif [ $((SECONDS - idle_since)) -ge 30 ]; then
+    [ $# -eq 2 ] && finish 1 "the text started no turn in 30 s; read the screen of $t"
+    finish 1 "$t stopped working 30 s ago and its turn count has not moved; read its screen"
+  fi
+  sleep 0.3   # hc wait can return at once while the target still works; this keeps the loop from spinning
+done

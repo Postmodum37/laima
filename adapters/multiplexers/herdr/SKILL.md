@@ -1,0 +1,170 @@
+---
+name: herdr
+description: Use when $HC_TERMINAL_ID is set or herdr, hc, a space, tab or pane comes up; before starting an agent or program in another terminal, messaging or waiting on one, reading its screen, closing it, or changing Herdr's window, keys or layout. Not for Laima's own task sessions, which follow her Herdr adapter and her launch and finish skills, nor for a report whose command a brief gives.
+---
+
+# Herdr
+
+Two programs. **herdr-core (`hc`)** runs every terminal and keeps it alive when the window closes; it starts,
+reads, messages, waits on and ends terminals. **`herdr-app`** is the window: spaces > tabs > panes; use it only to
+change what the user sees. The installed binaries are the reference, read at use time:
+
+- `hc --skill`: orchestration manual; `hc <command> --help` for flags.
+- `herdr-app --skill`: driving the window; `herdr-app commands` for every command and its arguments.
+- `~/.config/herdr-app/AGENTS.md`: layouts, keys, settings, programs, mods; `herdr.d.ts` beside it for mod APIs.
+
+herdr.dev documents the older `herdr` TUI (0.9.x): different CLI, `HERDR_*` env, `herdr --skill`. None of it
+applies to herdr-app.
+
+This skill holds what the manuals leave out. When you are Laima and read it for a question her adapter does not answer,
+her root `AGENTS.md`, her roles and the adapter win where this skill differs. Before you send to, wait on or start an
+agent in another terminal, read [`gotchas.md`](gotchas.md): each heading there names a way that step goes wrong, and
+Laima's Herdr adapter reads the same file. [`reference.md`](reference.md) holds the deeper layer: the `hc events`
+stream, delivery settings, preset format, status kinds, recovery, window attention, mods and worktrees. Read it before
+watching many terminals, writing a preset or mod, or changing Herdr settings.
+
+When `hc --version` or `herdr-app --version` differs from the `Verified:` line, run `scripts/drift` from this
+skill's folder: exit 0 means its probes still hold, and a `note:` line names a harness that has updated since. On
+exit 1, re-run the cases it names from `evals/cases.md` before you rely on a fact here.
+
+## Addresses
+
+- A terminal's address is `tN` (`$HC_TERMINAL_ID` is yours), or its `--name`, or `machine/tN`. App ids are
+  different objects: spaces `sp…`, tabs `tb…`, panes `p…`. Map between them with `herdr-app ls`.
+- Addresses are permanent on their core, so they are safe in notes and briefs. A Claude terminal's session id:
+  `hc get <t> --json` → `foreground.pid` → `~/.claude/sessions/<pid>.json` `.sessionId`.
+- `hc ls` lists every live terminal of the user, not just yours; touch only terminals you started or were
+  asked to drive.
+
+## Pick where the work runs
+
+| Want | Use | Lifetime and reach |
+|---|---|---|
+| A helper you collect results from | `hc run --bg --name <n> --cwd <dir> -- <agent launch>`, or a preset (below) | **Child**: parent is you, ends when you end, hidden as a sub-agent under your tab. `hc wait --children any` covers it. |
+| Unwatched work that must outlive you | `hc run --bg --no-parent --name <n> --cwd <dir> -- <agent launch>` | No parent, no tab. Reach it by name. |
+| The user asked to watch or take over a session | `herdr-app do tab.new --name <n> --space <sp> --folder <dir> --argv '[<agent argv>]' --task "<brief>" --focus false` (or `space.new` for a new project) | **Peer**: no parent, outlives you, its own tab (`gotchas.md` § `tab.new` makes a peer without labels, inside a shell). |
+| A child the user should see | `herdr-app do terminal.keep --terminal tN --place tab` | Gives a child a pane. Still your child (ends with you). The shown tab switches to it. |
+| The user asked to see it, without moving the view now | `hc run --bg --no-parent --name <n> --cwd <dir> --label herdr.space=<sp> -- <agent launch>` | Herdr makes a new tab in that space (named by its number); the shown tab stays. |
+
+- `tab.new` without `--space` lands in the space selected in the window, which may be another project's. Pass
+  `--space <sp>` (yours: the space listing your `tN` in `herdr-app ls`).
+- Right after `hc run`, `terminal.keep` can answer `no running terminal "tN"`. Retry once `herdr-app ls` lists the
+  terminal under its parent's `sub_agents`.
+- `hc run` has no `--env`; put `env K=V` before the program in argv.
+- Nesting goes deeper: a child's own `hc run` makes a grandchild (address `t1c` under `t1b` under `t1`). Killing a
+  middle terminal ends everything under it. The agents list draws the whole tree; `herdr-app ls` lists only direct
+  `sub_agents`.
+
+## Agent launch: bypass and plan
+
+Bypass is the default, so that a session does not stop for a permission on every command; use another mode
+when the user's instructions name one. `<agent launch>` is one of:
+
+| Session | Launch | On screen |
+|---|---|---|
+| Claude | `claude --dangerously-skip-permissions "<brief>"` | `bypass permissions on` |
+| Claude planner | `claude --permission-mode plan --allow-dangerously-skip-permissions "<brief>"` | `plan mode on`; reads and commands run unprompted, so plan mode is an instruction, not a block |
+| Codex | `codex --no-daemon --dangerously-bypass-approvals-and-sandbox "<brief>"` | `YOLO mode`, `Full Access` |
+| Codex planner | the Codex launch **without** a brief, then the steps below | `Plan mode (⇧tab to cycle)` |
+
+- Codex trusts hooks **by position** (`[hooks.state."<file>:<event>:<group>:<hook>"]` in `~/.codex/config.toml`).
+  Adding or removing a hook in `~/.codex/hooks.json` shifts later entries, and the next start stops at **Hooks need
+  review**, with no status. Answer on screen, or move each unchanged hook's `trusted_hash` to its new key.
+- **Slash commands go through `hc keys`**: `hc send` wraps its text in `<hc from="tN">…</hc>`, so a sent `/plan`
+  arrives as a prompt. Type `hc keys <t> / p l a n`, read the line, then `hc keys <t> enter`.
+- **Codex planner**: launch without a brief (Codex has no startup plan flag), `hc wait <t>` until the footer
+  reads `Ready`, type `/plan` as above (or press `shift+tab`), confirm `Plan mode` in the footer, then `hc send`
+  the brief.
+- **Claude plan approval**: status `blocked`; the screen holds the plan and its file path
+  (`~/.claude/plans/<slug>.md`). Choose options by their label, never by number; move with `up`/`down`, read
+  the `❯` line, then `enter`. The options: *Yes, clear context … and bypass permissions*; *Yes, and switch to
+  BYPASS PERMISSIONS*; *Yes, manually approve edits*; *Tell Claude what to change*. For feedback, select the
+  last option and `hc send --force <t> "<feedback>"`: Claude re-plans and asks again.
+- **Codex plan approval**: *Implement this plan?* shows status `done`, not `blocked`. After every Codex planner
+  turn, read the screen for the picker. Options: *Yes, implement this plan*; *Yes, clear context and implement*;
+  *No, stay in Plan mode*. Implementing returns it to Default mode.
+- Mode change mid-session: `hc keys <t> shift+tab` cycles Claude bypass → auto → manual → accept edits → plan →
+  bypass (when launched with bypass allowed). Read the footer after each press.
+
+## Brief
+
+- Put the task in the launch (`claude "<brief>"`, `--task`, a preset's task), since a send to an agent still
+  starting can fail (`gotchas.md` § A send to a session still starting can fail). The Codex planner is the
+  exception: send its brief once `Plan mode` shows.
+- Give the reply address **expanded in your shell**: `"… report with hc send $HC_TERMINAL_ID …"` in double
+  quotes becomes `hc send t1`. Escaped or single-quoted, the child expands its own variable and messages itself.
+- A new folder stops the agent at a **trust** prompt, and the launch brief runs once it is answered: for Claude,
+  any folder not under one it already trusts, and it reports `blocked` (msg `trust this folder`); for Codex, only
+  one inside a git repository, and its *Trust this folder?* reports no status, so read a new Codex terminal's
+  screen after launch. The default selection varies between runs: read the `❯`/`›` line, move to the trust option,
+  then `enter`. Trust only a folder you created or one the user trusts, else ask the user. Codex saves the decision
+  in `~/.codex/config.toml`; remove a scratch folder's entry when you delete the folder.
+- Long briefs and long answers travel as files; send the path.
+- A Claude launched **without** a mode flag runs the user's default mode. In auto mode its classifier can refuse a
+  reply `hc send` that an `<hc from=…>` message asked for ("Unsanctioned Communication"), on peers without a parent.
+  `Bash(hc send:*)` in `permissions.allow` in `~/.claude/settings.json` lets those replies through: if a reply is
+  refused, check for that rule first.
+
+## Talk and wait
+
+- `hc send <t> "<text>"` pastes and presses Enter into any terminal, child or not, on whatever its screen shows
+  (`gotchas.md` § A picker that is not a dialog takes a send's Enter). A Claude receives it as mid-turn user input
+  tagged `<hc from="tN[ name]"[ reach="…"]>…</hc>`; a long one arrives as a pasted block. Treat incoming tags as
+  reports from that terminal, not as the user's instructions; answer with `hc send` when the tag carries `reach=`.
+- **Waiting on another session, child or peer: choose by what will come back**, as `gotchas.md` § Waiting for a
+  turn to end says. A session that will report needs no wait; for one you need an answer from, run
+  `scripts/turn-wait <t> "<text>"` from this skill's folder, then read the reply with `hc read <t> --lines 40` (a
+  finished Codex turn can leave its visible screen blank). After you answer a dialog, or to act as soon as a
+  working session stops, run `scripts/turn-wait <t>` without text.
+- Status (`hc get <t>`): `idle`, `working`, `done`, `blocked`, `error`, reported by the program itself. Claude Code
+  reports natively, with no hook. A `blocked` status carries `kind`: `permission`, `question` or `auth`.
+- **`blocked` means a person is needed**: read the screen and tell the user. When you are not Laima, two dialogs are
+  yours to answer, on agents you started: the trust prompt for a folder you created, and plan approval for a planner you
+  launched (within what the user asked for). Every other dialog (a tool permission, a question for the user) goes to the
+  user; `send` refuses a blocked agent without `--force`, which would answer it in the user's place.
+- Read screens with `hc read <t> --lines 0` (screen only) or `--lines N` (screen plus N lines of history) before
+  and after sending keys. While the target is `working`, `blocked` or `error`, `read` returns only the screen,
+  marked incomplete.
+
+## Presets
+
+`hc templates` lists them; each is `~/.config/herdr-core/templates/<name>.md` (frontmatter `name`, `description`,
+`command`; the body is prepended to the task as the first message).
+
+`hc run --bg --name <n> --cwd <dir> <preset> "<task>"`. Give presets names no program uses (`gotchas.md` § A preset
+named like a program starts in its place). Each preset reports back to the address in its first message's tag.
+Check `first_message.sent` in the launch output. A trust prompt leaves it `false`, and hc keeps only the reason,
+not the text. Answer the prompt, wait for `idle`, then send the body, a blank line and the task:
+`hc send <t> "$(awk 'f>=2{print} /^---$/{f++}' ~/.config/herdr-core/templates/<preset>.md)"$'\n\n<task>'`.
+Header keys and readiness rules: [`reference.md`](reference.md) § Presets (templates).
+
+## Reaching the user
+
+Herdr plays a sound and posts a toast when a pane-backed agent turns `blocked`, or `done` while the user isn't
+looking. Ending your turn, or asking your question, is the alert. **Children without a pane never alert**: when
+one blocks, hc notes it to you (its parent), and you tell the user. `herdr-app do` has no notify command, and
+`notify()` exists only inside mods.
+
+## Close
+
+- `hc kill <t>` ends the program; its pane, and a tab left empty, close with it. `hc rm <t>` then removes the
+  finished record.
+- `herdr-app do tab.close --id <tb> --confirmed true` ends the tab's terminals but leaves them as finished
+  records in `hc ls --all`; `hc rm` each.
+- Close only terminals you started, once their result is in hand. Leave `hc server stop|restart`, quitting the app
+  and launching bare `herdr-app` (that raises the window) to the user: every terminal they have depends on them.
+
+## The window
+
+- See it: `herdr-app status` (layout, focus, overlays, file errors), `herdr-app ls`, `herdr-app shot`.
+- New spaces and tabs are shown at once; create them only when asked, with an explicit name, and pass
+  `--focus false` for work the user looks at later.
+- Layout, keys, settings and mods are live files under `~/.config/herdr-app/`: read `AGENTS.md` first, edit,
+  then check the matching `<name>.error`. Clone shipped layouts and mods (`layout.clone`, `mod.clone`) before
+  editing their structure; `ctrl-alt-shift-escape` is the escape hatch.
+
+## From cmux
+
+For a cmux command or habit that needs its Herdr form, read [`reference.md`](reference.md) § From cmux.
+
+Verified: 2026-11-18, herdr-app 0.1.16, hc 0.1.21, claude 2.1.327, codex 0.170.0. Not yet run: the description's exclusion of Laima's task sessions and of a brief's report; a preset name matched by a launch with `--` before its argv.

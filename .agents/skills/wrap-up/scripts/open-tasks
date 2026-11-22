@@ -1,0 +1,54 @@
+#!/bin/sh
+# Lists the open task records in local/work/ from their frontmatter, most pressing first.
+# A record is open while `closed` is empty. Nothing is stored: each state is worked out from
+# `not_before`, `due` and `waiting_on` against the clock. Runs from any folder. A trailing comment in a field
+# starts with two spaces and a `#`, so that a value such as "pull request #12" is kept whole; in a date field
+# one space before the `#` is enough. Quotes around a value are taken off, and `null`, `~` and `""` read as
+# empty. A record that is empty or does not open with a frontmatter block is listed as unreadable.
+dir="${1:-$(cd "$(dirname "$0")/../../../.." && pwd)/local/work}"
+set -- "$dir"/[0-9]*.md
+[ -e "$1" ] || { echo "no task records in $dir"; exit 0; }
+{
+for r in "$@"; do [ -s "$r" ] || echo "9 unreadable  $r  (empty file)"; done
+awk -v now="$(date '+%Y-%m-%d %H:%M')" -v today="$(date '+%Y-%m-%d')" '
+function finish_file() {
+  if (file != "" && seen < 2) print "9 unreadable  " file "  (no frontmatter block)"
+}
+FNR == 1 {
+  finish_file(); file = FILENAME; seen = 0; split("", f)
+  if ($0 !~ /^---[ \t]*$/) { finish_file(); file = ""; nextfile }
+}
+/^---[ \t]*$/ {
+  seen++
+  if (seen == 2) {
+    if (f["closed"] == "") {
+      nb = f["not_before"]; due = f["due"]; w = f["waiting_on"]
+      if (due != "" && substr(due, 1, 10) < today)       { rank = 1; state = "overdue" }
+      else if (due != "" && substr(due, 1, 10) == today) { rank = 2; state = "due-today" }
+      else if (nb != "" && nb <= now)                    { rank = 3; state = "arrived" }
+      else if (w != "")                                  { rank = 5; state = "waiting" }
+      else if (nb != "")                                 { rank = 6; state = "later" }
+      else                                               { rank = 4; state = "open" }
+      detail = ""
+      if (nb != "")  detail = detail "  not before " nb
+      if (due != "") detail = detail "  due " due
+      if (w != "")   detail = detail "  waiting on " w
+      printf "%d %-10s %s  %s, %s%s\n", rank, state, f["id"], f["project"], f["workflow"], detail
+    }
+    file = ""
+    nextfile
+  }
+  next
+}
+seen == 1 && /^[a-z_]+:/ {
+  key = $0; sub(/:.*/, "", key)
+  val = $0; sub(/^[a-z_]+:[ \t]*/, "", val); sub(/[ \t][ \t]+#.*$/, "", val); sub(/^#.*$/, "", val)
+  if (key == "not_before" || key == "due" || key == "closed" || key == "opened") sub(/[ \t]#.*$/, "", val)
+  sub(/[ \t]+$/, "", val)
+  if (val ~ /^".*"$/ || val ~ /^\047.*\047$/) val = substr(val, 2, length(val) - 2)
+  if (val == "null" || val == "Null" || val == "NULL" || val == "~") val = ""
+  f[key] = val
+}
+END { finish_file() }
+' "$@"
+} | sort | cut -c3-

@@ -1,0 +1,1 @@
+- @NOW@ [[laima]] usage — Claude Code: five-hour session 12% used, week all models 31% used, week fable 40% used; Codex: 72% of the month's cap left. Running short: neither → `claude -p "/usage"`, `codex app-server` account/rateLimits/read
