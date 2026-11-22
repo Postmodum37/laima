@@ -111,3 +111,6 @@ has no such windows, and what it prints then is not verified: ask the user for t
 - Without a mode flag the session runs in the user's default mode, which may stop for permissions.
 - The first bypass launch on a machine shows a one-time warning that the user has to accept (not verified).
 - Plan mode ends at an approval dialog that waits on a person; a planner is launched like any other worker.
+- When its start screen shows `Code Mode (experimental) is on`, the session can be resumed only with Code Mode on,
+  and it has no Chrome or computer-use tools: a brief that needs a browser names a command-line browser from
+  `local/setup.md` § Tools found.

@@ -50,7 +50,8 @@ exit 1, re-run the cases it names from `evals/cases.md` before you rely on a fac
   `--space <sp>` (yours: the space listing your `tN` in `herdr-app ls`).
 - Right after `hc run`, `terminal.keep` can answer `no running terminal "tN"`. Retry once `herdr-app ls` lists the
   terminal under its parent's `sub_agents`.
-- `hc run` has no `--env`; put `env K=V` before the program in argv.
+- `hc run` has no `--env`; put `env K=V` before the program in argv. That is also the cure for `spawn_failed`
+  (`gotchas.md` § `hc run` finds a program on the server's PATH, not yours).
 - Nesting goes deeper: a child's own `hc run` makes a grandchild (address `t1c` under `t1b` under `t1`). Killing a
   middle terminal ends everything under it. The agents list draws the whole tree; `herdr-app ls` lists only direct
   `sub_agents`.

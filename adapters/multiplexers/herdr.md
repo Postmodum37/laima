@@ -22,7 +22,8 @@ hc run --bg --no-parent --name <name> --cwd <folder> \
 ```
 
 - `<harness argv>`: harness adapter § Launch with a brief. The brief rides in it (`herdr/gotchas.md` § A send to a
-  session still starting can fail).
+  session still starting can fail). When `hc run` answers `spawn_failed`, put `/usr/bin/env PATH="$PATH"` in front of
+  it (`herdr/gotchas.md` § `hc run` finds a program on the server's PATH, not yours).
 - `<name>`: 1 to 32 of `a-z 0-9 - _`, unique among live terminals; shorten the slug of `<task-id>-<role>` to fit.
 - `<space-id>`: where the tab opens. Yours is `labels."herdr.space"` in `hc get $HC_TERMINAL_ID --json`. This
   label is what gives the session a tab, and the tab the user is looking at stays in front.
@@ -156,4 +157,6 @@ The Herdr facts a session outside Laima needs as well are in `herdr/gotchas.md`,
 - § Waiting for a turn to end: no one `status` or `turn` value says a turn ended.
 - § A preset named like a program starts in its place: a preset named `claude`, `codex` or `agy` takes the
   launch.
+- § `hc run` finds a program on the server's PATH, not yours: a harness installed through a version manager needs
+  your PATH handed to it.
 - § `tab.new` makes a peer without labels, inside a shell: start task sessions with `hc run` as above.

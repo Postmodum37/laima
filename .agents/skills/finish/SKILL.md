@@ -21,7 +21,10 @@ user or on other people; the task then stays open and you return here later.
      the pull request opened, then merged; tell the user it is ready. Where the change is made in place: tell
      the user what changed and what was checked. Any other way (a commit, a push) goes as far as the project's
      rules say, and you tell the user where the change is. A merge or a deploy waits for the user's word or the
-     project note's grant.
+     project note's grant. Before you ask for a merge, or make one, read what the merge sets off on the target branch
+     (a deploy, a release) and whether that branch's own checks pass now (on GitHub, `gh run list --branch <branch>
+     --limit 5`): a check failing there for a cause outside the change stops the release after the merge as well.
+     Put both in the merge question, and call the change live only once the run after the merge shows it.
 
    Where the project or the user has a skill, command or template for a delivery step (a pull request's text, a
    release, an update to the issue), use it. What the project asks at the end of a task is part of delivery: the
@@ -68,4 +71,4 @@ user or on other people; the task then stays open and you return here later.
    the task's lines under "Needs the user" and add it under "Recently finished".
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: a pull request on GitHub; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the issue update and the note's duties at delivery; the record's field read as `worktree`; a squash or rebase merge shown by the project's tool; a deliverable moved out of the task folder; a tagged session the record does not name.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the note's duties at delivery; a tagged session the record does not name.

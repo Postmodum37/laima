@@ -56,6 +56,14 @@ named `claude`, `codex` or `agy` starts instead of the harness and sends the fla
 launch output's `template` field shows a match. Whether a launch with `--` before the argv is matched as well is
 *(read, not run)*. Give presets names no program uses.
 
+## `hc run` finds a program on the server's PATH, not yours
+
+`hc run -- <program>` looks the program up on the PATH of the hc server, which started with the app, and not on the
+PATH of the shell that runs `hc run`. A program your shell finds only through a version manager's shims or a PATH set
+in a shell profile fails with `spawn_failed`, `cannot start "<program>": No such file or directory`, and nothing
+starts. Hand your PATH to it: `hc run ... -- /usr/bin/env PATH="$PATH" <program> <args>`. A program in a folder the
+server's PATH holds starts as given.
+
 ## `tab.new` makes a peer without labels, inside a shell
 
 `herdr-app do tab.new` also starts a peer in a tab of its own, but it sets no label or name, wraps the program in a

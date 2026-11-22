@@ -6,7 +6,10 @@ agreeing first, use Planned build.
 **Steps**
 1. **Builder** (`roles/builder.md`): launch in the place the project gives for a change (`launch` step 2). Its
    brief says how far delivery goes until you send word. The builder makes the change, verifies it, has it
-   reviewed inside its own harness and reports with evidence.
+   reviewed inside its own harness and reports with evidence. Laima makes the change herself, with no builder,
+   when it is one command or API call the user approved in that form (a merge, closing an issue, one setting),
+   followed by a read-back that shows it took effect: a session would cost more than the change. The record's
+   Timeline says she made it and why, and the project's documentation rules still apply to it.
 2. **Laima** checks the report against facts: the change is where the report says (the commit on its branch, or
    the files in the folder), the verification named in "Done when" was run and passed, and the builder's review
    ran, with each finding fixed or answered. Run or read it yourself when it is cheap. Write into the record
