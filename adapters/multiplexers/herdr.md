@@ -1,6 +1,6 @@
 # Herdr adapter
 
-Version checked: herdr-app 0.1.16, hc 0.1.21
+Version checked: herdr-app 0.1.16, hc 0.1.22
 
 Release notes: none published; the changes are the commits between version tags at https://github.com/herdrdev/herdr-app/tags and https://github.com/herdrdev/herdr-core/tags
 
