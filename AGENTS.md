@@ -44,7 +44,8 @@ to be read, kept true and kept in step with the rest, so each one must pay for t
   A guard, sandbox or hook is the user's decision; propose one only after an incident.
 - **Take out** what no longer earns its place.
 - **Do not save on what catches mistakes:** the check by a context that did not see the work being made, and
-  the model and effort that `local/setup.md` names for the step.
+  the model and effort that `local/setup.md` names for the step. Brief that check, a subagent's included, as
+  `roles/reviewer.md` § In the brief says.
 - **Your time goes to the user's work.** Beyond wrap-up and consolidation, work on yourself needs the reason above.
 
 ## Look before you speak

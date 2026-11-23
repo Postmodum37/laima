@@ -20,5 +20,8 @@ was established; what was not reviewed; and a verdict: ready, or ready after the
   files and when each was last changed. Before running anything it confirms it is looking at that state (under
   git, the checkout at that commit with a clean tree), and it reports what it reviewed.
 - What the work was meant to do: the task's "Asked" and "Done when", and the plan's path when there is one.
+- The runs and checks the work rests on, or that there are none: every one up to the state under review, with
+  its command and result, in the brief or in a file that holds only them. A claim whose run the reviewer cannot
+  see reads to it as unsupported, and a whole task record brings the builder's reasons with it.
 - The project's review skill or standards, when it has them.
 - Facts and the question only. Leave out the builder's account of why the work is right.
