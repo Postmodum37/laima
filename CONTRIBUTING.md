@@ -98,8 +98,10 @@ changelog. Write it in this form:
     Not run: <what was not run, and why>
     Closes #<issue>
 
-- The subject stays within 72 characters, aiming at 50, with no full stop: GitHub cuts a longer one. `<area>` is the
-  part changed (`Herdr adapter`, `finish`, `README`), and is left out when the change spans the core.
+- The subject stays within 72 characters, aiming at 50, with no full stop: GitHub cuts a longer one.
+- Start every subject with `<area>: `. Use the changed part's established name and spelling, such as `Herdr adapter`,
+  `finish` or `README`, and the owning part's name when related files change with it. Use `core` only for one change,
+  revertible on its own, that has no single owning part; several fixes are several commits.
 - The body wraps at 72 characters, because `git log` indents it and does not wrap.
 - The one trailer is `Closes #<issue>`, when an issue exists. Which agent wrote a contributor's change goes in their
   pull request (§ What the pull request says); the maintainer's commits name none.
