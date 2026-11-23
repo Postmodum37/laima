@@ -31,8 +31,12 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
    - An agent session without your tag is the user's: mention it, offer to adopt it, and leave it.
 3. **Check the writes** for each task touched since the last wrap-up. Every launch has a session id in the
    record and a `launched` line in the log; every question has an answer or is still waiting; every closed task
-   has an outcome with evidence. Add what is missing, marked "(added at wrap-up)". Done when you have a count of
-   the misses you repaired, zero included.
+   has an outcome with evidence. Add what is missing, marked "(added at wrap-up)". Then search for times written
+   with a placeholder digit, such as `17:3x`, which `local/AGENTS.md` § Writing here, "Times", rules out:
+   `grep -n -E '[0-9]:[0-9xX][xX]' local/work/*.md local/index.md local/log/*.md`
+   Correct each one in place, with a time taken as that rule says, marked "(time set at wrap-up)". In the log this
+   is the one edit its append-only rule allows. Done when you have a count of the misses you repaired, zero
+   included, and the search shows no placeholder time.
 4. **Archive** each closed record to `local/work/archive/<YYYY-MM>/`, after noting it for step 6.
 5. **Consolidate:** run the `consolidate` skill.
 6. **Rebuild `local/index.md`**, keeping its headings: "Needs the user" from the open records' unanswered
@@ -49,4 +53,4 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
 10. **Tell the user**, in this order: what needs them, what comes due tomorrow, what runs on without them, what
    closed. Then sign off.
 
-Verified: 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable.
+Verified: 2026-11-23, Claude Code 2.1.330 (step 3's time search); 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: step 3's time search on Codex; with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable.
