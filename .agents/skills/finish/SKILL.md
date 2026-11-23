@@ -17,6 +17,8 @@ user or on other people; the task then stays open and you return here later.
 2. **Deliver** what the workflow says, as far as `AGENTS.md` § Authority and the project note allow. This step
    holds how a result is delivered; a workflow adds only what is its own.
    - An answer or findings go to the user.
+   - A message a session drafted for the user to send to other people is delivered once it is in the record and
+     the user has been told where it is: sending it is theirs, so neither the task nor its session waits for it.
    - A reviewed change ships the way the project ships one. Where that is a pull request: the branch pushed and
      the pull request opened, then merged; tell the user it is ready. Where the change is made in place: tell
      the user what changed and what was checked. Any other way (a commit, a push) goes as far as the project's
@@ -72,4 +74,4 @@ user or on other people; the task then stays open and you return here later.
    the task's lines under "Needs the user" and add it under "Recently finished".
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.
