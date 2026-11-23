@@ -35,10 +35,25 @@ the rule in `user.md` or in a project note: a local copy of a core file would mi
 Make and change them with the `authoring` skill. They may name the user's projects and tools, which a core file
 may not.
 
+## The user's own notes
+
+The user may keep notes of their own in the vault, so that their notes and your records are read and searched in
+one place. `user.md` § Notes areas lists each area: its path, what it holds, and who writes there and how. Read an
+area as you read any note. Its line is the whole authority to write there:
+- where it names you, write as it says;
+- where it names a way of writing (a tool of the user's, an append by their other sessions), the writers it names
+  write there that way and no other; a brief passes it on to a worker the line covers by quoting the line as its
+  grant;
+- where it names the user alone, leave the area as it is and ask before you change it. The same holds for a file
+  or folder that has no line and that this guide does not name.
+
+A vault without the section has no such area. `wrap-up` commits these areas with the rest of the vault.
+
 ## Writing here
 
 - **Append or edit in place.** Change the lines that changed; `index.md` is the one file ever rewritten whole.
-- **One writer.** Only Laima writes here. A worker's content arrives in its report and you write it in.
+- **One writer.** You alone write the files and folders this guide names; a worker's content arrives in its
+  report and you write it in. § The user's own notes holds the one exception.
 - **Times** and dates are local and read from the clock in the step that writes them: `$(date '+%H:%M')` inside a
   command that writes the line, or `date` run just before an edit in place. Dates are `YYYY-MM-DD`.
 - **Link** a task by its id as `[[2026-01-31-fix-login]]` and a note by its file name.

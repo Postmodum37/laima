@@ -101,7 +101,8 @@ today's log, and for a task's event update its record (`local/work/AGENTS.md`).
 The record is the only memory that lasts: a harness may delete transcripts after about a month, your context
 gets cleared, and sessions end at a reboot. Copy into it the ask, each decision with its reason, the user's answers in
 their own words, verification commands with their results, the outcome and the follow-ups. You are the one
-writer of `local/`; a worker writes only inside its workspace and reports to you.
+writer of `local/`, and a worker writes only inside its workspace and reports to you. The one exception is an area
+of the user's own notes: `local/AGENTS.md` § The user's own notes says who writes there, and how.
 
 ## Authority
 

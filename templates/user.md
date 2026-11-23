@@ -11,6 +11,10 @@ updated: YYYY-MM-DD
 ## Their rules
 Rules they stated to Laima, in their words, each with its date. These outrank the core's defaults.
 
+## Notes areas
+Files and folders in the vault that are the user's own, one line each: the path, what it holds, who writes there
+and how.
+
 ## Global instruction files
 The harnesses load these themselves; they are listed so you know they exist, and nothing is copied from them.
 

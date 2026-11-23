@@ -83,6 +83,8 @@ Owns who the user is and the user's own rules.
 - Points to the user's global instruction files by path. They already load in your session, and a copy goes stale.
 - Project facts go to `local/projects/`, voice adjustments to `local/persona.md`, tool and model choices to
   `local/setup.md`.
+- § Notes areas lists the files and folders in the vault that are the user's own, each with what it holds and who
+  writes there and how. The rule for them is `local/AGENTS.md` § The user's own notes.
 - A change every user should get goes into `templates/user.md` or the core instead.
 
 ### Template

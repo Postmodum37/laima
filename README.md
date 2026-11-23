@@ -166,6 +166,9 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
   `local/setup.md`. Rules for one project: a note in `local/projects/`.
 - A workflow, role or skill of your own: `local/workflows/`, `local/roles/`, `local/skills/`. They add to the
   core, are never pushed, and an update of the core does not touch them. Ask her to make one.
+- Notes of your own beside hers: keep the folder in `local/` as a plain folder (the vault's git would hold a
+  repository of its own as a pointer only) and list it in `local/user.md` § Notes areas with who writes there and
+  how. She reads it, writes there only as that line says, and commits it with the vault at each wrap-up.
 - The core changes through her `authoring` skill, for a miss that happened or because you ask.
 - Herdr or cmux know-how in your other sessions too: link the companion skill of the multiplexer you use,
   `adapters/multiplexers/<multiplexer>/`, into `~/.claude/skills/<multiplexer>` and `~/.agents/skills/<multiplexer>`.
