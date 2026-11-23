@@ -23,4 +23,7 @@ anything it made for the task (a branch, a worktree), and anything left undone.
   which has not seen how the change was made; with the project's or the user's review skill when there is one.
   It fixes or answers each finding.
 - How far delivery goes for this task: the change in place, a commit, a push, or a pull request.
+- The machine it shares with other sessions: tests and builds run with the parallelism the project note sets,
+  else a few workers rather than the tool's default of one per core; each long-running process it starts (a dev
+  server, a watcher) stops once it has what it needed; its report lists anything it leaves running.
 - An approved plan's path, when the task has one, and what changed since it was written.
