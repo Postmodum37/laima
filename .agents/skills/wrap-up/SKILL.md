@@ -41,12 +41,12 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
    `rebuilt` to the time from the clock.
 7. **Log** a `wrap-up` line: tasks open, closed since the last wrap-up, waiting on the user, sessions left
    running, writes repaired.
-8. **Check the core:** `git status --short` in the Laima folder. Report uncommitted core changes to the user;
-   committing them belongs to the `authoring` skill.
+8. **Check the core:** `git status -sb` in the Laima folder. Report uncommitted core changes, and commits ahead of
+   the remote that wait for the user's word to publish; committing them belongs to the `authoring` skill.
 9. **Commit the vault,** its undo, from the Laima folder: `git -C local add -A && git -C local commit -qm "wrap-up
    $(date '+%F %H:%M')"`; a day without writes prints `nothing to commit`. Where `local/.git` is missing, run
    `set-up`, which makes it. Done when `git -C local status --short` prints nothing.
 10. **Tell the user**, in this order: what needs them, what comes due tomorrow, what runs on without them, what
    closed. Then sign off.
 
-Verified: 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: with workers still running; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable.
+Verified: 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable.

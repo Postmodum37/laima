@@ -81,12 +81,15 @@ on a real case says so on this line.
 
 ## 7. Commit the core change
 
-Commit the changed core files in the Laima folder, with a message that names the miss from step 1 and the checks that
-passed. Keep the commit local: publishing the core waits for the user's word. Files under `local/`, other than its
-`AGENTS.md` files, are untracked and have nothing to commit. Then tell the user which file changed and why, since a
-change to your own rules is otherwise invisible to them.
+Commit the changed core files in the Laima folder, with a message in the form of `CONTRIBUTING.md` § The commit
+message: the miss from step 1 and the checks that passed. The message is published with the files, so the record
+that step 1 cites stays in the vault: tell the miss in general terms. Keep the commit local: publishing the core, by
+a push or a pull request, waits for the user's word. Files under `local/`, other than its `AGENTS.md` files, are
+untracked and have nothing to commit. Then tell the user which file changed and why, and that the commit waits for
+their word to publish, since a change to your own rules is otherwise invisible to them.
 
-Done when: `git status --short` shows nothing left from this change, `git log -1` shows the commit, and the user has
-been told.
+Done when: `git status --short` shows nothing left from this change; `git log -1 --format='%an <%ae>%n%B'` shows the
+identity the user publishes the core under and a message in that form, its subject within 72 characters; `git log -1
+--format=%B | grep -n -E '/Users/|/home/'` prints nothing; and the user has been told.
 
-Verified: 2026-11-22, Claude Code 2.1.329 to 2.1.330 and Codex 0.170.0. Not yet run: a new core skill; step 6 moving an adapter's line to a newer version.
+Verified: 2026-11-22, Claude Code 2.1.329 to 2.1.330 and Codex 0.170.0. Not yet run: a new core skill; step 6 moving an adapter's line to a newer version; step 7 as now worded.

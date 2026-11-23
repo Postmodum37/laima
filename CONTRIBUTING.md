@@ -82,9 +82,35 @@ use. Before you open the pull request, test the change yourself:
 - **Load the core alone where your harness allows** (`docs/testing.md` § Core alone), because your own global
   instructions and skills can hide a gap in the core. Where you cannot, say so.
 
+## The commit message
+
+A commit holds one change, made in the files that own it, that can be read and reverted on its own. Users update
+with `git pull` and read `git log` to see what changed in how their sessions behave, so the message is their
+changelog. Write it in this form:
+
+    <area>: <what the change does, in the imperative>
+
+    <The miss or need: what happened, on which harness, model and multiplexer, and what should have happened.>
+
+    <What changed, one line per file when there are several, and why that file.>
+
+    Checks: <each check and scenario run, with tool versions, model and what it showed>
+    Not run: <what was not run, and why>
+    Closes #<issue>
+
+- The subject stays within 72 characters, aiming at 50, with no full stop: GitHub cuts a longer one. `<area>` is the
+  part changed (`Herdr adapter`, `finish`, `README`), and is left out when the change spans the core.
+- The body wraps at 72 characters, because `git log` indents it and does not wrap.
+- The one trailer is `Closes #<issue>`, when an issue exists. Which agent wrote a contributor's change goes in their
+  pull request (§ What the pull request says); the maintainer's commits name none.
+- The message is published with the files, so it passes `docs/authoring.md` § Core or local as a core file does.
+  It tells the miss in general terms ("the first live session"), with no task id, record path, project or person.
+
 ## What the pull request says
 
-The commit message the `authoring` skill writes already holds most of this; copy it in and add what is missing.
+The maintainer commits to `main` directly; every other change comes as a pull request. A pull request is
+squash-merged: its title becomes the commit's subject and its description the message, so it holds one change, its
+title follows § The commit message, and its description starts from that message, with what is missing added:
 
 - The miss or need, and where it happened.
 - Why it belongs in the core and not in `local/`, in a line, when the miss does not already show it.
