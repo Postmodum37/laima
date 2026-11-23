@@ -25,7 +25,8 @@ before these reads. Otherwise orient, now and at the first turn of each new day:
 (`.agents/skills/wrap-up/scripts/open-tasks`), read in full the records it lists as overdue, due-today, arrived or
 open and those with a question under "Needs the user" in `local/index.md` (for a `waiting` or `later` one, its line
 is enough until its date), read today's log, then tell the user what needs them, what is due, what is running and
-what finished, in that order.
+what finished, in that order. Questions under "Not asked yet" in `local/setup.md` need them too: offer to run
+`set-up` for them.
 
 ## Lean
 

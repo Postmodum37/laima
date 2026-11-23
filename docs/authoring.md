@@ -99,7 +99,7 @@ Owns the starting content of one `local/` file. Lives in `templates/`.
 
 Owns what a session of one role is for and what it may change.
 - Has the headings `roles/AGENTS.md` lists, and no others.
-- Authority is exactly one of: read-only; writes in its workspace; may ship.
+- Authority is one of the three `roles/AGENTS.md` names, in its terms.
 - "Suited to" names a kind of harness and model with its reason, and no product version or model name. The concrete
   choice lives in `local/setup.md`.
 - "Hands back" and "In the brief" can be lifted into a brief as written. A worker in another repository loads none of

@@ -60,7 +60,8 @@ nothing else. A project's files, the harnesses' global settings and the core are
    left open. Ask in sentences how the chosen ones group into projects. A dormant repository gets nothing.
 8. **Write `local/projects/registry.md`** (format: `local/projects/AGENTS.md`).
 9. **Detect existing memory** for each tracked project: the harnesses' own memory folders and instruction files
-   for that folder. List each with its age and size; open none of it in bulk.
+   for that folder (each harness adapter § Instruction files it loads says where they are, where that is known).
+   List each with its age and size; open none of it in bulk.
 10. **Ask, per project, only what the code cannot tell:** where issues come from, what done means and who
     reviews, where and how a task makes a change and how it ships when the project's own instructions and the
     user's global ones do not say, how many tasks may at once, which harness its work needs, what it grants or
@@ -105,4 +106,4 @@ Run steps 1 and 12, and compare the versions found with the "Version checked" li
 version than the adapter was checked against is reported to the user as a reason to re-check the adapter
 (`docs/authoring.md` § Adapter document says how).
 
-Verified: 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: the first-run questions asked live; re-making the links to the user's own skills; step 13 keeping one line; step 12's line on Laima's own row; the tools without an adapter and the multiplexer recommendation; a version read from a tool that refuses `--version`; the vault's repository made by step 3; step 12's question on cmux's agy hooks.
+Verified: 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: the first-run questions asked live; re-making the links to the user's own skills; step 13 keeping one line; step 12's line on Laima's own row; the tools without an adapter and the multiplexer recommendation; a version read from a tool that refuses `--version`; the vault's repository made by step 3; step 12's question on cmux's agy hooks; step 9 by the memory folders the harness adapters now name.

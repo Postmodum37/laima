@@ -80,7 +80,7 @@ it, a row for when a provider is running short of usage, and the user's rule for
 1. Take the role's usual row, or its raised row when this step meets the condition written there. A project
    note's pin and the user's rule for today come before both; the user's pick for this launch comes first.
 2. Use the latest `usage` line in today's log for the row's provider. Take a new reading of that provider alone
-   (its harness adapter § Remaining usage) and log it when this session has taken none, when the line is hours
+   (its harness adapter § Remaining usage) and log it when today's log has none for it, when the line is hours
    old, or when a session has stopped on a limit since; read the fallback's provider too before you move a step
    there. One reading serves every launch until then.
 3. When the reading shows the row's provider running short, by the guidance in that section, use the row's
@@ -149,4 +149,4 @@ so that `finish` removes it again.
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume.
+Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own.

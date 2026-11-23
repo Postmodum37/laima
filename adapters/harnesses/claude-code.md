@@ -26,12 +26,13 @@ claude --dangerously-skip-permissions --session-id <uuid> --model <model> --effo
 
 ## Instruction files it loads
 
-A worker loads the user's own files (`~/.claude/CLAUDE.md`, `~/.claude/rules/`, their settings, hooks and skills)
-and the project's: `CLAUDE.md`, `.claude/CLAUDE.md`, `CLAUDE.local.md` and `.claude/rules/` in its folder and in
-every folder above it up to the filesystem root, with the project's skills, settings and auto memory. It reads
-`AGENTS.md` in those folders too, by default only when none of them holds one of the three `CLAUDE.md` files. A
-subfolder's files load once it reads a file there. A git worktree shares its main checkout's memory
-*(read, not run)*.
+A worker loads the user's own files (`~/.claude/CLAUDE.md`, `~/.claude/rules/`, their settings, hooks and skills
+in `~/.claude/skills/`) and the project's: `CLAUDE.md`, `.claude/CLAUDE.md`, `CLAUDE.local.md` and `.claude/rules/`
+in its folder and in every folder above it up to the filesystem root, with the project's skills in
+`.claude/skills/`, its settings and its auto memory. That memory is kept in `~/.claude/projects/<folder>/memory/`,
+`<folder>` written as under § Transcripts from the repository's main checkout, which its worktrees and subfolders
+share *(read, not run)*, or from the folder itself outside git. It reads `AGENTS.md` in those folders too, by default
+only when none of them holds one of the three `CLAUDE.md` files. A subfolder's files load once it reads a file there.
 
 It loads nothing of yours while the workspace sits outside your folder, so the brief carries all the role and
 the task need. Keep the folder holding the workspaces free of instruction files: they would load into every worker.

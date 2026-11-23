@@ -32,7 +32,8 @@ codex --no-daemon --dangerously-bypass-approvals-and-sandbox -m <model> -c model
 At start, and only then, a worker loads the user's `~/.codex/AGENTS.md` and each `AGENTS.md` from the project
 root (the nearest folder above it holding `.git`) down to its own folder. Project files share 32 KiB and the
 rest is cut silently; a project the user's config marks untrusted loads none. Skills come from the project's
-`.agents/skills/` and the user's own folders *(read, not run)*; under Herdr a Codex worker can load the user's
+`.agents/skills/` *(read, not run)* and the user's `~/.agents/skills/`. Its memories, where the user keeps them, sit
+in `~/.codex/memories/`, one store for every folder. Under Herdr a Codex worker can load the user's
 `herdr` skill, when they linked it globally (README § Making her yours), and read its lead's screen without being
 asked. It loads nothing of yours and no `CLAUDE.md`, so the
 brief carries all the role and the task need, and names a project's `CLAUDE.md` to read when its rules live

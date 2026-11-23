@@ -6,8 +6,9 @@ the file, so the brief carries what matters from it. Laima's own role is the roo
 Each file has these headings, and nothing about one user, project, harness version or model name:
 
 - **Purpose**: what the session is for, in a sentence or two.
-- **Authority**: read-only, writes in its workspace, or may ship. A project note or the user's word can widen it
-  for one task; the brief then quotes that grant.
+- **Authority**: read-only, writes in its workspace, or may ship. A read-only role whose output is a file names
+  that one file and says it goes in the task folder. A project note or the user's word can widen it for one task;
+  the brief then quotes that grant.
 - **Lifetime**: per task or one-shot.
 - **Suited to**: the kind of harness and model that fits, in general terms. The concrete choice per role is in
   `local/setup.md`.

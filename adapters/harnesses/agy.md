@@ -52,7 +52,7 @@ folder holding the workspaces, and the folders above it, free of `AGENTS.md` and
 `.agents/skills/` in the same folders and from the user's `~/.gemini/skills/`, `~/.gemini/config/skills/` and
 `~/.gemini/antigravity-cli/skills/` *(read, not run)*; not from `~/.agents/skills/`, which Codex reads (an open
 issue says so, and that path is not in the binary) *(read, not run)*, so a skill the user linked only there is not
-there for an agy worker.
+there for an agy worker. Where it keeps a memory of its own per folder, if it keeps one, is not known.
 
 It loads nothing of yours while the workspace sits outside your folder, so the brief carries all the role and the
 task need, and names a project's `CLAUDE.md` to read when its rules live there.

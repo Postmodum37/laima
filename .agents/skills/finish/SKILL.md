@@ -40,10 +40,11 @@ user or on other people; the task then stays open and you return here later.
    knowledge note, or the record itself); the record names its final path. Done when the record makes sense to a
    reader who has no transcript and no workspace, and no deliverable is left in the task folder.
 4. **Close the sessions you launched** for the task, by the ids its record holds: read each one's screen, confirm
-   it is idle with nothing unreported, then close it (multiplexer adapter § Close a session). An adopted session is
-   the user's and stays: tell them the task is closed. A session tagged with the task id that the record does not
-   name is not one you can show is yours: leave it and tell the user it is there. Done when the listing shows none
-   of the record's sessions of yours.
+   it is idle with nothing unreported, then close it (multiplexer adapter § Close a session). For a task being
+   dropped, a session still working or at a dialog is closed as well, once step 3 holds what its screen shows. An
+   adopted session is the user's and stays: tell them the task is closed. A session tagged with the task id that
+   the record does not name is not one you can show is yours: leave it and tell the user it is there. Done when
+   the listing shows none of the record's sessions of yours.
 5. **Remove the workspace:** whatever the record says was made for the task alone (a worktree, a branch, a
    reviewer's copy) and the task folder. First show that nothing would be lost.
    - A worktree of the task, under git: after `git fetch --prune` where there is a remote, `git status --short`
@@ -71,4 +72,4 @@ user or on other people; the task then stays open and you return here later.
    the task's lines under "Needs the user" and add it under "Recently finished".
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the note's duties at delivery; a tagged session the record does not name.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4.

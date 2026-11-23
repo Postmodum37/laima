@@ -5,7 +5,7 @@ together, most often git repositories. One line per folder:
 
 ```markdown
 ## <project>
-- **<name>**: <purpose in a few words> | path: `<local path>` | remote: <url or none> | instructions: `<AGENTS.md or CLAUDE.md in the folder, or none>`
+- **<name>**: <purpose in a few words> | path: `<local path>` | remote: <url or none> | instructions: `<the instruction files in the folder (AGENTS.md, CLAUDE.md, .claude/CLAUDE.md, GEMINI.md), or none>`
 ```
 
 The name is the key; the path is a lead, so check it exists before launching there.
