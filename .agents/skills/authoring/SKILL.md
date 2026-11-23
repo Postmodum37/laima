@@ -88,8 +88,10 @@ a push or a pull request, waits for the user's word. Files under `local/`, other
 untracked and have nothing to commit. Then tell the user which file changed and why, and that the commit waits for
 their word to publish, since a change to your own rules is otherwise invisible to them.
 
-Done when: `git status --short` shows nothing left from this change; `git log -1 --format='%an <%ae>%n%B'` shows the
-identity the user publishes the core under and a message in that form, its subject within 72 characters; `git log -1
---format=%B | grep -n -E '/Users/|/home/'` prints nothing; and the user has been told.
+Done when: `git status --short` shows nothing left from this change; for every commit not yet published (`git log -p
+--format='%an <%ae>%n%B' @{u}..`), you have read the diff and the message: one change that can be reverted on its own,
+the identity the user publishes the core under, a subject within 72 characters that starts with `<area>: `, and a
+reason on each `Not run:` line; `git log --format=%B @{u}.. | grep -n -E '/Users/|/home/'` prints nothing; and the
+user has been told. Read a worker's commits the same way before you ask the user to publish them.
 
-Verified: 2026-11-22, Claude Code 2.1.329 to 2.1.330 and Codex 0.170.0. Not yet run: a new core skill; step 6 moving an adapter's line to a newer version; step 7 as now worded.
+Verified: 2026-11-23, Claude Code 2.1.330 and Codex 0.170.0. Not yet run: a new core skill; step 6 moving an adapter's line to a newer version.
