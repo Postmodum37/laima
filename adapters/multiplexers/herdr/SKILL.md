@@ -168,4 +168,4 @@ one blocks, hc notes it to you (its parent), and you tell the user. `herdr-app d
 
 For a cmux command or habit that needs its Herdr form, read [`reference.md`](reference.md) § From cmux.
 
-Verified: 2026-11-18, herdr-app 0.1.16, hc 0.1.21, claude 2.1.327, codex 0.170.0. Not yet run: the description's exclusion of Laima's task sessions and of a brief's report; a preset name matched by a launch with `--` before its argv.
+Verified: 2026-11-23, herdr-app 0.1.17, hc 0.1.22 by `scripts/drift` (every probe holds); the evals last 2026-11-18 on herdr-app 0.1.16, hc 0.1.21, claude 2.1.327, codex 0.170.0. Not yet run: the evals on herdr-app 0.1.17; the description's exclusion of Laima's task sessions and of a brief's report; a preset name matched by a launch with `--` before its argv.

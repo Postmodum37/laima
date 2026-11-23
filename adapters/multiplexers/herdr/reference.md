@@ -127,7 +127,9 @@ the parent is waiting on it (source). `--no-notify` on a child silences these bu
   `feature/x` and `feature-x` share a slug). It opens and focuses a space.
 - For another base ref, create the checkout with git first, then `herdr-app do space.new --name <task>
   --folder <checkout> --argv '[…]' --task '<brief>' --focus false` (when the user wants to see it).
-- Remove worktree closes the space's terminals before git removes the checkout and can force a dirty one.
+- Remove worktree refuses the main checkout and a locked worktree, and forces a dirty one after a warning. On macOS
+  and Linux git removes the checkout first and the space's terminals close only once it has, so they stay when git
+  refuses; on Windows they close first. *Source*, herdr-app v0.1.17.
 
 ## From cmux
 
