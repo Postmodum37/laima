@@ -61,8 +61,11 @@ isolated live test). The core has no status-setting RPC.
 ## Lifetime and recovery
 
 A child that outlives its parent retains its `parent` field. With a pane it gains a top-level row. Without a pane
-it disappears from the window and stays reachable through hc (isolated live test). See § Window: attention and
-navigation (herdr-app) for alerts and `hc --skill` for kept terminals and saved screens.
+it disappears from the window and stays reachable through hc (isolated live test). Closing a pane, tab or space
+ends the terminals inside it; a child with `--outlive-parent` outside it survives. `herdr-app do terminal.kill`
+also ends the terminal's hidden descendants that have no pane and no `herdr.space` label, outliving ones included
+(live test, herdr-app 0.1.18). See § Window: attention and navigation (herdr-app) for alerts and `hc --skill` for
+kept terminals and saved screens.
 
 ## Identity and environment
 
@@ -94,9 +97,9 @@ and file side effects with `checking()` as the guide describes. Cloned layouts s
 For a different base ref, create the checkout with git first, then open that folder with `herdr-app do space.new`
 if the user wants it visible. New worktree branches from the current checkout's HEAD.
 
-Remove worktree refuses the main checkout and a locked worktree, and forces a dirty one after a warning. On macOS
-and Linux git removes the checkout first, so terminals stay open if git refuses. On Windows the terminals close
-first. *Source*, herdr-app v0.1.17.
+Remove worktree refuses the main checkout and a locked worktree, and forces a dirty one after a warning. It then
+closes the worktree's space, waits up to 10 seconds for its terminals to stop, and runs git, so a late git refusal
+leaves the space closed and the checkout in place. *Source*, herdr-app v0.1.18.
 
 ## From cmux
 

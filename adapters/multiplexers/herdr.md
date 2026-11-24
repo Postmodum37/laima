@@ -1,6 +1,6 @@
 # Herdr adapter
 
-Version checked: herdr-app 0.1.17, hc 0.1.22
+Version checked: herdr-app 0.1.18, hc 0.1.22
 
 Release notes: `CHANGELOG.md` in each repository, https://github.com/herdrdev/herdr-app/blob/main/CHANGELOG.md and https://github.com/herdrdev/herdr-core/blob/main/CHANGELOG.md
 

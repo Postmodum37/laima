@@ -94,11 +94,12 @@ notes are suppressed, see [Notes and delivery settings](reference.md#notes-and-d
 ## Close
 
 Collect the result before closing a terminal you started. Use the kill and removal steps in `hc --skill`
-§ Status, recovery, and cleanup. Closing a tab in the app leaves finished records in `hc ls --all`. Leave the
-shared app and core running.
+§ Status, recovery, and cleanup. Closing a tab in the app leaves finished records in `hc ls --all`; what a close
+or an app kill ends is in [Lifetime and recovery](reference.md#lifetime-and-recovery). Leave the shared app and core
+running.
 
 ## From cmux
 
 For differences in message delivery, screen reads and notifications, see [From cmux](reference.md#from-cmux).
 
-Verified: 2026-11-24, herdr-app 0.1.17 and hc 0.1.22 for peer placement, Claude Code 2.1.331 and Codex 0.172.0 for skill discovery. Not yet run: the full [eval cases](evals/cases.md) on these versions, Laima's task-session and brief-report routing exclusions, preset matching with `--`, `scripts/child-run` from Codex, and whether a child's block plays a sound.
+Verified: 2026-11-24, herdr-app 0.1.18 and hc 0.1.22 for peer placement, close and kill lifetime (L9) and L4, Codex 0.172.0 for a `scripts/child-run` smoke run, Claude Code 2.1.331 and Codex 0.172.0 for skill discovery. Not yet run: the full [eval cases](evals/cases.md) on these versions, Laima's task-session and brief-report routing exclusions, preset matching with `--`, `scripts/child-run` cancellation from Codex, and whether a child's block plays a sound.

@@ -99,7 +99,9 @@ program starts in its place). The steps call them `reviewer`, `implementer`, `pl
 ## L9 Nesting
 
 `hc run --bg --name nest1 --cwd /tmp zsh`; `hc send nest1 "hc run --bg --name nest2 --cwd /tmp zsh"`. Pass:
-`hc get nest2` has parent `nest1`'s address; `hc kill nest1` leaves both `finished`/`killed`.
+`hc get nest2` has parent `nest1`'s address; `hc kill nest1` leaves both `finished`/`killed`. Since herdr-app 0.1.18,
+`herdr-app do terminal.kill` on `nest1` also ends a hidden `--outlive-parent` child of it, and spares one with a pane
+or a `herdr.space` label.
 
 ## L10 Codex hook trust after editing hooks.json
 
