@@ -26,8 +26,8 @@ to a pull request.
 The core is the same for every user; everything about you, your projects and your own additions lives in `local/`,
 which never leaves your machine. A change belongs in the core only when it passes all of these:
 
-- **A stranger would hit the same miss.** If a line in your `local/user.md`, a note in `local/projects/`, or a
-  workflow, role or skill of your own would settle it, it is local, and `local/AGENTS.md` § The user's own
+- **A stranger would hit the same miss.** If a line in your `local/Laima/user.md`, a note in `local/Laima/projects/`,
+  or a workflow, role or skill of your own would settle it, it is local, and `local/Laima/AGENTS.md` § The user's own
   workflows, roles and skills says where it goes. A core change you need only for your own setup is a cost to
   everyone else.
 - **Every line is true for a stranger who cloned the repository.** It names no person, employer, project or path

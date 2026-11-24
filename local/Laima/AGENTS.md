@@ -1,5 +1,8 @@
 # local/: the vault
 
+This guide applies throughout `local/`, including sibling folders and files. The root `AGENTS.md` requires it for
+vault work because directory-based loading stops at folder boundaries.
+
 Everything about one user and their work: Laima's long-term memory. Plain Markdown with frontmatter and
 `[[wikilinks]]`, so it opens in Obsidian without needing it. Never pushed anywhere. It is a git repository of its
 own (`local/.git`, made by `set-up`), and `wrap-up` commits it at its end, so a bad write can be undone from that
@@ -7,13 +10,12 @@ history: `git -C local log -p <file>` shows what changed.
 
 | File | Holds | Written |
 |-|-|-|
-| `index.md` | What waits on the user, what finished lately, the map of knowledge notes | Rebuilt by `wrap-up`; one line edited when a question is asked or a task closes |
-| `setup.md` | Multiplexer, harness and model per role, workspace location, tools found | By `set-up` |
-| `user.md` | Who the user is, their rules, pointers to their global instruction files | By `set-up`; edited when the user states a standing preference |
-| `persona.md` | The user's additions to `persona.md` | When the user asks |
+| `Laima/index.md` | Knowledge and project references and the consolidation cursor | By `set-up` and `consolidate` |
+| `Laima/setup.md` | Multiplexer, harness and model per role, workspace location, tools found | By `set-up` |
+| `Laima/user.md` | Who the user is, their rules, pointers to their global instruction files | By `set-up`, or when the user states a standing preference |
+| `Laima/persona.md` | The user's additions to `persona.md` | When the user asks |
 
-Folders, each with its own `AGENTS.md`: `work/`, `log/`, `knowledge/`, `projects/`. Three more hold what the
-user adds to the core and are created when first needed: `workflows/`, `roles/`, `skills/`.
+Vault folders with their own `AGENTS.md`: `work/`, `Laima/log/`, `Laima/knowledge/`, `Laima/projects/`.
 
 ## The user's own workflows, roles and skills
 
@@ -21,14 +23,14 @@ The core's workflows, roles and skills are the same for every user. One that onl
 that an update of the core never touches it. These add to the core. To change how a core workflow runs, write
 the rule in `user.md` or in a project note: a local copy of a core file would miss every later fix to it.
 
-- **A workflow** is `local/workflows/<name>.md`, under a name no core workflow has, with the headings the core's
+- **A workflow** is `local/Laima/workflows/<name>.md`, under a name no core workflow has, with the headings the core's
   `workflows/AGENTS.md` lists. Add its line to `setup.md` § Own workflows: that line is how a session learns
   the workflow exists.
-- **A role** is `local/roles/<name>.md`, under a name no core role has, with the headings the core's
+- **A role** is `local/Laima/roles/<name>.md`, under a name no core role has, with the headings the core's
   `roles/AGENTS.md` lists, and with its row in `setup.md` § Roles.
-- **A skill** is `local/skills/my-<name>/SKILL.md`, written as `docs/authoring.md` § Skill says. A harness lists
+- **A skill** is `local/Laima/skills/my-<name>/SKILL.md`, written as `docs/authoring.md` § Skill says. A harness lists
   skills only from the Laima folder's two skill folders, so link it from both, from the Laima folder:
-  `ln -s ../../local/skills/my-<name> .agents/skills/my-<name>` and
+  `ln -s ../../local/Laima/skills/my-<name> .agents/skills/my-<name>` and
   `ln -s ../../.agents/skills/my-<name> .claude/skills/my-<name>`. Git ignores links whose name starts with
   `my-`. A session started before the links were made does not list the skill.
 
@@ -51,7 +53,7 @@ A vault without the section has no such area. `wrap-up` commits these areas with
 
 ## Writing here
 
-- **Append or edit in place.** Change the lines that changed; `index.md` is the one file ever rewritten whole.
+- **Append or edit in place.** Change the lines that changed.
 - **One writer.** You alone write the files and folders this guide names; a worker's content arrives in its
   report and you write it in. § The user's own notes holds the one exception.
 - **Times** and dates are local and read from the clock in the step that writes them: `$(date '+%H:%M')` inside a

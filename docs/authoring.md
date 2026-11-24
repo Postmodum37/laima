@@ -1,8 +1,8 @@
 # Authoring Laima's files
 
-Read this before you create or edit a file that carries your behaviour: an `AGENTS.md`, `persona.md`, `local/user.md`, a
-template, a role, a workflow, a skill or an adapter. The steps for making a change are in the `authoring` skill. This
-file holds what a finished file must satisfy and the commands that check it.
+Read this before you create or edit a file that carries your behaviour: an `AGENTS.md`, `persona.md`,
+`local/Laima/user.md`, a template, a role, a workflow, a skill or an adapter. The steps are in the `authoring`
+skill. This file holds what a finished file must satisfy and the commands that check it.
 
 If the `writing-for-agents` skill is installed, load it for depth on pointers, completion criteria and pruning. Where it
 and this file differ, this file wins: it asks for normal volume where the skill suggests a stronger word, and it keeps
@@ -63,7 +63,9 @@ Owns the rules for writing in one folder. Only a folder you write into under rul
   write.
 - Repeats nothing from the root. Where it needs a root rule it gives the path.
 - Its folder is marked in the root's folder map.
-- Holds nothing you need before deciding to enter the folder, because it loads only once you are working there.
+- Holds nothing you need before deciding to enter the folder. The vault-wide exception is `local/Laima/AGENTS.md`:
+  the root requires it explicitly before work anywhere in `local/`, including siblings of `Laima/`.
+  The other vault guides apply to their own folders.
 - Under `local/` it is still a core file, so the core or local check below applies.
 
 ### `persona.md`
@@ -73,18 +75,18 @@ Owns who Laima is and how she sounds.
 - Says where the voice does not apply: briefs to workers, task records, log lines.
 - Leaves authority, routing and procedure to the root, the workflows and the skills.
 - Examples, if any, are several, varied and labelled as illustrations. A single example gets copied in length and tone.
-- `local/persona.md` holds only the user's additions, not a copy of the core file.
+- `local/Laima/persona.md` holds only the user's additions, not a copy of the core file.
 
-### `local/user.md`
+### `local/Laima/user.md`
 
 Owns who the user is and the user's own rules.
 - One fact or directive per line, written as it holds now. A changed preference replaces its old line; history belongs
   in the log.
 - Points to the user's global instruction files by path. They already load in your session, and a copy goes stale.
-- Project facts go to `local/projects/`, voice adjustments to `local/persona.md`, tool and model choices to
-  `local/setup.md`.
+- Project facts go to `local/Laima/projects/`, voice adjustments to `local/Laima/persona.md`, tool and model choices to
+  `local/Laima/setup.md`.
 - § Notes areas lists the files and folders in the vault that are the user's own, each with what it holds and who
-  writes there and how. The rule for them is `local/AGENTS.md` § The user's own notes.
+  writes there and how. The rule for them is `local/Laima/AGENTS.md` § The user's own notes.
 - A change every user should get goes into `templates/user.md` or the core instead.
 
 ### Template
@@ -103,7 +105,7 @@ Owns what a session of one role is for and what it may change.
 - Has the headings `roles/AGENTS.md` lists, and no others.
 - Authority is one of the three `roles/AGENTS.md` names, in its terms.
 - "Suited to" names a kind of harness and model with its reason, and no product version or model name. The concrete
-  choice lives in `local/setup.md`.
+  choice lives in `local/Laima/setup.md`.
 - "Hands back" and "In the brief" can be lifted into a brief as written. A worker in another repository loads none of
   the Laima files, so the brief is the only way this text reaches it.
 
@@ -159,7 +161,7 @@ Owns how one multiplexer or harness does what the core describes in general. A h
 - Holds instructions for using the tool: what to run, what to expect, and what to do when it goes otherwise, in the
   present tense. You read it while you work and act on each line, so it holds no date, no count of runs or tries, no
   account of a test ("in one test", "twice in six sends") and no model name except as an example value of a flag.
-  Which model a role runs on is `local/setup.md`'s.
+  Which model a role runs on is `local/Laima/setup.md`'s.
 - A fact that holds only under a condition (a pairing of tools, a mode, a length) states the condition, not how it was
   found.
 - Gives the exact command where one exists, and leaves option lists to the tool's own `--help`.
@@ -199,9 +201,9 @@ names. Core is written to be published; the rest of `local/` never leaves the ma
 - Every line would be true for a stranger who cloned the repository. A line true only for this user moves to `local/`,
   into the file that owns it.
 - Examples use invented names and IDs.
-- A workflow, role or skill that only this user needs is local: `local/AGENTS.md` § The user's own workflows, roles and
-  skills says where it goes. Its checklist here applies except for the lines that keep a core file generic, and a local
-  skill needs no row in the root's Skills table.
+- A workflow, role or skill that only this user needs is local. See `local/Laima/AGENTS.md` § The user's own
+  workflows, roles and skills for where it goes. Its checklist here applies except for the lines that keep a core
+  file generic, and a local skill needs no row in the root's Skills table.
 - `git status --short` lists nothing under `local/` except `AGENTS.md` files.
 - A change that alters what `README.md` states (the requirements, what is where, the status, what she is not) changes
   the README in the same commit. It is written for people and loads in no session, so nothing else brings a stale line
@@ -216,7 +218,7 @@ Run the ones that apply after an edit, from the Laima folder.
 | `/context` | A Claude Code session | The instruction files and skills loaded into the session, with their token cost | The root `AGENTS.md` is listed, no `CLAUDE*.md` from the Laima folder is, and a changed skill appears |
 | `/doctor prompt-audit` | A Claude Code session | An audit of everything that loads in the session, the user's global instructions, skills, agents and plugins included: emphasis, contradictions between files, leftovers, paths and commands that no longer resolve. It proposes a diff and applies nothing | Each finding on the file you changed is fixed or answered |
 | `codex debug prompt-input` | A shell | As JSON, the exact input Codex gives the model, without calling one | The root `AGENTS.md` appears whole in the first user message, and a skill appears by name with its description. Folder files are absent at a root start; that is expected |
-| A scenario from `docs/testing.md` | A fresh session in a throwaway copy, on the real multiplexer | What a session does with the changed file, judged against the guide's goals | Each scenario that uses the changed file passes on the model `local/setup.md` names for the role |
+| A scenario from `docs/testing.md` | A fresh session in a throwaway copy, on the real multiplexer | What a session does with the changed file, judged against the guide's goals | Each scenario that uses the changed file passes on the model `local/Laima/setup.md` names for the role |
 | `claude plugin eval <skill folder> --trust-plugin --no-publish --model <model> --runs <n> --max-cost-usd <usd>` | A shell | Runs each case under the skill's `evals/` (a folder per case with `prompt.md` and `graders/*.md`; `claude plugin eval init --bare <name>` writes a blank one) with and without the skill, and scores the difference. It writes `evals/results/` there | It exits 0: no case scored below `--threshold` |
 
 - The two slash commands are typed by the user. Ask for them and read the result. From a shell, `claude -p "/context

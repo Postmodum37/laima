@@ -7,7 +7,7 @@
 #                   folder this script did not build
 #   --seed          a scenario's starting state from docs/testing/fixture/seeds/<name>.sh, on top of the base, which has
 #                   nothing pending
-#   --multiplexer   the multiplexer the copy's local/setup.md names (default: the one this shell runs in)
+#   --multiplexer   the multiplexer the copy's local/Laima/setup.md names (default: the one this shell runs in)
 # The slot holds laima/ (the core's files as they stand in the working tree, new ones git does not ignore included,
 # without docs/testing and the skills' and companion skills' cases.md and evals, committed as a git repository, plus
 # the canned local/), the toy project
@@ -99,7 +99,7 @@ fill() {
   to="${to//@YMONTH@/${YDAY%-*}}"
   mkdir -p "$LOCAL/$(dirname "$to")"; fill < "$F/local/$f" > "$LOCAL/$to"
 done
-mkdir -p "$LOCAL"/{work,log,knowledge,projects}
+mkdir -p "$LOCAL"/work "$LOCAL"/Laima/{log,knowledge,projects}
 
 # toy_branch <branch> <subject> <command...>: for a seed, a branch off main with one commit made by the command in
 # the toy project; prints the commit's short id. Each part is chained, since a seed calls it inside $(...), where

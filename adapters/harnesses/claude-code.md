@@ -18,7 +18,7 @@ claude --dangerously-skip-permissions --session-id <uuid> --model <model> --effo
 ```
 
 - Bypass mode is the default for a worker, so that it does not stop for a permission on every command. When the
-  role's row in `local/setup.md` names another mode, pass `--permission-mode <mode>` in its place. Under bypass
+  role's row in `local/Laima/setup.md` names another mode, pass `--permission-mode <mode>` in its place. Under bypass
   the limits in the brief are instructions, and nothing enforces them.
 - `--model` and `--effort` come from the same row, each optional. `<uuid>` is the id you choose (§ Session id).
 - The brief travels as a file: give its absolute path in a one-line prompt, as above.
@@ -114,4 +114,4 @@ has no such windows, and what it prints then is not verified: ask the user for t
 - Plan mode ends at an approval dialog that waits on a person; a planner is launched like any other worker.
 - When its start screen shows `Code Mode (experimental) is on`, the session can be resumed only with Code Mode on,
   and it has no Chrome or computer-use tools: a brief that needs a browser names a command-line browser from
-  `local/setup.md` § Tools found.
+  `local/Laima/setup.md` § Tools found.

@@ -1,18 +1,34 @@
 #!/bin/sh
 # Lists the open task records in local/work/ from their frontmatter, most pressing first.
+# Usage: open-tasks [--needs-user] [DIR]. The flag lists pending decisions by record filename, without .md.
 # A record is open while `closed` is empty. Nothing is stored: each state is worked out from
 # `not_before`, `due` and `waiting_on` against the clock. Runs from any folder. A trailing comment in a field
 # starts with two spaces and a `#`, so that a value such as "pull request #12" is kept whole; in a date field
 # one space before the `#` is enough. Quotes around a value are taken off, and `null`, `~` and `""` read as
-# empty. A record that is empty or does not open with a frontmatter block is listed as unreadable.
+# empty. The default scan lists records with missing frontmatter as unreadable.
+needs_user_only=0
+if [ "${1:-}" = "--needs-user" ]; then
+  needs_user_only=1
+  shift
+  export LC_ALL=C
+fi
+if [ "$#" -gt 1 ]; then
+  printf '%s\n' 'Usage: open-tasks [--needs-user] [DIR]' >&2
+  exit 2
+fi
 dir="${1:-$(cd "$(dirname "$0")/../../../.." && pwd)/local/work}"
 set -- "$dir"/[0-9]*.md
-[ -e "$1" ] || { echo "no task records in $dir"; exit 0; }
+[ -e "$1" ] || {
+  [ "$needs_user_only" = 1 ] || echo "no task records in $dir"
+  exit 0
+}
 {
-for r in "$@"; do [ -s "$r" ] || echo "9 unreadable  $r  (empty file)"; done
-awk -v now="$(date '+%Y-%m-%d %H:%M')" -v today="$(date '+%Y-%m-%d')" '
+if [ "$needs_user_only" = 0 ]; then
+  for r in "$@"; do [ -s "$r" ] || echo "9 unreadable  $r  (empty file)"; done
+fi
+awk -v needs_user_only="$needs_user_only" -v now="$(date '+%Y-%m-%d %H:%M')" -v today="$(date '+%Y-%m-%d')" '
 function finish_file() {
-  if (file != "" && seen < 2) print "9 unreadable  " file "  (no frontmatter block)"
+  if (!needs_user_only && file != "" && seen < 2) print "9 unreadable  " file "  (no frontmatter block)"
 }
 FNR == 1 {
   finish_file(); file = FILENAME; seen = 0; split("", f)
@@ -21,7 +37,12 @@ FNR == 1 {
 /^---[ \t]*$/ {
   seen++
   if (seen == 2) {
-    if (f["closed"] == "") {
+    if (needs_user_only) {
+      id = FILENAME
+      sub(/^.*\//, "", id); sub(/\.md$/, "", id)
+      # Pad the ID for the same two-column strip used by the ranked scan.
+      if (f["closed"] == "" && f["needs_user"] != "") print "  " id
+    } else if (f["closed"] == "") {
       nb = f["not_before"]; due = f["due"]; w = f["waiting_on"]
       if (due != "" && substr(due, 1, 10) < today)       { rank = 1; state = "overdue" }
       else if (due != "" && substr(due, 1, 10) == today) { rank = 2; state = "due-today" }

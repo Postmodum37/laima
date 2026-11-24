@@ -9,7 +9,7 @@ projects do something. A question about their own systems is Investigate.
    about no project of the user's starts in its task folder (`launch` step 1).
 3. **Laima** reads the note and checks that the claims the answer rests on carry sources.
 4. **Laima** delivers the answer with the sources. When the note will matter beyond this task, promote it to
-   `local/knowledge/` (marked `origin: external`) and log `promoted`.
+   `local/Laima/knowledge/` (marked `origin: external`) and log `promoted`.
 
 **Ask the user** only to narrow the question.
 

@@ -32,7 +32,7 @@ launch. Each cell is `harness, model, effort`. A project note may pin a row for 
 - **Today's rule:** none.
 
 ## Own workflows
-One line per file in `local/workflows/`: its name and when to use it.
+One line per file in `local/Laima/workflows/`: its name and when to use it.
 
 ## Workspaces
 - Task folders: `@SLOT@/work/<task-id>/`, one per task, for its briefs, reports and plans only. Where a task

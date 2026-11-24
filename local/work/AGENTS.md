@@ -13,6 +13,7 @@ opened: 2026-01-31 14:05
 not_before:         # act, or look again at what it waits on, from then: 2026-02-07 or 2026-02-07 09:30
 due:                # a deadline someone set; most tasks have none
 waiting_on:         # who or what other than the user: a reviewer, a release
+needs_user:         # optional scalar: local ask time and a short cue for the pending decision
 closed:
 outcome:
 branch:             # where the project uses them; one per repository when the task changes several; the same for pr
@@ -38,8 +39,13 @@ What happened, with evidence: commands and their results, and where the change i
 ## Follow-ups
 ```
 
-- **Status is read, never stored.** Empty `closed` means open; a question without an answer means waiting on the
-  user; what a session is doing comes from the multiplexer.
+- **Status is read from the record and the multiplexer.** Empty `closed` means open. Read pending decisions with
+  `.agents/skills/wrap-up/scripts/open-tasks --needs-user`. What a session is doing comes from the multiplexer.
+- **Ask and answer in the record.** Before sending, write the full question verbatim in "Questions and answers"
+  and, in the same edit, set a scalar such as `needs_user: "2026-01-31 15:02 — Approve the change"`. For a batch,
+  use one cue for the outstanding decisions in that section. Record each answer verbatim and keep the cue current
+  until the last answer, then clear it to `needs_user:`. A missing field also means no pending decision. Use
+  an open follow-up record when the parent has closed or the decision needs to outlast its closure.
 - **A date or a wait is a field,** so that it can be listed: `.agents/skills/wrap-up/scripts/open-tasks` prints
   the open records as overdue, due today, arrived, open, waiting or later, and no written list of them is kept.
   A wait gets a `not_before` for the next look. Take a date from `date`, not from arithmetic in your head; when

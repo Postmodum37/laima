@@ -32,9 +32,9 @@ user or on other people; the task then stays open and you return here later.
    release, an update to the issue), use it. What the project asks at the end of a task is part of delivery: the
    issue updated or closed and the standing duties, as its note's § Done means and § Obligations say. A delivery step
    that needs the user's word becomes a question with your recommendation, naming the commit or the files: write it in
-   the record, log `asked`, and stop here. Done when the delivery the record's "Done when" names is shown: the user has
-   the answer, the change is where the project's definition of done puts it (on the remote's main branch, in the
-   folder), or the user has taken the work over.
+   the record with `needs_user` as `local/work/AGENTS.md` describes, log `asked`, and stop here. Done when the
+   delivery the record's "Done when" names is shown: the user has the answer, the change is where the project's
+   definition of done puts it (on the remote's main branch, in the folder), or the user has taken the work over.
 3. **Copy out** before anything is removed. From the reports and the files in the workspace into the record: the
    outcome with evidence, decisions with reasons, verification commands with results, follow-ups. A file the
    record's "Done when" names as the user's deliverable (a note, a report or a plan they asked to have) leaves the
@@ -66,12 +66,16 @@ user or on other people; the task then stays open and you return here later.
    needed. Anything uncommitted, unpushed or unexplained stops this step and becomes a question to the user.
    Done when nothing made for the task alone is left, the task folder is gone and the record's `worktree`
    field is empty.
-6. **Complete the record:** `closed`, `outcome`, and each follow-up either opened as its own task (with `source`
-   pointing here, and `not_before` when it is for a later date) or listed under Follow-ups. A lesson that would
-   change how a later task is done goes under Follow-ups as a line starting `lesson:`, for `consolidate`.
+6. **Record follow-ups and close.** Before setting `closed` and `outcome`, give each accepted, unresolved obligation
+   an open record. Reuse the record for the same deliverable or open one. Include the parent link in its `source`,
+   preserving existing provenance. Keep the actor or dependency, next verifiable step and dates in that record,
+   and link it from Follow-ups.
+   Put any decision still owed in its open record with the full question and `needs_user`, then clear the parent's
+   cue. Optional ideas and settled evidence may stay as prose. A lesson that would change a later task goes under
+   Follow-ups as a line starting `lesson:`, for `consolidate`. Done when every owed action links to its open record
+   and the parent's `closed` and `outcome` are set.
 7. **Log** `finished` with the outcome (`delivered`, `answered`, or `failed` with the reason), or `dropped` with
-   the reason, and the evidence. In `local/index.md`, remove
-   the task's lines under "Needs the user" and add it under "Recently finished".
+   the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; a dated follow-up first opened by step 6; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.

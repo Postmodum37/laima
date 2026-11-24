@@ -22,7 +22,7 @@ codex --no-daemon --dangerously-bypass-approvals-and-sandbox -m <model> -c model
   without the flag behaves the same as one with it: its command runs as its own child, with its own terminal's
   `HC_TERMINAL_ID`. What a launch that starts the daemon itself does is not verified.
 - Bypass mode is the default, so that a worker does not stop for an approval on every command; when the role's
-  row in `local/setup.md` names another mode, pass `-s <sandbox> -a <approval>` instead. Under bypass the brief's
+  row in `local/Laima/setup.md` names another mode, pass `-s <sandbox> -a <approval>` instead. Under bypass the brief's
   limits are instructions that nothing enforces. Model and effort come from the same row, each optional.
 - The brief travels as a file: give its absolute path in a one-line prompt, as above. `@file` is not expanded.
 - Keep it interactive. `codex exec` ends after one answer: nothing to watch, message or ask again.

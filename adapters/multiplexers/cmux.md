@@ -30,7 +30,7 @@ cmux workspace create --name <name> --description "laima task=<task-id>" --cwd <
 
 - `<harness argv>`: harness adapter § Launch with a brief, inside single quotes. The brief rides as a file path
   (`cmux/gotchas.md` § A `--command` over 1,023 bytes is cut and left unrun).
-- An agy launch, when `local/setup.md` § Multiplexer says the user does not keep cmux's agy hooks (§ Gotchas):
+- An agy launch, when `local/Laima/setup.md` § Multiplexer says the user does not keep cmux's agy hooks (§ Gotchas):
   `--command 'CMUX_ANTIGRAVITY_HOOKS_DISABLED=1 agy …'`. Every agy command you run in your own terminal carries the
   same prefix, the usage read (agy adapter § Remaining usage) included. Without the hooks cmux reports no state
   for agy and delivers it no message (not verified): follow it by its screen, and message it with `cmux paste --surface
@@ -212,7 +212,7 @@ The cmux facts a session outside Laima needs as well are in `cmux/gotchas.md`, e
 that bear on your steps:
 - § Every target defaults to your own surface: an empty variable as a target acts on you.
 - § cmux's `agy` wrapper writes hooks into the user's agy configuration. `set-up` asks a new user once whether to
-  keep them and writes a no in `local/setup.md` § Multiplexer; then every agy launch and agy command of yours
+  keep them and writes a no in `local/Laima/setup.md` § Multiplexer; then every agy launch and agy command of yours
   carries `CMUX_ANTIGRAVITY_HOOKS_DISABLED=1` (§ Start a task session). When hooks an earlier run wrote are already
   there, tell the user: taking them out is theirs.
 - § cmux's `codex` wrapper skips Codex's hook-trust review: where the user or the project relies on that review,

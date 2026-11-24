@@ -1,4 +1,4 @@
-# local/projects/: what you work on
+# local/Laima/projects/: what you work on
 
 `registry.md` lists every tracked folder, grouped under its project. A project is one or more folders worked on
 together, most often git repositories. One line per folder:
@@ -27,7 +27,6 @@ updated: YYYY-MM-DD
 ## Authority           what this project grants or restricts beyond the default
 ## Obligations         standing duties for any work here, such as a log to keep updated
 ## Existing memory     pointers to memory the harnesses already hold for it
-## Open loops
 ```
 
 - Facts about the project stay in its own files: read its instruction file and the files when you need them.

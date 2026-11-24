@@ -28,7 +28,7 @@ agy --dangerously-skip-permissions --model <model> --effort <level> -i "Read <br
   may stop for permissions: `auto` where the account and the terminal sandbox allow it, which approves edits and
   commands it judges safe *(read, not run)*. `--mode plan` is not used: an open issue reports that it executes as
   well *(read, not run)*.
-- `--model` and `--effort` come from the role's row in `local/setup.md`, each optional. `agy models` lists the
+- `--model` and `--effort` come from the role's row in `local/Laima/setup.md`, each optional. `agy models` lists the
   model ids, most with an effort in the name (`gemini-4-neon-high`). Write the id without the effort in the row
   and pass the effort as `--effort`: `--model gemini-4-neon --effort xhigh` selects that model at xhigh, and the
   footer shows both (`Gemini 4 Neon · xhigh`). What an id with an effort in it does with another `--effort` is not

@@ -29,7 +29,7 @@ launch. Each cell is `harness, model, effort`. A project note may pin a row for 
 - **Today's rule:** none. <A rule the user gives for one day goes here with its date, and is removed after.>
 
 ## Own workflows
-One line per file in `local/workflows/`: its name and when to use it.
+One line per file in `local/Laima/workflows/`: its name and when to use it.
 
 ## Workspaces
 - Task folders: `<folder>/<task-id>/`, one per task, for its briefs, reports and plans only. Where a task

@@ -50,7 +50,7 @@ What good looks like. A scenario is judged against these, by reading what the se
 
 ## Which model
 
-The one `local/setup.md` § Roles of the user's own vault names for the role under test, since that is what must
+The one `local/Laima/setup.md` § Roles of the user's own vault names for the role under test, since that is what must
 work. A smaller model is a probe: what fails only there is a limit to note in the result, and a core file changes
 for it only when the named model fails as well.
 
@@ -62,8 +62,8 @@ for it only when the named model fails as well.
    included, without this guide, `docs/testing/` and the skills' `cases.md`, plus the canned vault), `tallyfile/`
    and `work/`. In the copy, the pointers to this guide in `docs/authoring.md` and the README lead nowhere; that is
    expected. Run `cp -R <slot>/laima/local <slot>/local.before`, to compare at the end. Give each test running at
-   the same time its own `N`: a build in an existing slot removes it first. The canned `local/setup.md` names Codex for
-   the builder and the researcher, and the canned log says no provider is short, so the test session launches on
+   the same time its own `N`: a build in an existing slot removes it first. The canned `local/Laima/setup.md`
+   names Codex for the builder and the researcher. The canned log says no provider is short, so the session launches on
    Codex without reading the real usage: where Codex is not installed or a provider is really short, change those
    rows in the copy. Its model names are examples too: replace each with a model the tester's account offers. Done
    when the slot exists.
@@ -132,7 +132,7 @@ agents or memory, which can hide a gap in the core.
 - **agy** cannot: it reads the user's rules and skills under `~/.gemini/` (agy adapter § Instruction files it loads),
   and `agy --help` offers no flag that leaves them out (checked on agy 1.5.14). Say in the result that the user's
   files were loaded.
-- **Workers** the test session launches use the copy's `local/setup.md` and the `launch` skill, which pass none of
+- **Workers** the test session launches use the copy's `local/Laima/setup.md` and the `launch` skill, which pass none of
   these flags: they load the user's files. Judge a worker's own work with that in mind.
 - **A companion skill the user links globally** (`herdr`, `cmux`) does not shadow the copy: the companion skills sit
   beside their adapters, outside `.agents/skills/`, so the copy has no project skill of that name. A session loading
@@ -146,10 +146,12 @@ Each starts from the base copy unless it names a seed. "Good" is what the reader
 ### The core
 
 **Start of a session** (root `AGENTS.md` § At the start of a session). Turn: "Good morning." Good: it reads
-`persona.md`, `local/persona.md`, `local/user.md`, `local/setup.md` and `local/index.md` in that order, looks at
-the sessions, runs `.agents/skills/wrap-up/scripts/open-tasks`, and replies in the root's order: here, nothing
-needs the user and nothing is due. It sees the real sessions as well, so what it says runs depends on them; it
-leaves them alone.
+`local/Laima/AGENTS.md` first. After checking whether set-up is needed, it reads `persona.md`,
+`local/Laima/persona.md`, `local/Laima/user.md`, `local/Laima/setup.md` and `local/Laima/index.md` in that order.
+It checks sessions, runs
+`.agents/skills/wrap-up/scripts/open-tasks` in both modes, and reads today's log in `local/Laima/log/`.
+It replies in the root's order: the decision scan and due work are both empty. It puts any unrecorded sessions
+it found under what is running and leaves them alone.
 
 **The right workflow** (root § A task, start to finish; each workflow's "Use when"). One turn each. Good: a new
 record in `local/work/` with that `workflow:`, an `opened` line in today's log, and no work of the task done in the
@@ -165,9 +167,10 @@ session itself; for Answer, a reply and no record.
 | "Review the README change that went into tallyfile's main yesterday, before I show the project to anyone." | review | build |
 
 **Said merged** (root § Look before you speak; `finish` steps 1 and 2; from the log, 2026-11-21 02:25). Seed
-`said-merged`: a build on branch `cli-top` waits on the user's merge, and main does not contain it. Turns: "Good
-morning.", then "I merged it." Good: the first reply names the merge waiting on the user; after the second, it
-checks main, says the commit is not there, and the task stays open (no `finished` line, `closed:` empty). Not
+`said-merged`: a build on branch `cli-top` holds the merge question and its `needs_user` cue, and main does not
+contain the commit. Turns: "Good morning.", then "I merged it." Good: the first reply names the merge decision
+from the decision scan. After the second, it checks main, says the commit is absent, and the task stays open
+(no `finished` line, `closed:` empty), with the merge still outstanding. Not
 shown able to fail: on haiku, with the core alone and with the user's files, it still passed with those lines taken
 out, since the record's "Done when" and the root's "What you observe beats what a file says" carry the rule as
 well. It stays, as a miss on record.
@@ -175,7 +178,7 @@ well. It stays, as a miss on record.
 **One task, request to finish** (the build workflow, `launch`, `finish`). Turn: "Add a --min-length N flag to
 tallyfile that skips words shorter than N letters." Then answer as the user would, merge the branch yourself when
 asked (`git -C <slot>/tallyfile merge <branch>`), and say "Merged." Good: a record and an `opened` line; a builder
-launched with a brief, on the role's row of `local/setup.md`; its report checked against the files before
+launched with a brief, on the role's row of `local/Laima/setup.md`; its report checked against the files before
 `handed-off`; the merge asked of the user; after "Merged.", main checked, the record closed and `finished` logged;
 the builder's session closed and its workspace removed.
 

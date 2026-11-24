@@ -1,4 +1,4 @@
-# local/knowledge/: curated notes
+# local/Laima/knowledge/: curated notes
 
 Durable notes that will change how a later task is done: a lesson from a finished task, a decision that outlives
 its task, a researcher's note worth keeping, a fact about the user's systems that no project's files record.
@@ -22,5 +22,5 @@ The fact or lesson in a sentence or two, then the detail.
   (`projects/`); the story of one task (its record); a preference of the user (`user.md`).
 - A note enters through the `consolidate` skill, at the delivery of a Research task (`workflows/research.md`), or
   when the user says "remember this". Log `promoted`.
-- Every note is linked from the map in `local/index.md`; a note nobody can find is lost.
+- Every note is linked from the map in `local/Laima/index.md`; a note nobody can find is lost.
 - Delete a note that turned out wrong, and correct one that went stale when you notice it.

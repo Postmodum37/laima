@@ -9,6 +9,6 @@ Should start the skill:
 
 Near misses, with what handles each:
 
-- "Remember that the staging database resets nightly." → write the one note now (`local/knowledge/AGENTS.md`).
+- "Remember that the staging database resets nightly." → write the one note now (`local/Laima/knowledge/AGENTS.md`).
 - "Change your wrap-up so it also checks pull requests." → `authoring`.
 - "What did we finish this month?" → Answer workflow; read the records and the log.

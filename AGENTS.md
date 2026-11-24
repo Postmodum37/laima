@@ -12,21 +12,23 @@ hold the rest. No daemon, database or hook stands behind them, so a rule works o
 
 ## At the start of a session
 
-Read these, in order, before your first reply:
-1. `persona.md`: who you are and how you speak.
-2. `local/persona.md`: the user's additions; they win where they differ.
-3. `local/user.md`: who the user is, and their rules.
-4. `local/setup.md`: the multiplexer, the harness and model for each role, where workspaces go.
-5. `local/index.md`: what waits on the user and the map of the vault.
+Read `local/Laima/AGENTS.md` first. Check whether the private files below exist and `local/Laima/setup.md` lists a
+set-up run. If either check fails, run the `set-up` skill before the remaining reads.
 
-When one of the `local/` files is missing, or `local/setup.md` lists no set-up run, run the `set-up` skill
-before these reads. Otherwise orient, now and at the first turn of each new day: look at the sessions
+Read these in order before your first reply:
+1. `persona.md`: who you are and how you speak.
+2. `local/Laima/persona.md`: the user's additions; they win where they differ.
+3. `local/Laima/user.md`: who the user is, and their rules.
+4. `local/Laima/setup.md`: the multiplexer, the harness and model for each role, where workspaces go.
+5. `local/Laima/index.md`: the map of the vault.
+
+If set-up was unnecessary, orient now and at the first turn of each new day. Look at the sessions
 (§ Look before you speak; after a reboot, the adapter's § After a reboot), list the open tasks
-(`.agents/skills/wrap-up/scripts/open-tasks`), read in full the records it lists as overdue, due-today, arrived or
-open and those with a question under "Needs the user" in `local/index.md` (for a `waiting` or `later` one, its line
-is enough until its date), read today's log, then tell the user what needs them, what is due, what is running and
-what finished, in that order. Questions under "Not asked yet" in `local/setup.md` need them too: offer to run
-`set-up` for them.
+with `.agents/skills/wrap-up/scripts/open-tasks` and repeat with `--needs-user`. Read each decision record and each
+record the default scan lists as overdue, due-today, arrived or open. Read today's log in `local/Laima/log/`.
+Tell the user, in order, the pending decisions from `--needs-user`, the work that is due, what is running and
+what finished. Include unrecorded sessions under what is running. For questions under "Not asked yet" in
+`local/Laima/setup.md`, offer to run `set-up`.
 
 ## Lean
 
@@ -44,7 +46,7 @@ to be read, kept true and kept in step with the rest, so each one must pay for t
   A guard, sandbox or hook is the user's decision; propose one only after an incident.
 - **Take out** what no longer earns its place.
 - **Do not save on what catches mistakes:** the check by a context that did not see the work being made, and
-  the model and effort that `local/setup.md` names for the step. Brief that check, a subagent's included, as
+  the model and effort that `local/Laima/setup.md` names for the step. Brief that check, a subagent's included, as
   `roles/reviewer.md` § In the brief says.
 - **Your time goes to the user's work.** Beyond wrap-up and consolidation, work on yourself needs the reason above.
 
@@ -54,7 +56,7 @@ Session state lives in the multiplexer and nowhere else. While any task has a se
 the sessions at the start of each turn, and look before you say anything about one:
 `adapters/multiplexers/<multiplexer>.md` § See all sessions. The
 multiplexer is the one this session runs in; each adapter's opening names the variable that holds your address
-there. When `local/setup.md` names another, use the one you run in and tell the user once.
+there. When `local/Laima/setup.md` names another, use the one you run in and tell the user once.
 What you observe beats what a file says. A record, the index, a memory and a worker's report are leads to check.
 A task is finished when facts show it (the commit, the pull request, the file as it stands, the test result you
 ran or read).
@@ -63,7 +65,7 @@ ran or read).
 
 | Word | Meaning |
 |-|-|
-| project | One or more folders worked on together, most often repositories; listed in `local/projects/registry.md` |
+| project | One or more folders worked on together, most often repositories; listed in `local/Laima/projects/registry.md` |
 | task | One unit of work the user asked for: one record in `local/work/`, one workflow, one workspace |
 | workflow | The path a task takes: its steps, where the user is asked, what done means |
 | step | One stage of a workflow, carried out by the role it names |
@@ -85,7 +87,7 @@ ran or read).
    | A change that needs its design agreed first | `workflows/planned-build.md` |
    | Existing work judged | `workflows/review.md` |
 
-   The user's own workflows are listed in `local/setup.md` § Own workflows. Choose one when its "Use when" fits
+   The user's own workflows are listed in `local/Laima/setup.md` § Own workflows. Choose one when its "Use when" fits
    the request better than a row here.
 
 2. **Launch** each step's session with the `launch` skill. The worker loads its project's instructions and the
@@ -97,18 +99,18 @@ ran or read).
 
 ## Write it down when it happens
 
-Each event in the table in `local/log/AGENTS.md` is a write moment. In the turn one happens, add its line to
+Each event in the table in `local/Laima/log/AGENTS.md` is a write moment. In the turn one happens, add its line to
 today's log, and for a task's event update its record (`local/work/AGENTS.md`).
 The record is the only memory that lasts: a harness may delete transcripts after about a month, your context
 gets cleared, and sessions end at a reboot. Copy into it the ask, each decision with its reason, the user's answers in
 their own words, verification commands with their results, the outcome and the follow-ups. You are the one
 writer of `local/`, and a worker writes only inside its workspace and reports to you. The one exception is an area
-of the user's own notes: `local/AGENTS.md` § The user's own notes says who writes there, and how.
+of the user's own notes: `local/Laima/AGENTS.md` § The user's own notes says who writes there, and how.
 
 ## Authority
 
-The default, which the user's rules (their global instructions and `local/user.md`) or a project note in
-`local/projects/` may widen or narrow:
+The default, which the user's rules (their global instructions and `local/Laima/user.md`) or a project note in
+`local/Laima/projects/` may widen or narrow:
 - **Without asking:** launch sessions, create workspaces and, where the project works that way, commit, push a
   branch and open a pull request.
 - **Only on the user's word for that step, or a project note's grant:** merge, deploy. Ask, with a recommendation.
@@ -133,12 +135,15 @@ The default, which the user's rules (their global instructions and `local/user.m
   a project's files. Everything Laima needs lives here. One exception is cmux's, not Laima's: its `agy` wrapper
   writes cmux's hooks into the user's agy configuration, and `set-up` asks the user once whether to keep them
   (`adapters/multiplexers/cmux.md` § Gotchas).
-- Durable facts go in `local/` (`user.md`, `projects/` or `knowledge/`), where every harness can read them, in
+- Durable facts go in `local/Laima/` (`user.md`, `projects/` or `knowledge/`), where every harness can read them, in
   place of a harness's own memory store.
 
 ## Folder map
 
 Before you use, create or edit a file in a folder marked ★, read that folder's `AGENTS.md`.
+Before working anywhere in `local/`, including `work/` and the user's notes areas (`local/Laima/user.md` § Notes areas),
+read `local/Laima/AGENTS.md`.
+It governs the whole vault. The other vault guides govern their own folders.
 
 | Path | Holds |
 |-|-|
@@ -149,12 +154,13 @@ Before you use, create or edit a file in a folder marked ★, read that folder's
 | `adapters/multiplexers/` | How to do each session action with one multiplexer; beside each, `<multiplexer>/gotchas.md`, and for Herdr and cmux a companion skill for sessions outside Laima |
 | `docs/testing.md` | How to test the core by hand, after a change to it or when something seems off |
 | `templates/` | Starting files that `set-up` copies into `local/` |
-| `local/` ★ | The vault: `index.md`, `setup.md`, `persona.md`, `user.md` |
+| `local/` | The vault: `work/`, `Laima/` and the user's notes areas |
+| `local/Laima/` ★ | Operating context: `index.md`, `setup.md`, `persona.md`, `user.md` |
 | `local/work/` ★ | Task records; finished ones under `archive/` |
-| `local/log/` ★ | One file per day |
-| `local/knowledge/` ★ | Curated durable notes |
-| `local/projects/` ★ | `registry.md` and project notes |
-| `local/workflows/`, `local/roles/`, `local/skills/` | The user's own additions to the core; rules in `local/AGENTS.md` |
+| `local/Laima/log/` ★ | One file per day |
+| `local/Laima/knowledge/` ★ | Curated durable notes |
+| `local/Laima/projects/` ★ | `registry.md` and project notes |
+| `local/Laima/workflows/`, `local/Laima/roles/`, `local/Laima/skills/` | The user's own additions to the core; rules in `local/Laima/AGENTS.md` |
 
 ## Skills
 

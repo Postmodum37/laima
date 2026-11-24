@@ -1,16 +1,17 @@
 # local/ is the user's private vault. Nothing in it is tracked or pushed,
 # except the five AGENTS.md guidance files listed here, which belong to the core.
 /local/**
-!/local/AGENTS.md
 !/local/work/
 !/local/work/AGENTS.md
-!/local/log/
-!/local/log/AGENTS.md
-!/local/knowledge/
-!/local/knowledge/AGENTS.md
-!/local/projects/
-!/local/projects/AGENTS.md
-# A skill of the user's own lives in local/skills/ and is linked from the two skill folders under a name
+!/local/Laima/
+!/local/Laima/AGENTS.md
+!/local/Laima/log/
+!/local/Laima/log/AGENTS.md
+!/local/Laima/knowledge/
+!/local/Laima/knowledge/AGENTS.md
+!/local/Laima/projects/
+!/local/Laima/projects/AGENTS.md
+# A skill of the user's own lives in local/Laima/skills/ and is linked from the two skill folders under a name
 # that starts with "my-". The links are not tracked.
 /.agents/skills/my-*
 /.claude/skills/my-*

@@ -1,4 +1,4 @@
-# local/log/: what happened, by day
+# local/Laima/log/: what happened, by day
 
 One file per day, `YYYY-MM-DD.md`, append-only. One line per write moment, added in the turn it happens:
 
@@ -16,8 +16,8 @@ One file per day, `YYYY-MM-DD.md`, append-only. One line per write moment, added
 | `opened` | A task record is created |
 | `launched` | A session starts for a step, or one the user started is adopted |
 | `handed-off` | A session's report is checked and written into its record (root § A task, start to finish, step 3), and its result passes on: to the next step, or in a further brief to the same session; the detail says what it found or did and what you checked |
-| `asked` | Before sending a question, record it under Questions and answers and log it here. A question still open when your turn ends also gets its line under "Needs the user" in `local/index.md`; one answered in the same turn, as in a dialog, gets none. Include follow-up decisions requested in a delivery or wrap-up, even after the task closes. |
-| `answered` | The user answers; remove the question's line from `local/index.md` where it has one. Also when you answer a session's dialog under the root's § Authority: name the session and where the answer came from |
+| `asked` | A question is sent to the user. For a task question, record the question and cue before sending as `local/work/AGENTS.md` describes. |
+| `answered` | The user answers and the task is updated. Also log when you answer a session's dialog under the root's § Authority, with the session and where the answer came from. |
 | `failed` | A session or a step fails; the task stays open |
 | `finished` | A task closes as delivered, answered or failed; the detail opens with the outcome |
 | `dropped` | A task closes without delivery; say why |
@@ -28,7 +28,8 @@ One file per day, `YYYY-MM-DD.md`, append-only. One line per write moment, added
 
 Example: `- 16:20 [[2026-01-31-fix-login]] handed-off — build verified, review requested (builder claude:3f2a) → commit 9c1e2d4`
 
-Other events stay out of the log, and a task's go into its record (root § Write it down when it happens): the log
-answers "what changed", and the multiplexer answers "what is running now".
+Other events stay out of the log. The multiplexer answers what is running now, and decision-relevant details go
+in the task record. When a worker's report and its verified handoff record the same change, one `handed-off` line
+covers both.
 `consolidate` summarises a month in `YYYY-MM-summary.md` once it is about 30 days past and moves its daily files
 to `archive/<YYYY-MM>/`.

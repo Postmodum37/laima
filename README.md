@@ -61,7 +61,7 @@ She is built on four goals:
 - **Not an application or a service.** Nothing runs when no session is open. She looks at your sessions when you
   talk to her, and a dated task comes up when a session starts on or after its day.
 - **Not a sandbox or a guard.** By default she launches workers in the harness's bypass mode, so that they do not
-  stop for a permission on every command; `local/setup.md` can name another mode for any role. Her limits are
+  stop for a permission on every command; `local/Laima/setup.md` can name another mode for any role. Her limits are
   written instructions, and nothing enforces them.
 - **Not a notification system.** Your multiplexer can alert you when an agent waits on you, and she relies on
   that; each adapter's § What the user is notified of without you says what it covers.
@@ -140,7 +140,7 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
   file per day, in `local/`.
 - **She learns.** At the end of a day, `wrap-up` checks that nothing was dropped, and `consolidate` files what
   the day taught: your preferences into `user.md`, facts about a project into its note, and lessons that cross
-  projects into `local/knowledge/`.
+  projects into `local/Laima/knowledge/`.
 - **Without asking** she launches sessions, creates workspaces and, where a project works that way, commits,
   pushes a branch and opens a pull request. **Only on your word** does she merge or deploy. Your rules or a
   project note can widen or narrow this: `AGENTS.md` § Authority.
@@ -159,15 +159,19 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
 - `local/`: your private vault: who you are, your projects, task records, the log, notes. Git ignores everything
   in it except the `AGENTS.md` guidance files, so it is never pushed. It is a git repository of its own, never
   pushed either, which she commits at each wrap-up, so a bad write can be undone.
+- In the vault, `local/work/` holds task records and their archive. `local/Laima/` holds operating context,
+  curated knowledge, projects and the coordination log. `local/Laima/AGENTS.md` governs the whole vault.
+  If upgrading from the previous layout, move the existing private context and its pointers before starting
+  a session on the updated core. Keep the task paths at the vault root.
 
 ## Making her yours
 
-- Who she is to you: `local/persona.md`. Your rules: `local/user.md`. Which harness and model each role uses:
-  `local/setup.md`. Rules for one project: a note in `local/projects/`.
-- A workflow, role or skill of your own: `local/workflows/`, `local/roles/`, `local/skills/`. They add to the
-  core, are never pushed, and an update of the core does not touch them. Ask her to make one.
+- Who she is to you: `local/Laima/persona.md`. Your rules: `local/Laima/user.md`. The harness and model for each role:
+  `local/Laima/setup.md`. Rules for one project: a note in `local/Laima/projects/`.
+- A workflow, role or skill of your own: `local/Laima/workflows/`, `local/Laima/roles/`, `local/Laima/skills/`.
+  They add to the core, are never pushed, and an update of the core does not touch them. Ask her to make one.
 - Notes of your own beside hers: keep the folder in `local/` as a plain folder (the vault's git would hold a
-  repository of its own as a pointer only) and list it in `local/user.md` § Notes areas with who writes there and
+  repository of its own as a pointer only) and list it in `local/Laima/user.md` § Notes areas with who writes there and
   how. She reads it, writes there only as that line says, and commits it with the vault at each wrap-up.
 - The core changes through her `authoring` skill, for a miss that happened or because you ask.
 - Herdr or cmux know-how in your other sessions too: link the companion skill of the multiplexer you use,

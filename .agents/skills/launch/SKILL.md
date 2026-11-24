@@ -7,25 +7,25 @@ description: Use when a workflow step needs a worker session started, when a clo
 
 Starts one session for one step of one task. The task record exists first (`local/work/AGENTS.md`).
 
-How each action is done with the tools on this machine is in two adapters, named in `local/setup.md`:
+How each action is done with the tools on this machine is in two adapters, named in `local/Laima/setup.md`:
 `adapters/multiplexers/<multiplexer>.md` and `adapters/harnesses/<harness>.md`. Their section names are used below.
 
 ## Steps
 
-1. **Read the ground:** the role file `roles/<role>.md` (`local/roles/<role>.md` for a role of the user's
-   own); the project's line in `local/projects/registry.md` and its note when one exists (a task that belongs
+1. **Read the ground:** the role file `roles/<role>.md` (`local/Laima/roles/<role>.md` for a role of the user's
+   own); the project's line in `local/Laima/projects/registry.md` and its note when one exists (a task that belongs
    to no project, such as research on an outside question, has neither: its record says `project: none` and
    its worker starts in its task folder); the row for this
    session (§ Which harness, model and effort). Then find what the project and the user already have for this
    step, because theirs comes before anything of yours: the project's instruction file, the skills in its own
    skill folders, the user's global skills for the worker's harness (harness adapter § Instruction files it
-   loads names the folders) and the tools in `local/setup.md` § Tools found. Note each skill, command, gate
+   loads names the folders) and the tools in `local/Laima/setup.md` § Tools found. Note each skill, command, gate
    and rule of theirs that covers part of the step: making and shipping a change, tests, review, commits, pull
    requests, the issue tracker. Check that the project's folder exists. Done when you can name the folder, the
    harness, model and effort with the reason for them, where and how the change is made, and what of the
    project's and the user's own the brief will name.
 2. **Prepare the workspace.**
-   - **The task folder,** `<task folders>/<task-id>/` (`local/setup.md` § Workspaces), holds the briefs,
+   - **The task folder,** `<task folders>/<task-id>/` (`local/Laima/setup.md` § Workspaces), holds the briefs,
      reports with their messages, and plans, and nothing else.
    - **Where a builder makes its change is the project's:** its own instructions, the user's global ones and
      the note's § Workspaces say whether work happens in the folder itself, on a branch or in a worktree, and
@@ -74,7 +74,7 @@ How each action is done with the tools on this machine is in two adapters, named
 
 ## Which harness, model and effort
 
-`local/setup.md` § Roles is the one place that says: a usual row per role, a raised row with the condition for
+`local/Laima/setup.md` § Roles is the one place that says: a usual row per role, a raised row with the condition for
 it, a row for when a provider is running short of usage, and the user's rule for today when they gave one.
 
 1. Take the role's usual row, or its raised row when this step meets the condition written there. A project
@@ -149,4 +149,4 @@ so that `finish` removes it again.
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own.
+Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own.

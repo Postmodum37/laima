@@ -24,4 +24,4 @@ Rules that hold for every workflow:
   the fix after an investigation, is a new task whose `source` points back.
 
 Add a workflow only when tasks keep taking a path that no file here describes. One that only this user needs
-goes in `local/workflows/` (`local/AGENTS.md` § The user's own workflows, roles and skills).
+goes in `local/Laima/workflows/` (`local/Laima/AGENTS.md` § The user's own workflows, roles and skills).

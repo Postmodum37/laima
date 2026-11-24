@@ -11,7 +11,7 @@ Each file has these headings, and nothing about one user, project, harness versi
   the brief then quotes that grant.
 - **Lifetime**: per task or one-shot.
 - **Suited to**: the kind of harness and model that fits, in general terms. The concrete choice per role is in
-  `local/setup.md`.
+  `local/Laima/setup.md`.
 - **Hands back**: what its report must contain.
 - **In the brief**: what a brief for this role needs beyond the common checks in the `launch` skill.
 
@@ -19,4 +19,4 @@ A role is separate from how it runs. Whether a session gets its own tab, which h
 at launch.
 
 Add a role only when a kind of work keeps getting a brief that fits no existing role. One that only this user
-needs goes in `local/roles/` (`local/AGENTS.md` § The user's own workflows, roles and skills).
+needs goes in `local/Laima/roles/` (`local/Laima/AGENTS.md` § The user's own workflows, roles and skills).

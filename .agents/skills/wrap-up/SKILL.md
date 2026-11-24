@@ -7,8 +7,9 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
 
 1. **Look at every session**: the ones you tagged, finished ones included, and the plain listing for agent
    sessions without your tag (multiplexer adapter § See all sessions). Look also at every record in
-   `local/work/` outside `archive/`; `scripts/open-tasks` in this skill's folder lists the open ones with their
-   dates and waits. Pair them by the ids the records hold (`sessions`, and the addresses on their Timeline), not
+   `local/work/` outside `archive/`. Run `scripts/open-tasks` in this skill's folder in both default and
+   `--needs-user` modes. Read each pending decision record and each record listed as overdue, due-today, arrived
+   or open. Pair sessions to tasks by the ids the records hold (`sessions`, and the addresses on their Timeline), not
    by the tag alone. Done when each session and each record is in one of the cases of step 2.
 2. **Settle each one:**
    - A task whose work is done but which is not closed: run `finish`.
@@ -30,27 +31,26 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
      meant, otherwise tell the user it is there.
    - An agent session without your tag is the user's: mention it, offer to adopt it, and leave it.
 3. **Check the writes** for each task touched since the last wrap-up. Every launch has a session id in the
-   record and a `launched` line in the log; every question has an answer or is still waiting; every closed task
+   record and a `launched` line in the log. Match each pending decision to its full question and cue as
+   `local/work/AGENTS.md` describes, including questions that were logged but are missing a cue. Each closed task
    has an outcome with evidence. Add what is missing, marked "(added at wrap-up)". Then search for times written
-   with a placeholder digit, such as `17:3x`, which `local/AGENTS.md` § Writing here, "Times", rules out:
-   `grep -n -E '[0-9]:[0-9xX][xX]' local/work/*.md local/index.md local/log/*.md`
+   with a placeholder digit, such as `17:3x`, which `local/Laima/AGENTS.md` § Writing here, "Times", rules out:
+   `grep -n -E '[0-9]:[0-9xX][xX]' local/work/*.md local/Laima/index.md local/Laima/log/*.md`
    Correct each one in place, with a time taken as that rule says, marked "(time set at wrap-up)". In the log this
    is the one edit its append-only rule allows. Done when you have a count of the misses you repaired, zero
    included, and the search shows no placeholder time.
-4. **Archive** each closed record to `local/work/archive/<YYYY-MM>/`, after noting it for step 6.
+4. **Archive** each direct closed record to `local/work/archive/<YYYY-MM>/`. Collect its ID and outcome before
+   moving it. Use that same set for what closed in step 10.
 5. **Consolidate:** run the `consolidate` skill.
-6. **Rebuild `local/index.md`**, keeping its headings: "Needs the user" from the open records' unanswered
-   questions and each earlier line that is still unanswered, "Recently finished" from the records closed since
-   the previous `rebuilt` time, the knowledge map from the knowledge folder, projects from the registry. Set
-   `rebuilt` to the time from the clock.
-7. **Log** a `wrap-up` line: tasks open, closed since the last wrap-up, waiting on the user, sessions left
+6. **Refresh the decision list for the report:** run `scripts/open-tasks --needs-user` after the repairs and closures.
+7. **Log** a `wrap-up` line: tasks open, closed and archived in step 4, waiting on the user, sessions left
    running, writes repaired.
 8. **Check the core:** `git status -sb` in the Laima folder. Report uncommitted core changes, and commits ahead of
    the remote that wait for the user's word to publish; committing them belongs to the `authoring` skill.
 9. **Commit the vault,** its undo, from the Laima folder: `git -C local add -A && git -C local commit -qm "wrap-up
    $(date '+%F %H:%M')"`; a day without writes prints `nothing to commit`. Where `local/.git` is missing, run
    `set-up`, which makes it. Done when `git -C local status --short` prints nothing.
-10. **Tell the user**, in this order: what needs them, what comes due tomorrow, what runs on without them, what
-   closed. Then sign off.
+10. **Tell the user**, in this order: what needs them, what comes due tomorrow, what runs on without them,
+    and the IDs and outcomes collected in step 4. Then sign off.
 
-Verified: 2026-11-23, Claude Code 2.1.330 (step 3's time search); 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: step 3's time search on Codex; with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable.
+Verified: 2026-11-23, Claude Code 2.1.330 (step 3's time search); 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: both scans and the archive-to-report flow in a session; the retargeted time search in a session; with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable.

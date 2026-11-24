@@ -9,6 +9,6 @@ Should start the skill:
 
 Near misses, with what handles each:
 
-- "From now on call me by my first name." → `local/user.md`; no core change.
-- "For the web app, reviews go to the platform team." → the project note in `local/projects/`.
-- "Remember this lesson." → write the one note now (`local/knowledge/AGENTS.md`).
+- "From now on call me by my first name." → `local/Laima/user.md`; no core change.
+- "For the web app, reviews go to the platform team." → the project note in `local/Laima/projects/`.
+- "Remember this lesson." → write the one note now (`local/Laima/knowledge/AGENTS.md`).
