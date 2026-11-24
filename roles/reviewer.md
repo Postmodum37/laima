@@ -24,4 +24,7 @@ was established; what was not reviewed; and a verdict: ready, or ready after the
   its command and result, in the brief or in a file that holds only them. A claim whose run the reviewer cannot
   see reads to it as unsupported, and a whole task record brings the builder's reasons with it.
 - The project's review skill or standards, when it has them.
+- Passing tests are evidence only with the tests themselves read: each test the work changed, removed or skipped,
+  and the code for values or branches that serve only the test inputs, since a special-cased solution passes its
+  tests.
 - Facts and the question only. Leave out the builder's account of why the work is right.

@@ -19,6 +19,9 @@ anything it made for the task (a branch, a worktree), and anything left undone.
 - Where the change is made: the folder, and under version control the branch to work on and the base it was
   cut from, or that the project's own rules say how to set that up.
 - What must be shown before reporting done, and the project's own gate commands when it has them.
+- A test that contradicts the work item gets reported, not passed: the builder stops, names the test and the
+  conflict, and leaves the test as it was. Agents pressed to make tests pass special-case or edit them, and the stop
+  turns that into a question the user can answer.
 - The review before reporting: on the finished change, by a subagent or the review command of its own harness,
   which has not seen how the change was made; with the project's or the user's review skill when there is one.
   It fixes or answers each finding.
