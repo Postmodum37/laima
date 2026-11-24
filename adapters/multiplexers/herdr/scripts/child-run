@@ -24,8 +24,8 @@
 # that reaches this script, or an INT (a shell's background job ignores INT), runs
 # that `hc kill` on the child. A SIGKILL to this script leaves the child and its
 # spool: find it with `hc ls --all --json --label child-run=<id>`, `hc kill` that
-# address, and once it has finished read the spool, `hc rm` the address and delete
-# the folder.
+# address, and once it has finished read out and rc where they exist (no rc: take
+# the record's signal or exit_code), then `hc rm` the address and delete the folder.
 # Out of reach: a program that waits on /dev/tty (a password prompt) waits there
 # unseen, and a descendant that detached into its own session survives `hc kill`.
 #
@@ -54,27 +54,26 @@ envargs=()
 for v in "${vars[@]}"; do [ -n "${!v+x}" ] && envargs+=("$v=${!v}"); done
 dir=$(mktemp -d "${TMPDIR:-/tmp}/child-run.XXXXXX") || exit 2
 id=${dir##*/child-run.}
-addr='' cancel='' keep='' state='' sig=- code=-
+addr='' cancel='' keep=''
 
-# snap: one `hc get`, setting state, sig and code ("-" when null). Returns 0 for a
-# record in a known state, 3 when hc no longer knows it, 9 for any other reply.
+# snap: one `hc get`; prints "<state> <signal> <exit_code>" ("-" for null) for a record
+# that is live or finished with numeric or null codes. Returns 3 when hc no longer
+# knows it, 9 for any other reply. Callers read the line into variables of their own.
 snap() {
   local j r
-  state='' sig=- code=-
   j=$(hc get "$addr" --json 2> /dev/null); r=$?
-  [ "$r" -eq 3 ] && return 3
-  [ "$r" -eq 0 ] || return 9
-  IFS=$'\t' read -r state sig code < <(
-    jq -r '[.state // "", .signal // "-", .exit_code // "-"] | @tsv' <<< "$j" 2> /dev/null)
-  case ${state:-} in live | finished) return 0 ;; *) return 9 ;; esac
+  [ "$r" -eq 0 ] || { [ "$r" -eq 3 ] && return 3; return 9; }
+  jq -er 'select((.state == "live" or .state == "finished")
+      and (.signal | . == null or type == "number") and (.exit_code | . == null or type == "number"))
+    | "\(.state) \(.signal // "-") \(.exit_code // "-")"' <<< "$j" 2> /dev/null || return 9
 }
 # keep_spool <exit> <why>: leave the spool for a child that may still run, and exit.
 keep_spool() { keep=1; echo "child-run: $2; its spool $dir is kept (out, and rc once it ends)" >&2; exit "$1"; }
 stop_child() {
-  local i
+  local i s
   for i in 1 2 3; do
     hc kill "$addr" > /dev/null 2>&1 && return
-    snap; [ $? -eq 3 ] || [ "${state:-}" = finished ] && return
+    s=$(snap); [ $? -eq 3 ] || [ "${s%% *}" = finished ] && return
     sleep 0.5
   done
   keep_spool $((128 + cancel)) "hc kill $addr failed 3 times; it may still run"
@@ -86,14 +85,14 @@ cleanup() {
   [ -n "$keep" ] && return
   rm -rf "$dir"
   [ -n "$addr" ] || return
-  local i
+  local i s
   for i in 1 2 3 4 5 6 7 8 9 10; do
-    snap; case $? in 3) return ;; 0) [ "$state" = finished ] && break ;; esac
+    s=$(snap); case $? in 3) return ;; 0) [ "${s%% *}" = finished ] && break ;; esac
     sleep 0.2
   done
   for i in 1 2 3; do
     hc rm "$addr" > /dev/null 2>&1 && return
-    snap; [ $? -eq 3 ] && return
+    snap > /dev/null; [ $? -eq 3 ] && return
     sleep 0.5
   done
   echo "child-run: the record $addr is left; remove it with hc rm $addr" >&2
@@ -114,14 +113,15 @@ addr=$(jq -r '.address // empty' <<< "$launch" 2> /dev/null)
 if [ -z "$addr" ]; then
   # hc can report an error after a real launch (a registry save failure): the label finds it.
   [ "$rc" -ne 0 ] || rc=1
+  # Only a reply that proves no match, or exactly one row with an address, decides.
   found=$(hc ls --all --json --label "child-run=$id" 2> /dev/null) &&
-    found=$(jq -er '.terminals | map(.address) | join("\n")' <<< "$found" 2> /dev/null) ||
-    keep_spool "$rc" "hc run failed, and hc ls cannot tell whether child-run=$id started"
-  case $found in
-    '') exit "$rc" ;;
-    *$'\n'*) keep_spool "$rc" "more than one terminal carries child-run=$id" ;;
-    *) addr=$found ;;
-  esac
+    found=$(jq -er '.terminals as $t | if ($t | type) != "array" then error
+      elif ($t | length) == 0 then "-"
+      elif ($t | length) == 1 and ($t[0].address | type) == "string" and $t[0].address != "" then $t[0].address
+      else error end' <<< "$found" 2> /dev/null) ||
+    keep_spool "$rc" "hc run failed, and hc ls cannot prove whether child-run=$id started"
+  [ "$found" != - ] || exit "$rc"
+  addr=$found
 fi
 [ -z "$cancel" ] || stop_child
 
@@ -130,13 +130,14 @@ fails=0
 until [ -e "$dir/rc" ]; do
   sleep 1
   [ -e "$dir/rc" ] && break
-  snap; r=$?
+  s=$(snap); r=$?
   if [ "$r" -eq 9 ]; then
     fails=$((fails + 1)); [ "$fails" -lt 60 ] && continue
     keep_spool 1 "hc get $addr failed 60 times in a row; it may still run"
   fi
   fails=0
-  [ "$r" -eq 0 ] && [ "$state" = live ] && continue
+  read -r state sig code <<< "${s:-gone - -}"
+  [ "$state" = live ] && continue
   [ -e "$dir/rc" ] && break
   # Ended (or gone) without its exit code: the SIGKILL of `hc kill`, or hc lost it.
   cat "$dir/out" 2> /dev/null

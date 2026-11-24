@@ -51,9 +51,10 @@ exit 1, re-run the cases it names from `evals/cases.md` before you rely on a fac
 - Inside Herdr, `scripts/child-run` gives the program an empty stdin but still a terminal: a program that opens
   `/dev/tty` (a password prompt) waits there unseen, so give it non-interactive auth. `hc kill` sends SIGHUP, then
   SIGTERM and SIGKILL within a second, and a descendant that detached into its own session survives it. A SIGKILL to
-  the waiting call leaves the child and its spool `$TMPDIR/child-run.<id>`: `hc ls --all --json --label
-  child-run=<id>` gives the child's address. `hc kill` that address; once it has finished, read `out` and `rc` in
-  the spool, `hc rm` the address and delete the folder.
+  the waiting call leaves the child and its spool `${TMPDIR:-/tmp}/child-run.<id>`: `hc ls --all --json --label
+  child-run=<id>` gives the child's address. `hc kill` that address; once it has finished, read `out` and `rc` where
+  they exist (with no `rc`, the record's `signal` or `exit_code` from `hc get <address> --json` is the result), then
+  `hc rm` the address and delete the folder.
 - `tab.new` without `--space` lands in the space selected in the window, which may be another project's. Pass
   `--space <sp>` (yours: the space listing your `tN` in `herdr-app ls`).
 - Right after `hc run`, `terminal.keep` can answer `no running terminal "tN"`. Retry once `herdr-app ls` lists the
