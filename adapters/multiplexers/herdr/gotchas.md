@@ -1,9 +1,6 @@
 # Herdr gotchas
 
-Facts about Herdr that both Laima's task steps and a session working with Herdr on its own have to know. Each has
-its own heading, so that the Herdr adapter and `SKILL.md` can point to it where it applies. `hc --skill` and
-`herdr-app --skill` hold the general use, and this file only what they leave out. *(read, not run)* marks a fact
-read in code or help and not run.
+Shared pitfalls for Laima's adapter and the companion skill. For general use see `hc --skill` and `herdr-app --skill`.
 
 ## A subagent inside your harness acts as you
 
@@ -18,8 +15,7 @@ A draft the user left unsent in a terminal's input is submitted in front of a me
 ## A send to a session still starting can fail
 
 `hc send` to a session still starting waits for it and delivers when it is ready within moments; otherwise it fails
-with exit 5 and types nothing. Put the first task in the launch itself, and send again once the session has
-settled.
+with exit 5 and types nothing. Retry a refused send once the session has settled.
 
 ## A picker that is not a dialog takes a send's Enter
 
@@ -29,28 +25,15 @@ saves a new default model in the user's settings. Send only to a terminal you ha
 
 ## Waiting for a turn to end
 
-No single `hc get` or `hc wait` result says that the turn you started has ended:
-- `turn` counts up each time the agent stops working: at a turn's end, and also when it stops on a dialog
-  (`blocked`). Codex's startup is a turn of its own, so it starts at `turn: 1`.
-- The status a turn ends on differs by harness: Claude Code `done`; Codex `done` after a message and `idle` after its
-  startup. A Codex at `done` turns `idle`, with `turn` unchanged, on any input, a history read (`hc read --lines
-  40`) included; `--lines 0` leaves it `done`.
-- `hc wait <t>` returns at once, with `ended: true` and the last status, when the target is not working: right
-  after a send, before work shows, and right after you answer a dialog. `ended` does not mean a new turn ended.
-- `hc wait` and `hc send --wait` also return on any message to you and at their check-in, as `hc --skill` says.
-- A message typed into you while you worked leaves a wakeup, and the next wait you run returns on it at once, however
-  long ago it came.
-- `hc send --wait --json` prints the target's status and turn from before the send at the top level; the wait's
-  result is under `wait`.
-- A session with a background command still running (a Claude Code background Bash call, an agy background task)
-  reports `working` after its turn has ended, until that command ends, so `turn-wait` and `hc wait` wait for the
-  command too. Seen with Claude Code and agy.
+A turn counter can advance at a dialog or on Codex startup. Work can also be about to start when a wait says
+`ended: true`. Even an old message to the caller can wake a new wait while the target still works. Claude Code
+and agy can stay `working` until a background command ends, so a turn wait also waits for that command.
 
-So wait with `scripts/turn-wait` beside this file, the one tested way to tell that a turn ended: with text it sends
-the text and waits for the turn that text starts; without text it waits for the turn running now. Its header gives
-the arguments and what each exit means. Run it as a background command when the turn can take more than a minute,
-since a foreground wait holds your turn and every message to you waits behind it. A session that will report to you
-with `hc send` needs no wait: end your turn, and its report starts your next one.
+If the agent will report with `hc send`, end your turn and let the report start the next one. If you need to read
+the result yourself, use [turn-wait](scripts/turn-wait) beside this file. With text it sends and waits for the
+resulting turn. Without text it waits for current work, including work about to start after a dialog. Run a long
+wait as a background command so the user and incoming reports can reach you. For JSON fields, timing and
+harness-specific transitions, see [Waiting and wakeups](reference.md#waiting-and-wakeups).
 
 ## A preset named like a program starts in its place
 
@@ -67,9 +50,12 @@ in a shell profile fails with `spawn_failed`, `cannot start "<program>": No such
 starts. Hand your PATH to it: `hc run ... -- /usr/bin/env PATH="$PATH" <program> <args>`. A program in a folder the
 server's PATH holds starts as given.
 
-## `tab.new` makes a peer without labels, inside a shell
+## `tab.new` makes a peer inside a shell
 
-`herdr-app do tab.new` also starts a peer in a tab of its own, but it sets no label or name, wraps the program in a
-shell (an exit then leaves the tab at a prompt, shown as `agent: zsh`, not `finished`), and moves the user's view
-unless given `--focus false`. Its task is a command-line argument, not an hc launch task, so `hc wait` can return
-`idle` while the agent is still starting or working.
+Pass an explicit `--space <sp>` from `herdr-app ls` when targeting your own space. By default the tab goes in the
+space selected in the window. Use `--focus false` to keep the view where it is.
+
+The terminal can have app placement labels (`herdr.space`, `herdr.tab`; see L2 in [evals](evals/cases.md)). The tab
+name is separate from the hc terminal name, and Laima's tags need explicit handling. The agent runs inside a shell:
+its exit can leave a live prompt (`agent: zsh`). The task is an argv argument, so `hc wait` can return `idle` while
+the agent is still starting or working.

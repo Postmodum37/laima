@@ -1,8 +1,8 @@
 # herdr eval cases
 
-A re-verify session runs these after `scripts/drift` exits 1, from inside a Herdr terminal, on terminals and tabs
-it creates and closes itself. Addresses and ids below are examples; a run gets its own. Probe folders: a fresh
-`mkdir` under `/tmp`, or a folder Claude already trusts.
+Use the [adapter's release notes links](../../herdr.md) to identify changed behavior, then run the affected cases
+from inside Herdr on terminals and tabs you create and close. Use your own addresses and IDs. Probe folders: a
+fresh `mkdir` under `/tmp`, or a folder Claude already trusts.
 
 ## Trigger
 
