@@ -19,11 +19,15 @@ hc run --bg --no-parent --name <name> --cwd <folder> \
   --label laima=1 --label laima.task=<task-id> --label herdr.space=<space-id> -- <harness argv>
 ```
 
-Use the harness adapter's § Launch with a brief for argv. On `spawn_failed`, use the PATH recipe in
-[Gotchas](herdr/gotchas.md). Shorten `<task-id>-<role>` to a unique live name of 1–32 characters from `a-z 0-9 - _`.
+Use the harness adapter's § Launch with a brief for argv. On `spawn_failed`, see
+[Server PATH](herdr/gotchas.md#hc-run-finds-a-program-on-the-servers-path-not-yours).
+For a preset that shares the harness name, see
+[Preset name collisions](herdr/gotchas.md#a-preset-named-like-a-program-starts-in-its-place).
+Shorten `<task-id>-<role>` to a unique live name of 1–32 characters from `a-z 0-9 - _`.
 
 1. Record the returned JSON `address` in the task record.
-2. Find the tab by that exact address in the chosen space. If the lookup prints nothing, retry after the app sees it.
+2. Find the tab by that exact address in the chosen space. The lookup can be empty for a few seconds after
+   launch. Retry during that interval. If it stays empty, check the space ID before renaming.
 
    ```sh
    herdr-app ls | jq -r --arg space "<space-id>" --arg address "<address>" '
@@ -59,10 +63,11 @@ For `status: blocked`, check `status.kind` (`permission`, `question`, `auth`) an
 `hc get <address> --json`, then read the dialog. Use root `AGENTS.md` § Authority to decide who answers.
 
 To answer a dialog in your authority, read the selection, move with `hc keys <address> up` or `down`, read
-again, then send `hc keys <address> enter` when the intended choice is selected. For the free-text row and
-multi-question flow, see the Claude Code adapter § Gotchas. For example, `hc keys <address> shift+z e t a space t w o`
-types `Zeta two`. Read the text before submitting. While blocked, `hc send` exits 9 without typing. Both
-`hc keys` and `hc send --force` can answer the dialog, so use them only within your authority.
+again, then send `hc keys <address> enter` when the intended choice is selected. For a free-text answer, select
+`Type something.` and send one key name per character. `hc keys <address> shift+z e t a space t w o` types
+`Zeta two`. Read the text, then press Enter. For Claude Code's multi-question flow, see its adapter § Gotchas.
+While blocked, `hc send` exits 9 without typing. Both `hc keys` and `hc send --force` can answer the dialog,
+so use them only within your authority.
 
 ## How you learn a session finished
 
@@ -89,8 +94,8 @@ and run `adapters/multiplexers/herdr/scripts/turn-wait <address>` in the backgro
 
 ## What you are not told
 
-Check your tagged sessions for a peer that blocked, errored, exited, crashed, stopped without reporting, or
-stayed at a prompt without a useful status. Untagged terminals belong to the user.
+Check your tagged sessions for a peer that blocked, errored, exited, crashed, stopped without reporting,
+hung in `working`, or stayed at a prompt without a useful status. Untagged terminals belong to the user.
 
 ## Read a session
 
@@ -114,19 +119,21 @@ window running. Use `herdr-app` through `ls`, `status` and `do`.
 
 ## What the user is notified of without you
 
-For an agent with a tab and no parent, see `herdr/reference.md` § Window: attention and navigation (herdr-app)
-for alerts. Check the listing and screen for exits, crashes and prompts without a status, which are silent
-*(read, not run)*, and tell the user when their input is needed.
+Herdr alerts the user when a task peer, or you, blocks, reports an error or ends a turn off screen. Your own
+question or turn end is the alert. See
+[sound and toast timing](herdr/reference.md#window-attention-and-navigation-herdr-app).
+Check the listing and screen for exits, crashes and prompts without a status, which are silent *(read, not run)*,
+and tell the user when their input is needed.
 
 ## After a reboot
 
 A closed window leaves the core running. Kept terminals can return as replacement shells at the same address
 after loss. The details are in `hc --skill` § Status, recovery, and cleanup *(read, not run)*.
 
-Read each open task's record and restart only steps that still need a session. Close any leftover shell you
-launched, then follow the harness adapter's § Resume from a session id in the same folder, with your current
-reply address in the brief. Use a fresh brief from the record if resume fails. Record the new address.
-An adopted session is the user's to restart.
+After a reboot, logout or core crash, check the listing and each open task's record. Restart only steps that
+still need a session and whose agent is gone. Close any leftover shell you launched, then follow the harness
+adapter's § Resume from a session id in the same folder, with your current reply address in the brief. Use a
+fresh brief from the record if resume fails. Record the new address. An adopted session is the user's to restart.
 
 ## Gotchas
 

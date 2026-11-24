@@ -1,7 +1,7 @@
 # herdr eval cases
 
-Use the [adapter's release notes links](../../herdr.md) to identify changed behavior, then run the affected cases
-from inside Herdr on terminals and tabs you create and close. Use your own addresses and IDs. Probe folders: a
+Follow the release check in [the skill](../SKILL.md), then run the affected cases from inside Herdr on
+terminals and tabs you create and close. Use your own addresses and IDs. Probe folders: a
 fresh `mkdir` under `/tmp`, or a folder Claude already trusts.
 
 ## Trigger

@@ -68,7 +68,9 @@ navigation (herdr-app) for alerts and `hc --skill` for kept terminals and saved 
 
 - A send from outside Herdr without `HC_*` variables arrives without an `<hc from=…>` tag. Have that sender
   identify itself in the text (live).
-- `terminal.run` exposes `env` via the API. `doc.get` and `doc.set` are API methods for versioned JSON documents.
+- For launch environment variables, prefix the program argv in `hc run` with `env K=V`. The API's
+  `terminal.run` accepts `env` directly.
+- `doc.get` and `doc.set` are API methods for versioned JSON documents.
 
 ## Window: attention and navigation (herdr-app)
 

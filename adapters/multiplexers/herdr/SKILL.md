@@ -14,14 +14,15 @@ guides and the exceptions below:
 - [Gotchas](gotchas.md) before starting, messaging or waiting on an agent. [Reference](reference.md) for event
   streams, delivery settings, presets, recovery, attention, mods and worktrees.
 
-When the installed versions change, check the [adapter's release notes links](../herdr.md) and the installed help.
-Run the [eval cases](evals/cases.md) for changed behavior before relying on it.
+When `hc --version` or `herdr-app --version` differs from the `Verified:` line, check the changed tool's
+`CHANGELOG.md` (herdrdev/herdr-core or herdrdev/herdr-app) and installed help. Run the affected
+[eval cases](evals/cases.md) before relying on changed behavior.
 
 ## Addresses
 
 `$HC_TERMINAL_ID` is your core address. Use `herdr-app ls` to map core addresses to app space, tab and pane IDs.
-See `hc --skill` for address syntax and the [Claude Code adapter](../../harnesses/claude-code.md) for its session IDs.
-Touch only terminals you started or were asked to drive.
+See `hc --skill` for address syntax. For a Claude session ID, get `foreground.pid` from `hc get <t> --json`,
+then read `.sessionId` in `~/.claude/sessions/<pid>.json`. Touch only terminals you started or were asked to drive.
 
 ## Pick where the work runs
 
@@ -41,8 +42,8 @@ recovery](reference.md#lifetime-and-recovery). For a failed program lookup, see 
 
 Run `child-run` in your harness's background. It passes PATH and the named environment variables. Give the command
 noninteractive auth since it can still open its TTY despite empty stdin. Stopping the waiting call stops its child.
-See the [script header](scripts/child-run) for signals, spool recovery and PID edge cases, and the
-[agy adapter](../../harnesses/agy.md) for its shell timeout and cancellation.
+agy backgrounds shell calls after at most 10 s. See the [script header](scripts/child-run) for cancellation,
+signals, spool recovery and PID edge cases.
 
 ## Agent launch: permissions and plan
 
@@ -63,8 +64,9 @@ Use `hc --skill` § Delegate a task for first-task delivery. Expand the reply ad
 
 Read the screen if a new session stalls. Claude Code can report `blocked` with `trust this folder`. Codex's
 trust and hook-review prompts can have no status. See the harness adapter's § Gotchas before answering. In
-Claude Code auto mode, check for *Unsanctioned Communication* if a peer's expected reply never arrives. See
-the [Claude Code adapter](../../harnesses/claude-code.md) § How a worker reports back and [eval L5](evals/cases.md).
+Claude Code auto mode, check for *Unsanctioned Communication* if a peer's expected reply never arrives.
+If auto mode refused it, ask the user about allowing `Bash(hc send:*)` in `permissions.allow` in
+`~/.claude/settings.json`. See [eval L5](evals/cases.md#l5-auto-mode-blocks-replies-requested-over-hc).
 
 ## Talk and wait
 
@@ -99,4 +101,4 @@ shared app and core running.
 
 For differences in message delivery, screen reads and notifications, see [From cmux](reference.md#from-cmux).
 
-Verified: 2026-11-24, herdr-app 0.1.17 and hc 0.1.22 for peer placement, Claude Code 2.1.331 and Codex 0.172.0 for skill discovery. For behavioral checks see [eval cases](evals/cases.md). Not yet run: the full evals on these versions, including Laima's task-session and brief-report routing exclusions, preset matching with `--`, `scripts/child-run` from Codex, and whether a child's block plays a sound.
+Verified: 2026-11-24, herdr-app 0.1.17 and hc 0.1.22 for peer placement, Claude Code 2.1.331 and Codex 0.172.0 for skill discovery. Not yet run: the full [eval cases](evals/cases.md) on these versions, Laima's task-session and brief-report routing exclusions, preset matching with `--`, `scripts/child-run` from Codex, and whether a child's block plays a sound.
