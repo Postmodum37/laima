@@ -62,8 +62,10 @@ user or on other people; the task then stays open and you return here later.
 
    Then remove what was made for the task, with the project's own command when it has one. Delete a local
    branch that was merged, once no checkout is on it (`git branch -D` for one the tool showed merged by a squash
-   or rebase, since git does not count it as merged), and delete the task folder once nothing in it is still
-   needed. Anything uncommitted, unpushed or unexplained stops this step and becomes a question to the user.
+   or rebase, since git does not count it as merged). Before deleting the task folder, search the other open tasks'
+   briefs in the task folders configured in `local/Laima/setup.md` for paths into it. Delete the folder only after
+   the search is complete, any references are resolved, and nothing in it is still needed. Anything uncommitted,
+   unpushed or unexplained stops this step and becomes a question to the user.
    Done when nothing made for the task alone is left, the task folder is gone and the record's `worktree`
    field is empty.
 6. **Record follow-ups and close.** Before setting `closed` and `outcome`, give each accepted, unresolved obligation
@@ -78,4 +80,4 @@ user or on other people; the task then stays open and you return here later.
    the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.
