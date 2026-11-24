@@ -48,10 +48,12 @@ exit 1, re-run the cases it names from `evals/cases.md` before you rely on a fac
 | A long command (a Codex round, a test suite) you wait on, shown under you | `scripts/child-run <name> [--env VAR]... -- <command>` | Child you wait on: run it in your harness's background. Its exit code comes back as if run directly, its stdout and stderr merged on stdout once it ends; a message to you does not end the wait, as it ends a foreground `hc run`. A working spinner under your row. `hc kill <name>`, or stopping the background call, stops it. Hands over PATH and each `--env`. |
 | The user asked to see it, without moving the view now | `hc run --bg --no-parent --name <n> --cwd <dir> --label herdr.space=<sp> -- <agent launch>` | Herdr makes a new tab in that space (named by its number); the shown tab stays. |
 
-- `scripts/child-run` gives the program an empty stdin but still a terminal: a program that opens `/dev/tty` (a
-  password prompt) waits there unseen, so give it non-interactive auth. `hc kill` sends SIGHUP, then SIGTERM and
-  SIGKILL within a second, and a descendant that detached into its own session survives it. A SIGKILL to the waiting
-  call leaves the child running with its record: `hc kill` and `hc rm` it by name.
+- Inside Herdr, `scripts/child-run` gives the program an empty stdin but still a terminal: a program that opens
+  `/dev/tty` (a password prompt) waits there unseen, so give it non-interactive auth. `hc kill` sends SIGHUP, then
+  SIGTERM and SIGKILL within a second, and a descendant that detached into its own session survives it. A SIGKILL to
+  the waiting call leaves the child and its spool `$TMPDIR/child-run.<id>`: `hc ls --all --json --label
+  child-run=<id>` gives the child's address. `hc kill` that address; once it has finished, read `out` and `rc` in
+  the spool, `hc rm` the address and delete the folder.
 - `tab.new` without `--space` lands in the space selected in the window, which may be another project's. Pass
   `--space <sp>` (yours: the space listing your `tN` in `herdr-app ls`).
 - Right after `hc run`, `terminal.keep` can answer `no running terminal "tN"`. Retry once `herdr-app ls` lists the
@@ -62,8 +64,8 @@ exit 1, re-run the cases it names from `evals/cases.md` before you rely on a fac
   middle terminal ends everything under it. The agents list draws the whole tree; `herdr-app ls` lists only direct
   `sub_agents`.
 - A child that outlives its parent (`--outlive-parent`) keeps `parent` for good: hc has no re-parent. Without a pane it
-  then shows nowhere in the window (reach it by name); with one it gets a top-level row, and still gets no toast or
-  sound.
+  then shows nowhere in the window (reach it by name); with one it gets a top-level row, and still gets no toast (nor,
+  inferred and not observed, a sound).
 
 ## Agent launch: bypass and plan
 
@@ -150,15 +152,16 @@ Header keys and readiness rules: [`reference.md`](reference.md) § Presets (temp
 
 ## Reaching the user
 
-Herdr plays a sound and posts a toast when a pane-backed agent with no parent turns `blocked` or `error`, or `done`
-while the user isn't looking. Ending your turn, or asking your question, is the alert. **A child gets no toast or
-sound**, with a pane or without, and after its parent ended too (the sound is inferred, not observed). What still shows
-when a child needs you: a "Needs you" badge on its row in the agents list, and with a tab, the status bar's "needs
-you" count and a red dot on its tab pill. When a child blocks, errs or exits, hc also types a note into you (its
-parent), `<hc>tN name is blocked (question). See: hc read tN</hc>` or `<hc>tN name exited (exit 3). Read: hc read
-tN</hc>`, as input to your running turn, and you tell the user. No note for `done`, none while you `hc wait` on it or
-after your `hc get`/`read` saw the news, none with `--no-notify` or `notes = false`, and none into a parent that
-reports no status. `herdr-app do` has no notify command, and `notify()` exists only inside mods.
+For a pane-backed agent with no parent, Herdr plays a sound when it turns `blocked` or `error`, even on screen, and
+when its turn ends off screen; it posts a toast for those only while the user isn't looking. Ending your turn, or
+asking your question, is the alert. **A child gets no toast** (nor, inferred and not observed, a sound), with a pane
+or without, and after its parent ended too. What still shows when a child needs you: a "Needs you" badge on its row in
+the agents list, and with a tab, the status bar's "needs you" count and a red dot on its tab pill. When a child
+blocks, errs or exits, hc also types a note into you (its parent), `<hc>tN name is blocked (question). See: hc read
+tN</hc>` or `<hc>tN name exited (exit 3). Read: hc read tN</hc>`, as input to your running turn, and you tell the
+user. No note for `done`, none while you `hc wait` on it or after your `hc get`/`read` saw the news, none with
+`--no-notify` or `notes = false`, and none into a parent that reports no status. `herdr-app do` has no notify command,
+and `notify()` exists only inside mods.
 
 ## Close
 

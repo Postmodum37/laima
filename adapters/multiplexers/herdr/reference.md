@@ -76,7 +76,7 @@ the parent is waiting on it (source). `--no-notify` on a child silences these bu
 
 - Killing a parent kills its children, even ones started with `--keep`; `--outlive-parent` children survive with
   their `parent` field intact (isolated live test). Once the parent has gone, one without a pane shows nowhere in the
-  window; one with a pane gets a top-level row. Either way it still gets no toast or sound.
+  window; one with a pane gets a top-level row. Either way it still gets no toast (nor, inferred, a sound).
 - `--keep`: a lost program (crash, reboot, signal) comes back as a shell at the same address, never re-running
   the command; `restore_screen = true` shows its last screen above it, and `hc read` then sees that old text.
 - Quitting the app leaves the core and its terminals running (live).
@@ -98,11 +98,11 @@ the parent is waiting on it (source). `--no-notify` on a child silences these bu
 ## Window: attention and navigation (herdr-app)
 
 - Sounds and toasts come only from **pane-backed agents with no parent**: entering `blocked`/`error` rings even on
-  screen; finishing rings only when off screen; toasts only when the user isn't looking. **A child gets no toast or
-  sound**, with a pane or without, and after its parent ended too (toast seen live; sound inferred from the same
-  rule, not observed). A blocked child still shows a "Needs you" badge on its row and raises its parent's rank in
-  the sidebar; with a tab it also counts in the status bar's "needs you" and puts a red dot on its tab pill. The
-  parent agent must notice (hc's note) and tell the user.
+  screen; finishing rings only when off screen; toasts only when the user isn't looking. **A child gets no toast**
+  (nor, inferred and not observed, a sound), with a pane or without, and after its parent ended too. A blocked child
+  still shows a "Needs you" badge on its row and raises its parent's rank in the sidebar; with a tab it also counts
+  in the status bar's "needs you" and puts a red dot on its tab pill. The parent agent must notice (hc's note) and
+  tell the user.
 - Looking at a `done` agent turns it `idle` in the app (`herdr-app ls`) while `hc get` may still say `done`.
 - Agents list order: pinned, then Needs you, Done, Working, Idle; descendants' states raise a parent.
   `terminal.pin --terminal <t> --pinned true` pins a pane-backed agent (label `herdr.pinned`).
