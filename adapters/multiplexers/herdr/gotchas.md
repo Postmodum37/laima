@@ -42,6 +42,9 @@ No single `hc get` or `hc wait` result says that the turn you started has ended:
   long ago it came.
 - `hc send --wait --json` prints the target's status and turn from before the send at the top level; the wait's
   result is under `wait`.
+- A session with a background command still running (a Claude Code background Bash call, an agy background task)
+  reports `working` after its turn has ended, until that command ends, so `turn-wait` and `hc wait` wait for the
+  command too. Seen with Claude Code and agy.
 
 So wait with `scripts/turn-wait` beside this file, the one tested way to tell that a turn ended: with text it sends
 the text and waits for the turn that text starts; without text it waits for the turn running now. Its header gives

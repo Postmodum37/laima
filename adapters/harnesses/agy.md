@@ -1,6 +1,6 @@
 # Antigravity CLI adapter
 
-Version checked: Antigravity CLI (agy) 1.5.14
+Version checked: Antigravity CLI (agy) 1.5.15
 
 Release notes: `agy changelog`, which runs ahead of the online page (https://antigravity.google/docs/changelog)
 
@@ -163,3 +163,8 @@ Under cmux, the multiplexer adapter § Start a task session says when the comman
   the other harnesses, and the one headless call she makes is `/usage`, which starts no model turn; whether to use
   agy on such a plan is the user's decision.
 - `/exit` ends a session *(read, not run)*; closing its block ends it too.
+- Its shell tool waits at most 10 s for a command (`WaitMsBeforeAsync`, 500 to 10000 ms), then makes it a background
+  task and ends the call; the task's result comes later as a message. Esc during the call, and `manage_task kill` on a
+  task, end the command with SIGKILL, so its traps do not run. Esc of a turn leaves a background task running, and a
+  task that finishes after an interrupted turn starts no turn: its message waits for the next input. Seen under
+  Herdr; the Herdr companion skill's `scripts/child-run` stops its child after such a SIGKILL.

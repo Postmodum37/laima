@@ -50,11 +50,18 @@ exit 1, re-run the cases it names from `evals/cases.md` before you rely on a fac
 
 - Inside Herdr, `scripts/child-run` gives the program an empty stdin but still a terminal: a program that opens
   `/dev/tty` (a password prompt) waits there unseen, so give it non-interactive auth. `hc kill` sends SIGHUP, then
-  SIGTERM and SIGKILL within a second, and a descendant that detached into its own session survives it. A SIGKILL to
-  the waiting call leaves the child and its spool `${TMPDIR:-/tmp}/child-run.<id>`: `hc ls --all --json --label
-  child-run=<id>` gives the child's address. `hc kill` that address; once it has finished, read `out` and `rc` where
-  they exist (with no `rc`, the record's `signal` or `exit_code` from `hc get <address> --json` is the result), then
-  `hc rm` the address and delete the folder.
+  SIGTERM and SIGKILL within a second, and a descendant that detached into its own session survives it.
+- How `scripts/child-run` meets each harness's shell tool. Under Claude Code, a call past the Bash timeout (120 s by
+  default) moves to the background by itself, the child runs on and its result comes as a task notification; Esc and
+  TaskStop stop the child. Under agy, the shell tool waits at most 10 s and then backgrounds the command itself, so a
+  longer run always comes back as a background-task message, and Esc during the call or `manage_task kill` is a
+  SIGKILL, which runs no trap: the child sees within a second that the waiting call is gone, stops its program as
+  `hc kill` does, deletes its spool and removes its own record.
+- The child is left, with its spool `${TMPDIR:-/tmp}/child-run.<id>`, when the waiting call said so on stderr, or when
+  the child could not act: its own `hc kill` failed, or it could not tell that the waiting call ended (a PID it could
+  not see, or one reused). `hc ls --all --json --label child-run=<id>` gives the child's address. `hc kill`
+  that address; once it has finished, read `out` and `rc` where they exist (with no `rc`, the record's `signal` or
+  `exit_code` from `hc get <address> --json` is the result), then `hc rm` the address and delete the folder.
 - `tab.new` without `--space` lands in the space selected in the window, which may be another project's. Pass
   `--space <sp>` (yours: the space listing your `tN` in `herdr-app ls`).
 - Right after `hc run`, `terminal.keep` can answer `no running terminal "tN"`. Retry once `herdr-app ls` lists the
@@ -186,4 +193,4 @@ and `notify()` exists only inside mods.
 
 For a cmux command or habit that needs its Herdr form, read [`reference.md`](reference.md) § From cmux.
 
-Verified: 2026-11-24, herdr-app 0.1.17, hc 0.1.22 by `scripts/drift` (every probe holds); the evals last 2026-11-18 on herdr-app 0.1.16, hc 0.1.21, claude 2.1.327, codex 0.170.0. Not yet run: the evals on herdr-app 0.1.17; the description's exclusion of Laima's task sessions and of a brief's report; a preset name matched by a launch with `--` before its argv; `scripts/child-run` called from a Codex session; whether a child's block plays a sound.
+Verified: 2026-11-24, herdr-app 0.1.17, hc 0.1.22 by `scripts/drift` (every probe holds); the evals last 2026-11-18 on herdr-app 0.1.16, hc 0.1.21, claude 2.1.327, codex 0.170.0. `scripts/child-run` also 2026-11-24 on Claude Code 2.1.331 and agy 1.5.15 (exit codes, signals, a SIGKILLed waiter). Not yet run: the evals on herdr-app 0.1.17; the description's exclusion of Laima's task sessions and of a brief's report; a preset name matched by a launch with `--` before its argv; `scripts/child-run` called from a Codex session; whether a child's block plays a sound.

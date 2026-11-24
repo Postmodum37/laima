@@ -22,17 +22,24 @@
 # second and SIGKILL after one. A program that exits within that second hands
 # back its own exit code; one the SIGKILL ends gives 128+signal. A TERM or HUP
 # that reaches this script, or an INT (a shell's background job ignores INT), runs
-# that `hc kill` on the child. A SIGKILL to this script leaves the child and its
-# spool: find it with `hc ls --all --json --label child-run=<id>`, `hc kill` that
-# address, and once it has finished read out and rc where they exist (no rc: take
-# the record's signal or exit_code), then `hc rm` the address and delete the folder.
+# that `hc kill` on the child. A SIGKILL to this script runs no trap (agy cancels
+# that way), so the child checks this script's PID once a second: once the script
+# is gone without having cleaned up or kept the spool, the child runs that `hc kill`
+# on itself, deletes the spool and removes its own record. A PID it cannot see at
+# its start (another user, another PID namespace) or a reused one only keeps the
+# child running. When the child's `hc kill` fails, or this script kept the
+# spool, the child and its spool are left: find it with `hc ls --all --json --label
+# child-run=<id>`, `hc kill` that address, and once it has finished read out and rc
+# where they exist (no rc: take the record's signal or exit_code), then `hc rm` the
+# address and delete the folder.
 # Out of reach: a program that waits on /dev/tty (a password prompt) waits there
 # unseen, and a descendant that detached into its own session survives `hc kill`.
 #
 # Exit 2: usage, hc or jq missing, or no temp folder. 128+N: the child ended on
 # signal N before it could record its exit code, or this script got signal N and
 # could not stop the child. 1: hc lost the child, or `hc get` kept failing.
-# Whenever the child may still run, the spool is kept and named on stderr.
+# Whenever this script exits while the child may still run, the spool is kept and
+# named on stderr.
 # Another code before any output: hc refused the start (its error is on stderr:
 # 1 for a taken name, 6 for a bad one).
 set -u
@@ -68,7 +75,11 @@ snap() {
     | "\(.state) \(.signal // "-") \(.exit_code // "-")"' <<< "$j" 2> /dev/null || return 9
 }
 # keep_spool <exit> <why>: leave the spool for a child that may still run, and exit.
-keep_spool() { keep=1; echo "child-run: $2; its spool $dir is kept (out, and rc once it ends)" >&2; exit "$1"; }
+# The file keep tells the child's watch to leave the child and spool alone too.
+keep_spool() {
+  keep=1; : > "$dir/keep"
+  echo "child-run: $2; its spool $dir is kept (out, and rc once it ends)" >&2; exit "$1"
+}
 stop_child() {
   local i s
   for i in 1 2 3; do
@@ -102,12 +113,23 @@ trap cleanup EXIT
 # In the child: report working (the spinner), run the program into the file, and
 # record its exit code. The trap keeps this shell alive through `hc kill`'s HUP and
 # TERM, which the program still gets (a handler, unlike an ignore, is not inherited).
-inner='printf "\033]7501;state=working\007"; trap : HUP TERM; d=$1; shift
+# The watch on this script ($w) runs as a job (set -m: a process group of its own),
+# so that the `hc kill` it runs spares it and it can `hc rm` the finished record.
+# It ends once this script has removed the spool or kept it (file keep), and at
+# once when it cannot see this script's PID at the start.
+inner='printf "\033]7501;state=working\007"; trap : HUP TERM; w=$1 d=$2; shift 2
+set -m; (trap "" HUP TERM; exec < /dev/null > /dev/null 2>&1; t=$HC_TERMINAL_ID
+  kill -0 "$w" 2> /dev/null || exit
+  while [ -d "$d" ] && [ ! -e "$d/keep" ] && kill -0 "$w" 2> /dev/null; do sleep 1; done
+  [ -d "$d" ] && [ ! -e "$d/keep" ] || exit
+  n=0; until hc kill "$t"; do n=$((n + 1)); [ "$n" -lt 3 ] || exit; sleep 0.5; done
+  rm -rf "$d"
+  for n in 1 2 3 4 5 6 7 8 9 10; do sleep 0.5; hc rm "$t" && exit; done) & set +m
 "$@" < /dev/null > "$d/out" 2>&1; echo $? > "$d/rc.tmp"; mv "$d/rc.tmp" "$d/rc"'
 # No notes: the caller waits here. No --rm: it would remove the record before
 # `hc kill` returns, and the kill would then report not_found.
 launch=$(hc run --bg --json --name "$name" --label "child-run=$id" --no-notify --cwd "$PWD" -- \
-  /usr/bin/env "${envargs[@]}" /bin/bash -c "$inner" child-run "$dir" "$@")
+  /usr/bin/env "${envargs[@]}" /bin/bash -c "$inner" child-run "$$" "$dir" "$@")
 rc=$?
 addr=$(jq -r '.address // empty' <<< "$launch" 2> /dev/null)
 if [ -z "$addr" ]; then
