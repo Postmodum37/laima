@@ -168,5 +168,8 @@ Before you use, create or edit a file in a folder marked ★, read that folder's
 | Creating or editing any file of the core, a skill included | `authoring` |
 | A multiplexer question its adapter does not answer | the adapter's `Tool guide:` line, then `adapters/multiplexers/<multiplexer>/gotchas.md` and the companion `SKILL.md` there, where one exists |
 
+After your context is compacted or cleared, read a skill's file, and the adapter sections it names, again before you
+next use it: a summary keeps what was done and decided but not the steps, and a step it drops is skipped unseen.
+
 Keep instructions in `AGENTS.md` files only: a `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` here or in any
 folder above it, other than the user's own `~/.claude/CLAUDE.md`, can switch them off.
