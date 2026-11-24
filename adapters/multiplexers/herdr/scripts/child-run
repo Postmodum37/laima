@@ -1,0 +1,76 @@
+#!/bin/bash
+# child-run <name> [--env VAR]... -- <program> [args...]
+#
+# Run a long command as an hc child of the calling terminal, so Herdr's agents
+# list draws it under the caller with a working spinner, and wait for it like a
+# shell: prints the program's stdout and stderr (merged, once it ends) and exits
+# with its exit code. The program's stdin is /dev/null and its output goes to a
+# file, so it never sees a terminal and cannot stop at a prompt nobody sees.
+#
+# The child starts with `hc run --bg` and the wait is on a file it writes, not on
+# a foreground `hc run`: that wait ends early, exit 0, when a message is typed
+# into the caller (a send, a note), and leaves the program running unwatched.
+#
+# The program starts with the hc server's environment, not the caller's:
+# PATH and each --env VAR (when set) are handed over. HC_* variables are
+# refused: the child has its own. <name> is 1-32 of a-z 0-9 - _.
+# Outside Herdr ($HC_TERMINAL_ID unset) it runs the program directly.
+# Stop it with `hc kill <name>`: hc sends SIGHUP, then SIGTERM after half a
+# second and SIGKILL after one. A program that exits within that second hands
+# back its own exit code; one killed by the SIGKILL leaves this with exit 1.
+# Ending this script leaves the program running.
+# Exit 2: usage, or no temp folder. 1: the child ended without an exit code.
+# Another code before any output from the program: hc refused the start (its error
+# is on stderr: 1 for a taken name, 6 for a bad one).
+set -u
+usage() { echo "usage: child-run <name> [--env VAR]... -- <program> [args...]" >&2; exit 2; }
+[ $# -ge 3 ] || usage
+name="$1"; shift
+vars=(PATH)
+while [ $# -gt 0 ] && [ "$1" = --env ]; do
+  [ $# -ge 2 ] || usage
+  case $2 in HC_*) echo "child-run: $2 is the child's own; not handed over" >&2; exit 2 ;; esac
+  vars+=("$2"); shift 2
+done
+[ "${1:-}" = -- ] || { echo "child-run: expected -- before the program" >&2; exit 2; }
+shift
+[ $# -ge 1 ] || usage
+[ -n "${HC_TERMINAL_ID:-}" ] || exec "$@"
+envargs=()
+for v in "${vars[@]}"; do [ -n "${!v+x}" ] && envargs+=("$v=${!v}"); done
+dir=$(mktemp -d "${TMPDIR:-/tmp}/child-run.XXXXXX") || exit 2
+# In the child: report working (the spinner), run the program into the file, and
+# record its exit code. The trap keeps this shell alive through `hc kill`'s HUP and
+# TERM, which the program still gets (a handler, unlike an ignore, is not inherited).
+inner='printf "\033]7501;state=working\007"; trap : HUP TERM; d=$1; shift
+"$@" < /dev/null > "$d/out" 2>&1; echo $? > "$d/rc.tmp"; mv "$d/rc.tmp" "$d/rc"'
+# No notes: the caller waits here. No --rm: it would remove the record before
+# `hc kill` returns, and the kill would then report not_found.
+hc run --bg --name "$name" --no-notify --cwd "$PWD" -- \
+  /usr/bin/env "${envargs[@]}" /bin/bash -c "$inner" child-run "$dir" "$@" > /dev/null ||
+  { rc=$?; rm -rf "$dir"; exit $rc; }
+# From here on: drop the temp folder, and the child's record once it has finished.
+trap 'rm -rf "$dir"; hc rm "$name" > /dev/null 2>&1' EXIT
+# Polls once a second: `hc wait` would also end on every message to the caller.
+# The child has ended only when hc says finished or no longer knows it (exit 3);
+# any other failed `hc get` (a core restart, a socket hiccup) is retried.
+ended() {
+  local out rc
+  out=$(hc get "$name" --json 2> /dev/null); rc=$?
+  case $rc:$out in 0:*'"state":"finished"'*|3:*) return 0 ;; esac
+  return 1
+}
+until [ -e "$dir/rc" ]; do
+  sleep 1
+  [ -e "$dir/rc" ] && break
+  if ended && [ ! -e "$dir/rc" ]; then
+    cat "$dir/out" 2> /dev/null
+    echo "child-run: $name ended without an exit code" >&2
+    exit 1
+  fi
+done
+cat "$dir/out" 2> /dev/null
+rc=$(cat "$dir/rc")
+# The record stays live until the child's shell has exited; wait briefly before the trap's hc rm.
+for _ in 1 2 3 4 5; do ended && break; sleep 0.2; done
+exit "$rc"

@@ -9,6 +9,7 @@ Should start the skill:
 - "Ask the Codex session in t9 what it thinks of the plan and bring me its answer."
 - "Make the Herdr sidebar narrower and give me a key for the next space."
 - Any session where `$HC_TERMINAL_ID` is set, before it starts a helper agent in another terminal.
+- (In a Herdr terminal) "Run the integration suite under my row in the agents list and give me its exit code."
 
 Near misses, with what handles each (`$HC_TERMINAL_ID` unset in the first three):
 
