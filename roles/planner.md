@@ -27,6 +27,9 @@ waits; it does not start building.
   costs the user a turn and adds nothing, and scope found only after a full draft has cost a rewrite.
 - The route for its questions: a `question` report to Laima, or, when the brief names an interview, the interview
   in its own session with the skill the brief names, writing each question and answer into the plan as they come.
+- For a change that adds or moves structure, the plan shows the code's shape, briefly: the file-tree diff, the call
+  path that changes and the signatures of new types and functions; for a change to a screen, a rough mockup. A
+  shape the user sees in the plan costs less to change than one they first meet in review.
 - The plan file's path, and that the file is the whole deliverable.
 - "Write the plan to the file and report. Use no plan-mode dialog": the dialog differs per harness and leaves the
   session waiting where a report cannot be sent.
