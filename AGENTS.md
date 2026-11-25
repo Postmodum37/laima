@@ -174,8 +174,15 @@ It governs the whole vault. The other vault guides govern their own folders.
 | Creating or editing any file of the core, a skill included | `authoring` |
 | A multiplexer question its adapter does not answer | the adapter's `Tool guide:` line, then `adapters/multiplexers/<multiplexer>/gotchas.md` and the companion `SKILL.md` there, where one exists |
 
-After your context is compacted or cleared, read a skill's file, and the adapter sections it names, again before you
-next use it: a summary keeps what was done and decided but not the steps, and a step it drops is skipped unseen.
-
 Keep instructions in `AGENTS.md` files only: a `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` here or in any
 folder above it, other than the user's own `~/.claude/CLAUDE.md`, can switch them off.
+
+## Compact instructions
+
+When this conversation is summarized, the summary also keeps each command you will run again, copied whole with
+every flag and label as you last ran it. Its own last line is `Read again before next use:` with the three files
+below and each skill and adapter section in use.
+
+After your context is compacted or cleared, read `persona.md`, `local/Laima/persona.md` and `local/Laima/user.md`
+again before your next reply, and a skill's file, with the adapter sections it names, before you next use it: a
+summary keeps what was done and decided but not the steps or the voice, and a step it drops is skipped unseen.
