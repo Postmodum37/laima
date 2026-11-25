@@ -113,7 +113,8 @@ in the worker's report or screen. Send long content as a file path. See the gotc
 
 Close an address only when the task record and your label establish that you launched it. If a labelled address
 has no record, tell the user and leave it. Close a session labelled `laima.adopted` only at the user's request.
-Use `hc kill <address>` to end a live program and close its tab. Read any output you still need, then run
+First end the program as its harness adapter's § End a session says, where it has one. Use `hc kill
+<address>` to end a program still live after that, and to close its tab. Read any output you still need, then run
 `hc rm <address>` on the finished record and confirm it is absent from `hc ls --all`. Leave the shared core and
 window running. Use `herdr-app` through `ls`, `status` and `do`.
 

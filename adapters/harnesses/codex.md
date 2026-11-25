@@ -26,6 +26,9 @@ codex --no-daemon --dangerously-bypass-approvals-and-sandbox -m <model> -c model
   limits are instructions that nothing enforces. Model and effort come from the same row, each optional.
 - The brief travels as a file: give its absolute path in a one-line prompt, as above. `@file` is not expanded.
 - Keep it interactive. `codex exec` ends after one answer: nothing to watch, message or ask again.
+- Add `-c mcp_servers.<name>.enabled=false` for each stdio MCP server that `local/Laima/setup.md` lists as unused
+  by workers, on launch and resume. Codex starts every enabled stdio server when the session starts, even one it
+  never calls, and a session that does not exit cleanly leaves it running (§ End a session).
 
 ## Instruction files it loads
 
@@ -71,6 +74,15 @@ defaults; the bypass flag above is the default mode. Start it in the folder the 
 the folder it is started in (not verified), recreated first when it went with the workspace (Claude Code adapter §
 Resume from a session id says how). When two sessions ran in one folder, pick the id from the task record and never
 `--last`.
+
+## End a session
+
+Before the multiplexer adapter's § Close a session, end Codex itself: `hc keys <address> ctrl+c`, then check that
+the program exited (`hc get <address> --json` shows `"state":"finished"`). At an idle prompt one press quits; in a
+turn the first press interrupts it, so press again once it is idle. Use `hc kill` only when it is still alive
+after that. Typing `/quit` with `hc send` does nothing, because the text arrives inside an `<hc from=…>` tag as a
+message to the model. The reason: Codex shuts its stdio MCP servers down only on an orderly exit, and `hc kill`
+sends a hangup, which skips that, so each server is left running with parent 1.
 
 ## Transcripts
 
