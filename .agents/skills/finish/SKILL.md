@@ -36,7 +36,8 @@ user or on other people; the task then stays open and you return here later.
    delivery the record's "Done when" names is shown: the user has the answer, the change is where the project's
    definition of done puts it (on the remote's main branch, in the folder), or the user has taken the work over.
 3. **Copy out** before anything is removed. From the reports and the files in the workspace into the record: the
-   outcome with evidence, decisions with reasons, verification commands with results, follow-ups. A file the
+   outcome with evidence, decisions with reasons, verification commands with results, each review finding in a
+   line with what became of it, follow-ups. A file the
    record's "Done when" names as the user's deliverable (a note, a report or a plan they asked to have) leaves the
    task folder first: to where the user keeps such files when they said where, otherwise into `local/` (a
    knowledge note, or the record itself); the record names its final path. Done when the record makes sense to a
@@ -80,4 +81,4 @@ user or on other people; the task then stays open and you return here later.
    the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.

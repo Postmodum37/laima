@@ -10,15 +10,18 @@ Runs on request and from `wrap-up`, never on a schedule. Read `local/Laima/knowl
 
 1. **Gather candidates** since the `consolidated` date in `local/Laima/index.md`: `lesson:` lines and Decisions in
    closed records, in `local/work/` and in `local/work/archive/<YYYY-MM>/` (where `wrap-up` has just moved
-   them), the user's corrections in "Questions and answers", and anything the user asked you to remember. Done
-   when every record closed since that date has been read.
+   them), review findings in those records, the user's corrections in "Questions and answers", and anything the
+   user asked you to remember. Done when every record closed since that date has been read.
 2. **Test each candidate:** would a later task go differently for knowing it? Drop the ones that fail; most do.
 3. **Route each survivor to its one home**, updating an existing entry before adding a new one:
    - a preference or rule of the user → `local/Laima/user.md`, in their words, with the date;
    - a fact about one project that its own files do not hold → that project's note;
    - a lesson or outside fact that crosses projects → a note in `local/Laima/knowledge/`, with its line added to the
      map in `local/Laima/index.md`;
-   - a way Laima herself should work differently → tell the user; the core changes only through `authoring`.
+   - a way Laima herself should work differently → tell the user; the core changes only through `authoring`;
+   - a review finding about a project's code that a record from an earlier task holds too, and that a linter, type
+     checker or test could catch → propose to the user a Build task that adds that check to the project, with both
+     records as its source; it starts on their yes.
    Log `promoted` for each, pointing at the task it came from.
 4. **Repair what went stale.** A note, registry line or setup row that a task showed to be wrong is corrected or
    deleted now, with the task as the reason. Update the knowledge and project pointers in the reference map
@@ -37,4 +40,4 @@ Runs on request and from `wrap-up`, never on a schedule. Read `local/Laima/knowl
 
 Done when steps 1 to 7 each have a result you can state, "nothing to do" included.
 
-Verified: 2026-11-19, Claude Code 2.1.327/2.1.328 and Codex 0.170.0. Not yet run: consolidation in the Laima/ layout; step 6; folding logs on real files; records read from the archive; a month skipped as done.
+Verified: 2026-11-19, Claude Code 2.1.327/2.1.328 and Codex 0.170.0. Not yet run: consolidation in the Laima/ layout; the route for a review finding seen in two tasks; step 6; folding logs on real files; records read from the archive; a month skipped as done.
