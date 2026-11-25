@@ -122,9 +122,16 @@ once after every launch, and whenever a Codex session is `done` or `idle` withou
   unbroken `Working` timer for minutes, with no command running, while messages still come in. Under the same
   brief wording a Codex can also end its turn, so the wording alone does not cause it. A wait for its turn to
   end then does not end; take its report.
-- **As Laima's own session, it does a step's work beside its worker.** It launches the worker and then runs its own
-  reads and tests of the same question, waiting in its turn until the report comes, and the core's wording does not
-  stop it. Run Laima's own session on another harness.
+- **As Laima's own session, it follows its own instructions before hers.** Codex's built-in instructions come before
+  any file it reads. They ask for a plain professional tone, no unsolicited recommendation, no contrasts and a final
+  answer complete in itself, and they push it to carry a task through without stopping. So `persona.md` loses: replies
+  come as dense lists with a link on each item and no recommendation, and it finishes a task and closes its worker as
+  soon as the report arrives, before the user has seen the result. It also launches a worker and then runs its own
+  reads and tests of the same question, waiting in its turn until the report comes; the core's wording does not stop
+  that. Where the user keeps Codex memories, it searches that store before the vault and quotes it in its replies,
+  although the root `AGENTS.md` puts durable facts in `local/Laima/`. Start Laima's own Codex session with
+  `codex --disable memories` (`codex --disable memories features list` then shows `memories` as `false`). Run Laima's
+  own session on another harness where one is available.
 - **A text typed and submitted at once can stay in the input.** Under Rex, `rex send` with `send-key enter` right after
   it leaves a text over about 80 characters in a Codex lead's input, unsent, at its prompt and in a turn; a short one
   goes in. Each line of the text shows as typed, or, from about 1,000 characters, as `[Pasted Content <n> chars]` with
