@@ -122,16 +122,30 @@ once after every launch, and whenever a Codex session is `done` or `idle` withou
   unbroken `Working` timer for minutes, with no command running, while messages still come in. Under the same
   brief wording a Codex can also end its turn, so the wording alone does not cause it. A wait for its turn to
   end then does not end; take its report.
-- **As Laima's own session, it follows its own instructions before hers.** Codex's built-in instructions come before
-  any file it reads. They ask for a plain professional tone, no unsolicited recommendation, no contrasts and a final
-  answer complete in itself, and they push it to carry a task through without stopping. So `persona.md` loses: replies
-  come as dense lists with a link on each item and no recommendation, and it finishes a task and closes its worker as
-  soon as the report arrives, before the user has seen the result. It also launches a worker and then runs its own
-  reads and tests of the same question, waiting in its turn until the report comes; the core's wording does not stop
-  that. Where the user keeps Codex memories, it searches that store before the vault and quotes it in its replies,
-  although the root `AGENTS.md` puts durable facts in `local/Laima/`. Start Laima's own Codex session with
-  `codex --disable memories` (`codex --disable memories features list` then shows `memories` as `false`). Run Laima's
-  own session on another harness where one is available.
+- **As Laima's own session, it follows its own instructions before hers.** Codex's built-in instructions are developer
+  messages; the root `AGENTS.md` reaches it as a user message and `persona.md` as a file it reads, so on a conflict
+  Codex's own text wins. That text asks for a plain professional tone, no unsolicited recommendation, no contrasts and
+  a final answer complete in itself, and pushes it to carry a task through without stopping. Started plainly, its
+  replies come as dense lists with a link on each item and no recommendation, and it finishes a task and closes its
+  worker as soon as the report arrives, before the user has seen the result. It also launches a worker and then runs
+  its own reads and tests of the same question, waiting in its turn until the report comes. Where the user keeps
+  Codex memories, it searches that store before the vault and quotes it in its replies. So start Laima's own Codex
+  session from the Laima folder with:
+
+  ```sh
+  codex --no-daemon -c 'personality="none"' -c "developer_instructions=$( {
+    printf '%s\n\n' "This is Laima's own session. Follow the startup order, authority, delegation, reporting and worker cleanup rules in the Laima root AGENTS.md. Apply the persona below and its local additions to user-facing conversation. Apply completion and persistence to Laima's role, including delivering before worker cleanup and yielding after a handoff or while awaiting a user decision. Use the harness question dialog for a user-owned decision with named options when available. Look durable facts up in local/Laima/ first and write them there; Codex memories come after the vault."
+    cat persona.md; } | jq -Rs .)"
+  ```
+
+  `personality="none"` takes out the built-in style section and leaves the rest of Codex's instructions;
+  `developer_instructions` puts the text above and `persona.md` among the developer messages. Codex memories stay
+  on: the vault is the store every harness shares, and the text above puts it first. `codex <the same flags> debug
+  prompt-input 'x'` prints the model's input without a turn: it shows no `# Personality` heading and shows the
+  persona. Started this way, with memories off, it followed the startup order, led with a recommendation, kept
+  delivery before closing a worker and looked facts up in the vault; with memories on, whether it reads the vault
+  first is not verified. It still writes in bold-led lists, and it does not open its question dialog for a decision
+  with named answers: ask in words there.
 - **A text typed and submitted at once can stay in the input.** Under Rex, `rex send` with `send-key enter` right after
   it leaves a text over about 80 characters in a Codex lead's input, unsent, at its prompt and in a turn; a short one
   goes in. Each line of the text shows as typed, or, from about 1,000 characters, as `[Pasted Content <n> chars]` with
