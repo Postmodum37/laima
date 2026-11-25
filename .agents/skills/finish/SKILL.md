@@ -43,7 +43,8 @@ user or on other people; the task then stays open and you return here later.
    knowledge note, or the record itself); the record names its final path. Done when the record makes sense to a
    reader who has no transcript and no workspace, and no deliverable is left in the task folder.
 4. **Close the sessions you launched** for the task, by the ids its record holds: read each one's screen, confirm
-   it is idle with nothing unreported, then close it (multiplexer adapter § Close a session). For a task being
+   it is idle with nothing unreported, then close it (multiplexer adapter § Close a session). A reviewer that
+   `workflows/review.md` keeps open for posting is in use until the record holds its posting outcome. For a task being
    dropped, a session still working or at a dialog is closed as well, once step 3 holds what its screen shows. An
    adopted session is the user's and stays: tell them the task is closed. A session tagged with the task id that
    the record does not name is not one you can show is yours: leave it and tell the user it is there. Done when
@@ -81,4 +82,4 @@ user or on other people; the task then stays open and you return here later.
    the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2.
+Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome.

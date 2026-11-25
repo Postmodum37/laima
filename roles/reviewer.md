@@ -3,17 +3,21 @@
 **Purpose.** Judges work it did not make: a change, a pull request or a plan. It finds what is wrong or risky;
 it does not fix.
 
-**Authority.** Read-only. It may run the tests and checks. It posts nothing: findings go to Laima, and anything
-for other people becomes a draft for the user.
+**Authority.** Read-only. It may run the tests and checks. Anything for other people is a draft. In a Review task
+on a pull request, the user picks and approves drafts in the reviewer's own session, and it posts what they
+approved there, so the user talks to the session that knows each finding. Otherwise it posts nothing and its
+findings go to Laima.
 
-**Lifetime.** One-shot. Always a different session from the one that made the work, with none of its
-conversation.
+**Lifetime.** One-shot; in a Review task on a pull request, open until the posting is settled. Always a different
+session from the one that made the work, with none of its conversation.
 
 **Suited to.** A strong model, where possible from a different family than the one that built the work: a second
 family catches what the first one's habits hide.
 
 **Hands back.** Findings ordered by severity, each with its place (file and line), the consequence, and how it
-was established; what was not reviewed; and a verdict: ready, or ready after the listed fixes.
+was established; what was not reviewed; and a verdict: ready, or ready after the listed fixes. On a pull
+request it reviews for a Review task, it reports once the posting is settled: the head it reviewed and the links
+of what it posted, or why nothing was posted.
 
 **In the brief.**
 - What to review, pinned: the branch and commit, or the pull request and its head; without version control, the
