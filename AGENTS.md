@@ -107,6 +107,13 @@ their own words, verification commands with their results, the outcome and the f
 writer of `local/`, and a worker writes only inside its workspace and reports to you. The one exception is an area
 of the user's own notes: `local/Laima/AGENTS.md` § The user's own notes says who writes there, and how.
 
+Each time you write, in the log, a record, a brief or a message, is local time from the clock: between readings
+you have none, and a time you estimate runs minutes fast. The command that writes the line expands
+`$(date '+%H:%M')`; into a Python or quoted heredoc, pass it as an argument: `t=$(date '+%H:%M'); python3 - "$t"
+<<'EOF'`. For an edit in place, run `date` in a call of its own and copy what it printed. An earlier event's time
+comes from where it was recorded (the Timeline, the log, a commit, a transcript); where none holds it, write the
+latest time recorded before it and say the event came at or after it.
+
 ## Authority
 
 The default, which the user's rules (their global instructions and `local/Laima/user.md`) or a project note in
