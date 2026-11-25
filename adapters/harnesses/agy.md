@@ -1,6 +1,6 @@
 # Antigravity CLI adapter
 
-Version checked: Antigravity CLI (agy) 1.5.15
+Version checked: Antigravity CLI (agy) 1.5.16
 
 Release notes: `agy changelog`, which runs ahead of the online page (https://antigravity.google/docs/changelog)
 
@@ -50,9 +50,10 @@ repository root, never from subfolders; the user's own in `~/.gemini/` and `~/.g
 a pointer to their path *(read, not run)*. How far it looks up from a folder outside git is not known, so keep the
 folder holding the workspaces, and the folders above it, free of `AGENTS.md` and `GEMINI.md`. Skills come from
 `.agents/skills/` in the same folders and from the user's `~/.gemini/skills/`, `~/.gemini/config/skills/` and
-`~/.gemini/antigravity-cli/skills/` *(read, not run)*; not from `~/.agents/skills/`, which Codex reads (an open
-issue says so, and that path is not in the binary) *(read, not run)*, so a skill the user linked only there is not
-there for an agy worker. Where it keeps a memory of its own per folder, if it keeps one, is not known.
+`~/.gemini/antigravity-cli/skills/` *(read, not run)*, and since 1.5.16 from the user's `~/.agents/skills/`, the
+folder Codex reads too: a print-mode session in a plain folder listed skills that exist only there. On a name
+found in both, the `~/.gemini/` skill wins *(read, not run)*. Where it keeps a memory of its own per folder, if it
+keeps one, is not known.
 
 It loads nothing of yours while the workspace sits outside your folder, so the brief carries all the role and the
 task need, and names a project's `CLAUDE.md` to read when its rules live there.
