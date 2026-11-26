@@ -20,7 +20,10 @@ anything it made for the task (a branch, a worktree), and anything left undone.
   cut from, or that the project's own rules say how to set that up.
 - What must be shown before reporting done, and the project's own gate commands when it has them. For a change
   someone can run (an app, an endpoint, a page), that includes running it the way a user would, with the project's
-  or the user's own tool for it, and the output or screenshot's path in the report.
+  or the user's own tool for it, and the output or screenshot's path in the report. A terminal program (a status
+  line, a terminal UI) is run that way in disposable sessions of a harness, side by side in panes at the widths
+  under test: the brief grants them as the one exception to the report block's "start no other agent sessions",
+  with how many, a small model, a scratch folder, and each closed after, and the report lists their addresses.
 - A test that contradicts the work item gets reported, not passed: the builder stops, names the test and the
   conflict, and leaves the test as it was. Agents pressed to make tests pass special-case or edit them, and the stop
   turns that into a question the user can answer.

@@ -57,6 +57,26 @@ Shorten `<task-id>-<role>` to a unique live name of 1–32 characters from `a-z 
    nothing typed; otherwise leave it, and tell the user. The shell carries no tag of yours, so one left open reads as
    the user's: when it will not close, keep its address in the record and tell the user.
 
+A program that a step runs for the user to watch beside its session, such as a dev server, a demo's terminal UI or
+a log, goes in a pane of that session's tab, so that the two are seen together:
+
+```sh
+herdr-app do pane.split '{"direction":"right","pane":"<session-pane-id>","argv":["/bin/sh","-c","cd <folder> && exec <program>"]}'
+```
+
+The session's pane id is listed beside its terminal in `herdr-app ls`. `pane.split` takes no folder, so the argv
+changes into it, and a split in a tab out of view leaves the user's view where it is. It prints the new `pane` and
+`terminal`. The terminal carries no tag of yours, so tag it with `hc label <terminal> laima=1 laima.task=<task-id>`,
+name the pane with `herdr-app do pane.rename '{"pane":"<pane>","name":"<name>"}'`, record its address, and close it
+with its session. A task session keeps a tab of its own: a pane narrows its screen, and closing a tab ends every
+terminal in it.
+
+When the user asks to watch a helper that a worker runs without a pane (`hc ls --json` shows the worker as its
+`parent`), focus the worker's pane with `herdr-app do pane.focus '{"pane":"<pane>"}'`, then give the helper a pane
+beside it with `herdr-app do terminal.keep --terminal <helper> --place right`. Both move the user's view, which is
+what they asked for. Close the helper yourself once the worker is done, because a terminal with a pane can be spared
+when its parent ends *(read, not run)*.
+
 To adopt a session the user started, find it in plain `hc ls` and tag it with
 `hc label <address> laima=1 laima.task=<task-id> laima.adopted=1`.
 
