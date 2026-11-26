@@ -147,9 +147,10 @@ skill's, are not sessions.
 
 ## Resume a closed session
 
-Use the harness adapter § Resume from a session id as the argv in step 4, with the flags the launch's Timeline line
-recorded, in the folder that line names, since the harness finds the session by that folder; give a first message saying
-what changed and what is wanted now. Add a Timeline line and a `launched` log line saying "resumed". When the session's
+Use the harness adapter § Resume from a session id as the argv in step 4, in the folder the session first ran in (the
+launch's Timeline line names it). Run step 1's search for rules again for that folder and add the flags it gives,
+together with any the Timeline recorded; where they differ, the current rules win. Give a first message saying what
+changed and what is wanted now. Add a Timeline line and a `launched` log line saying "resumed". When the session's
 folder went with the workspace and the adapter has you recreate it, write it into the record's `worktree` field, so that
 `finish` removes it again.
 
@@ -164,4 +165,4 @@ folder went with the workspace and the adapter has you recreate it, write it int
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send.
+Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send; flags added on resume from the rule search.
