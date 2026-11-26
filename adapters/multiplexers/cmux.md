@@ -203,9 +203,9 @@ You start again only once the user has opened a cmux terminal for you. Then, per
 which step it is at. Only where that step still needs its session, find its workspace by title. When the agent is there
 at a prompt, record the new surface UUID, give the workspace its description again if it lost it, and message the
 session your new UUID as its report address. When the workspace is missing or holds only a shell, close what is left of
-yours, by § Close a session, and start the session again by `launch` § Resume a closed session, which takes the
-folder and the flags as a launch does. A Claude Code resumed so in a new workspace keeps its session id and its
-conversation.
+yours, by § Close a session, and start the session again by `launch` § Resume a closed session, in the
+folder it first ran in, with its recorded flags. A Claude Code resumed so in a new workspace keeps its session id
+and its conversation.
 
 ## Gotchas
 

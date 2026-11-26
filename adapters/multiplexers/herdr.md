@@ -32,7 +32,8 @@ hc run --bg --no-parent --name <name> --cwd <session-folder> \
   --label laima=1 --label laima.task=<task-id> --label herdr.space=<space-id> -- <harness argv>
 ```
 
-`<session-folder>` is the folder `launch` step 4 chose. Use the harness adapter's § Launch with a brief for argv.
+`<session-folder>` is the folder `launch` step 4 chose. Use the harness adapter's § Launch with a brief for argv
+(§ Resume from a session id on resume).
 On `spawn_failed`, see
 [Server PATH](herdr/gotchas.md#hc-run-finds-a-program-on-the-servers-path-not-yours).
 For a preset that shares the harness name, see
@@ -155,8 +156,8 @@ after loss. The details are in `hc --skill` § Status, recovery, and cleanup *(r
 
 After a reboot, logout or core crash, check the listing and each open task's record. Restart only steps that
 still need a session and whose agent is gone. Close any leftover shell you launched, then resume it by `launch`
-§ Resume a closed session, which takes the folder, the flags and the space as a launch does, with your current
-reply address in the brief. Use a
+§ Resume a closed session, in the folder it first ran in, with its recorded flags and the space a launch would
+take, and your current reply address in the brief. Use a
 fresh brief from the record if resume fails. Record the new address. An adopted session is the user's to restart.
 
 ## Gotchas
