@@ -57,11 +57,11 @@ Closing a space's last tab closes the space, so a space made for some sessions i
 called after the folder of its first terminal and takes a new name when another terminal comes first, while its
 `folder` stays: a space shown as one project's can hold another's tabs. Give every space you make a name.
 
-## A tab moves to another space only by parking its terminal
+## A running terminal moves to a new tab in another space only by parking it
 
 `tab.move` reorders tabs within their space (its arguments are `id`, `index` and `by`), and `hc label <t>
 herdr.space=<sp>` on a terminal that has a pane changes the label but leaves the tab where it is. To move a running
-terminal, take its pane away, relabel it, and give it a pane again:
+terminal, take its pane away, relabel it, and give it a pane again, as a new tab there:
 
 ```sh
 herdr-app do terminal.park --terminal <t>
@@ -70,7 +70,8 @@ herdr-app do terminal.keep --terminal <t> --place tab
 ```
 
 It keeps its address and stays live. `terminal.keep` shows the target space in the window and takes no focus
-argument, so tell the user before you move one; `terminal.park` also turns off the terminal's `--keep`. How a
+argument, so tell the user before you move one. `terminal.park` also turns off the terminal's `--keep`, and the
+commands move one terminal: in a split tab the other panes stay where they were *(both read, not run)*. How a
 harness's screen comes through the move is not known.
 
 ## `tab.new` makes a peer inside a shell
