@@ -50,6 +50,13 @@ in a shell profile fails with `spawn_failed`, `cannot start "<program>": No such
 starts. Hand your PATH to it: `hc run ... -- /usr/bin/env PATH="$PATH" <program> <args>`. A program in a folder the
 server's PATH holds starts as given.
 
+## A space closes with its last tab, and one without a name renames itself
+
+Closing a space's last tab closes the space, so a space made for some sessions is gone, id and all, once they end.
+`herdr-app do space.new` without `--argv` opens the space with a shell tab in it. A space made without `--name` is
+called after the folder of its first terminal and takes a new name when another terminal comes first, while its
+`folder` stays: a space shown as one project's can hold another's tabs. Give every space you make a name.
+
 ## `tab.new` makes a peer inside a shell
 
 Pass an explicit `--space <sp>` from `herdr-app ls` when targeting your own space. By default the tab goes in the
