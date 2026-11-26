@@ -51,8 +51,9 @@ Shorten `<task-id>-<role>` to a unique live name of 1–32 characters from `a-z 
    ```
 3. Rename that tab with `herdr-app do tab.rename --id <tab-id> --name <name>`.
 4. In a space you made for this launch, close its opening shell by the address you recorded: `hc kill <terminal>`,
-   then `hc rm <terminal>`. Only now, with step 2's tab found, since the shell is the space's last tab until yours is
-   in. When the launch failed and no tab of yours came, close the shell as well if its screen shows a bare prompt with
+   then `hc rm <terminal>`. Close it only once step 2 found the task tab, since a space closes with its last tab
+   ([gotcha](herdr/gotchas.md#a-space-closes-with-its-last-tab-and-one-without-a-name-renames-itself)). When the
+   launch failed and no tab of yours came, close the shell as well if its screen shows a bare prompt with
    nothing typed; otherwise leave it, and tell the user. The shell carries no tag of yours, so one left open reads as
    the user's: when it will not close, keep its address in the record and tell the user.
 
