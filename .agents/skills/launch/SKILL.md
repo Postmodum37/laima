@@ -65,8 +65,10 @@ How each action is done with the tools on this machine is in two adapters, named
    is at its prompt (step 6); and where the step begins with a command that only a typed prompt starts, such as a skill
    the project closes to the model, that command is the first prompt in the argv, and you send the brief, report block
    included, in the same turn as the launch: record the session first (step 5), then send the brief once its input is
-   free, whether the command is still running or has finished, and a refused send goes as that adapter says. Without
-   the brief that session never reports, and nothing else brings you back.
+   free, at its prompt with no dialog open, whether the command is still running or has finished (a running turn
+   counts where the harness takes typed input while it works). When the multiplexer refuses the send, write "brief
+   pending" in the Timeline and send it at your next look at the sessions. Without the brief that session never
+   reports, and nothing else brings you back.
 5. **Record it** as soon as the start command returns, before anything else can go wrong: a Timeline line with the role,
    address, harness, model, effort, mode, each flag step 4 added and the folder it started in; the `worktree` field once
    a place was made for this task alone (at once when you made it, from the builder's report when it did), and `branch`
