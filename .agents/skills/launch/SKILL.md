@@ -64,11 +64,11 @@ How each action is done with the tools on this machine is in two adapters, named
    first turn there would run before the trust prompt is answered, send it once the prompt is answered and the session
    is at its prompt (step 6); and where the step begins with a command that only a typed prompt starts, such as a skill
    the project closes to the model, that command is the first prompt in the argv, and you send the brief, report block
-   included, in the same turn as the launch: record the session first (step 5), then send the brief once its input is
-   free, at its prompt with no dialog open, whether the command is still running or has finished (a running turn
-   counts where the harness takes typed input while it works). When the multiplexer refuses the send, write "brief
-   pending" in the Timeline and send it at your next look at the sessions. Without the brief that session never
-   reports, and nothing else brings you back.
+   included, in the same turn as the launch: record the session first (step 5), with "brief pending" on its Timeline
+   line, then send the brief once its input is free, at its prompt with no dialog open, whether the command is still
+   running or has finished (a running turn counts where the harness takes typed input while it works). Clear the entry
+   once the send is confirmed; while it stands, send at each next look at the sessions. Without the brief that session
+   never reports, and nothing else brings you back.
 5. **Record it** as soon as the start command returns, before anything else can go wrong: a Timeline line with the role,
    address, harness, model, effort, mode, each flag step 4 added and the folder it started in; the `worktree` field once
    a place was made for this task alone (at once when you made it, from the builder's report when it did), and `branch`
@@ -164,4 +164,4 @@ folder went with the workspace and the adapter has you recreate it, write it int
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules.
+Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send.
