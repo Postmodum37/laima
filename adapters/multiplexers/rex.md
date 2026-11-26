@@ -250,9 +250,9 @@ A restored block looks like a session whose harness left: `process` shows a shel
 run again once you are resumed from your session id.
 
 Per open task, work out from its record which step it is at. Only where that step still needs its session,
-close what is left of a session you launched (§ Close a session) and start a task session again with the
-harness adapter's § Resume from a session id as the argv, in the same folder, with your current two ids in the
-first message. Record the new ids. An adopted session is the user's to restart. When an id cannot be resumed,
+close what is left of a session you launched (§ Close a session) and start a task session again by `launch`
+§ Resume a closed session, which takes the folder and the flags as a launch does, with your current two ids in
+the first message. Record the new ids. An adopted session is the user's to restart. When an id cannot be resumed,
 launch a fresh session of that role with a brief built from the record.
 
 ## Gotchas

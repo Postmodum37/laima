@@ -154,8 +154,9 @@ A closed window leaves the core running. Kept terminals can return as replacemen
 after loss. The details are in `hc --skill` § Status, recovery, and cleanup *(read, not run)*.
 
 After a reboot, logout or core crash, check the listing and each open task's record. Restart only steps that
-still need a session and whose agent is gone. Close any leftover shell you launched, then follow the harness
-adapter's § Resume from a session id in the same folder, with your current reply address in the brief. Use a
+still need a session and whose agent is gone. Close any leftover shell you launched, then resume it by `launch`
+§ Resume a closed session, which takes the folder, the flags and the space as a launch does, with your current
+reply address in the brief. Use a
 fresh brief from the record if resume fails. Record the new address. An adopted session is the user's to restart.
 
 ## Gotchas
