@@ -15,8 +15,8 @@ Each task session is a peer with its own tab, opened while the user's current ta
 one the user's placement rule in `local/Laima/setup.md` § Multiplexer gives; with no rule there, your own,
 `labels."herdr.space"` from `hc get "$HC_TERMINAL_ID" --json`. A rule by repository names the space's folder: the
 repository's main checkout, also for a session that starts in one of its worktrees (`set-up` step 2 gives the git
-command that finds it). Look the space up in `herdr-app ls` at each launch, by that `folder` or by a name you gave
-it, not by an id from a record or an earlier launch
+command that finds it). Look the space up in `herdr-app ls` at each launch, by that `folder` under a rule by
+repository and by name only where the rule names a space, not by an id from a record or an earlier launch
 ([A space's life](herdr/gotchas.md#a-space-closes-with-its-last-tab-and-one-without-a-name-renames-itself)). When the
 rule's space does not exist, make it, out of the user's view, with the space's folder, not the session's:
 
