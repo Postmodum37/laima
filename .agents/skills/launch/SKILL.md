@@ -68,11 +68,11 @@ How each action is done with the tools on this machine is in two adapters, named
    free, whether the command is still running or has finished, and a refused send goes as that adapter says. Without
    the brief that session never reports, and nothing else brings you back.
 5. **Record it** as soon as the start command returns, before anything else can go wrong: a Timeline line with the role,
-   address, harness, model, effort, mode and the folder it started in; the `worktree` field once a place was made for
-   this task alone (at once when you made it, from the builder's report when it did), and `branch` when there is one; a
-   `launched` line in today's log that names the model, the effort and why that row. Add the session id (harness adapter
-   § Session id) to `sessions` and to that Timeline line once you have it. Done when the record and the log both show
-   the session.
+   address, harness, model, effort, mode, each flag step 4 added and the folder it started in; the `worktree` field once
+   a place was made for this task alone (at once when you made it, from the builder's report when it did), and `branch`
+   when there is one; a `launched` line in today's log that names the model, the effort and why that row. Add the
+   session id (harness adapter § Session id) to `sessions` and to that Timeline line once you have it. Done when the
+   record and the log both show the session.
 6. **See it working:** the listing shows the session and its screen shows it on the brief, or on its first command
    with the brief sent. A session in a folder the harness has not seen can stop at a trust prompt (harness adapter
    § Gotchas says when).
@@ -145,10 +145,11 @@ skill's, are not sessions.
 
 ## Resume a closed session
 
-Use the harness adapter § Resume from a session id as the argv in step 4, with a first message saying what
-changed and what is wanted now. Add a Timeline line and a `launched` log line saying "resumed". When the session's
-folder went with the workspace and the adapter has you recreate it, write it into the record's `worktree` field,
-so that `finish` removes it again.
+Use the harness adapter § Resume from a session id as the argv in step 4, with the flags the launch's Timeline line
+recorded, in the folder that line names, since the harness finds the session by that folder; give a first message saying
+what changed and what is wanted now. Add a Timeline line and a `launched` log line saying "resumed". When the session's
+folder went with the workspace and the adapter has you recreate it, write it into the record's `worktree` field, so that
+`finish` removes it again.
 
 ## Adopt a session the user started
 
