@@ -19,7 +19,8 @@ How each action is done with the tools on this machine is in two adapters, named
    session (§ Which harness, model and effort). Then find what the project and the user already have for this
    step, because theirs comes before anything of yours: the project's instruction file, the skills in its own
    skill folders, the user's global skills for the worker's harness (harness adapter § Instruction files it
-   loads names the folders) and the tools in `local/Laima/setup.md` § Tools found. Note each skill, command, gate
+   loads names the folders), the user's global instruction files and `local/Laima/user.md` § Their rules, and the
+   tools in `local/Laima/setup.md` § Tools found. Note each skill, command, gate
    and rule of theirs that covers part of the step: making and shipping a change, tests, review, commits, pull
    requests, the issue tracker. Check that the project's folder exists. Done when you can name the folder, the
    harness, model and effort with the reason for them, where and how the change is made, and what of the
@@ -50,16 +51,18 @@ How each action is done with the tools on this machine is in two adapters, named
    written as the character it names, which the worker then cannot see. The Rex send block carries the prompt
    glyphs `❯` and `›` on purpose; its lines are expected in that list.
 4. **Start the session:** multiplexer adapter § Start a task session, with the argv from the harness adapter
-   § Launch with a brief. Name it for the task and the role within the adapter's length limit (shorten the slug;
-   the tag carries the full id), tag it with the task id, and start it in the place for the change, in the
-   project's folder, or, for a task of no project, in its task folder; when a task spans several, in the one
-   holding most of the work, with the others listed in the brief. Two cases start without the brief, which you
-   send as the next message (multiplexer adapter § Message a session): where the harness adapter § Launch with a
-   brief says a first turn there would run before the trust prompt is answered, send it once the prompt is
-   answered and the session is at its prompt (step 6); and where the step begins with a command that only a typed
-   prompt starts, such as a skill the project closes to the model, that command is the first prompt, and you send
-   the brief, report block included, in the same turn as the launch, as soon as the screen shows the command
-   running with its input free. Without the brief that session never reports, and nothing else brings you back.
+   § Launch with a brief and each launch flag that the rules found in step 1 give for a session in that folder,
+   such as a second folder to add, on resume as well, written for this harness and placed where its adapter says (right
+   after the program's name where it says nothing). Name it for the task and the role within the adapter's length limit
+   (shorten the slug; the tag carries the full id), tag it with the task id, and start it in the place for the change,
+   in the project's folder, or, for a task of no project, in its task folder; when a task spans several, in the one
+   holding most of the work, with the others listed in the brief. Two cases start without the brief, which you send as
+   the next message (multiplexer adapter § Message a session): where the harness adapter § Launch with a brief says a
+   first turn there would run before the trust prompt is answered, send it once the prompt is answered and the session
+   is at its prompt (step 6); and where the step begins with a command that only a typed prompt starts, such as a skill
+   the project closes to the model, that command is the first prompt, and you send the brief, report block included, in
+   the same turn as the launch, as soon as the screen shows the command running with its input free. Without the brief
+   that session never reports, and nothing else brings you back.
 5. **Record it** as soon as the start command returns, before anything else can go wrong: a Timeline line with the role,
    address, harness, model, effort, mode and the folder it started in; the `worktree` field once a place was made for
    this task alone (at once when you made it, from the builder's report when it did), and `branch` when there is one; a
@@ -67,8 +70,8 @@ How each action is done with the tools on this machine is in two adapters, named
    § Session id) to `sessions` and to that Timeline line once you have it. Done when the record and the log both show
    the session.
 6. **See it working:** the listing shows the session and its screen shows it on the brief, or on its first command
-   with the brief sent. A session in a
-   folder the harness has not seen can stop at a trust prompt (harness adapter § Gotchas says when).
+   with the brief sent. A session in a folder the harness has not seen can stop at a trust prompt (harness adapter
+   § Gotchas says when).
    `AGENTS.md` § Authority says when that prompt is yours to answer, and which other dialog is. A session that
    failed to start gets a `failed` line in the log and the record.
 7. **Go on.** The worker reports by message; how it reaches you is in the multiplexer adapter § How you learn
@@ -154,4 +157,4 @@ so that `finish` removes it again.
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded.
+Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules.

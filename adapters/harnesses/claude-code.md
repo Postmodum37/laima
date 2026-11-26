@@ -23,6 +23,8 @@ claude --dangerously-skip-permissions --session-id <uuid> --model <model> --effo
 - `--model` and `--effort` come from the same row, each optional. `<uuid>` is the id you choose (§ Session id).
 - The brief travels as a file: give its absolute path in a one-line prompt, as above.
 - Keep it interactive. Print mode (`-p`) ends after one answer: nothing to watch, message or ask again.
+- An added flag goes right after `claude`. `--add-dir <directories...>` takes several values, so placed just before
+  the prompt it takes the prompt as one more folder, and the session starts without its brief *(read, not run)*.
 
 ## Instruction files it loads
 
