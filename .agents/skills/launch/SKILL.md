@@ -19,7 +19,8 @@ How each action is done with the tools on this machine is in two adapters, named
    session (§ Which harness, model and effort). Then find what the project and the user already have for this
    step, because theirs comes before anything of yours: the project's instruction file, the skills in its own
    skill folders, the user's global skills for the worker's harness (harness adapter § Instruction files it
-   loads names the folders), the user's global instruction files and `local/Laima/user.md` § Their rules, and the
+   loads names the folders), the user's global instruction files, the files that section says load from the folders
+   above the session's folder and above the project's checkout, `local/Laima/user.md` § Their rules, and the
    tools in `local/Laima/setup.md` § Tools found. Note each skill, command, gate
    and rule of theirs that covers part of the step: making and shipping a change, tests, review, commits, pull
    requests, the issue tracker. Check that the project's folder exists. Done when you can name the folder, the
@@ -53,10 +54,12 @@ How each action is done with the tools on this machine is in two adapters, named
 4. **Start the session:** multiplexer adapter § Start a task session, with the argv from the harness adapter
    § Launch with a brief and each launch flag that the rules found in step 1 give for a session in that folder,
    such as a second folder to add, on resume as well, written for this harness and placed where its adapter says (right
-   after the program's name where it says nothing). Name it for the task and the role within the adapter's length limit
-   (shorten the slug; the tag carries the full id), tag it with the task id, and start it in the place for the change,
-   in the project's folder, or, for a task of no project, in its task folder; when a task spans several, in the one
-   holding most of the work, with the others listed in the brief. Two cases start without the brief, which you send as
+   after the program's name where it says nothing). A flag the adapter's argv already carries (mode, model, effort)
+   keeps the value § Which harness, model and effort gives. Name it for the task and the role within the adapter's
+   length limit (shorten the slug; the tag carries the full id), tag it with the task id, and start it in the place
+   for the change, in the project's folder, or, for a task of no project, in its task folder; when a task spans
+   several, in the one holding most of the work, with the others listed in the brief. Two cases start without the
+   brief, which you send as
    the next message (multiplexer adapter § Message a session): where the harness adapter § Launch with a brief says a
    first turn there would run before the trust prompt is answered, send it once the prompt is answered and the session
    is at its prompt (step 6); and where the step begins with a command that only a typed prompt starts, such as a skill
