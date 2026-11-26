@@ -12,26 +12,28 @@ See § Gotchas for shared Herdr pitfalls. Use `herdr/SKILL.md` for work outside 
 ## Start a task session
 
 Each task session is a peer with its own tab, opened while the user's current tab stays in front. Its space is the
-one the user's placement rule in `local/Laima/setup.md` § Multiplexer gives for the folder the session works in
-(for a worktree, its repository's); with no rule there, your own, `labels."herdr.space"` from
-`hc get "$HC_TERMINAL_ID" --json`. Look the space's id up in `herdr-app ls` at each launch, not in a record or an
-earlier launch, and match it by what the rule gives, a space's `folder` or a name you gave it: a space can close,
-and one without a name takes the name of whatever runs first in it
+one the user's placement rule in `local/Laima/setup.md` § Multiplexer gives; with no rule there, your own,
+`labels."herdr.space"` from `hc get "$HC_TERMINAL_ID" --json`. A rule by repository names the space's folder: the
+repository's main checkout, also for a session that starts in one of its worktrees (`set-up` step 2 gives the git
+command that finds it). Look the space up in `herdr-app ls` at each launch, by that `folder` or by a name you gave
+it, not by an id from a record or an earlier launch
 ([A space's life](herdr/gotchas.md#a-space-closes-with-its-last-tab-and-one-without-a-name-renames-itself)). When the
-rule's space does not exist, make it, out of the user's view:
+rule's space does not exist, make it, out of the user's view, with the space's folder, not the session's:
 
 ```sh
-herdr-app do space.new --name <space-name> --folder <folder> --focus false
+herdr-app do space.new --name <space-name> --folder <space-folder> --focus false
 ```
 
-It prints the new `space` and the `terminal` of the shell tab it opens with; step 4 below closes that shell.
+It prints the new `space` and the `terminal` of the shell tab it opens with. Write that terminal's address in the
+task record at once, as the space's opening shell; step 4 below closes it.
 
 ```sh
-hc run --bg --no-parent --name <name> --cwd <folder> \
+hc run --bg --no-parent --name <name> --cwd <session-folder> \
   --label laima=1 --label laima.task=<task-id> --label herdr.space=<space-id> -- <harness argv>
 ```
 
-Use the harness adapter's § Launch with a brief for argv. On `spawn_failed`, see
+`<session-folder>` is the folder `launch` step 4 chose. Use the harness adapter's § Launch with a brief for argv.
+On `spawn_failed`, see
 [Server PATH](herdr/gotchas.md#hc-run-finds-a-program-on-the-servers-path-not-yours).
 For a preset that shares the harness name, see
 [Preset name collisions](herdr/gotchas.md#a-preset-named-like-a-program-starts-in-its-place).
@@ -47,10 +49,11 @@ Shorten `<task-id>-<role>` to a unique live name of 1–32 characters from `a-z 
      | select(any(.terminals[]?; .terminal == $address)) | .id'
    ```
 3. Rename that tab with `herdr-app do tab.rename --id <tab-id> --name <name>`.
-4. In a space you made for this launch, close the shell it opened with, by the `terminal` that `space.new` printed:
-   `hc kill <terminal>`, then `hc rm <terminal>`. Only now, with step 2's tab found: until your session's tab is in,
-   the shell is the space's last tab, and closing it closes the space. The shell carries no tag of yours, so one left
-   open reads as the user's: when it will not close, write its address in the record and tell the user.
+4. In a space you made for this launch, close its opening shell by the address you recorded: `hc kill <terminal>`,
+   then `hc rm <terminal>`. Only now, with step 2's tab found, since the shell is the space's last tab until yours is
+   in. When the launch failed and no tab of yours came, close the shell as well if its screen shows a bare prompt with
+   nothing typed; otherwise leave it, and tell the user. The shell carries no tag of yours, so one left open reads as
+   the user's: when it will not close, keep its address in the record and tell the user.
 
 To adopt a session the user started, find it in plain `hc ls` and tag it with
 `hc label <address> laima=1 laima.task=<task-id> laima.adopted=1`.
