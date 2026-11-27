@@ -81,19 +81,20 @@ How each action is done with the tools on this machine is in two adapters, named
    record and the log both show the session.
 6. **See it working:** check its folder and actual placement against the chosen space or tab where applicable.
    For project-required flags, read the live process arguments using the multiplexer adapter or check the
-   effective behavior in the worker. Record a flag as unverified when neither is available. Verify the intended
-   brief in the worker's conversation or from its acknowledgement, including after a typed first command.
-   A session in a folder the harness has not seen can stop at a trust prompt (harness adapter § Gotchas).
-   Use `AGENTS.md` § Authority for trust and other dialogs. Record a failed start in the log and task record
-   with a `failed` line. Done when the running session and its brief match the launch, or the wait or failure
-   is recorded.
+   effective behavior in the worker. Verify the intended brief in the worker's conversation or from its
+   acknowledgement, including after a typed first command. A session in a folder the harness has not seen
+   can stop at a trust prompt (harness adapter § Gotchas). Use `AGENTS.md` § Authority for trust and other dialogs.
+   Record a failed start in the log and task record with a `failed` line. The worker is ready when the intended
+   folder, placement, required flags and brief all match. When a required check fails or remains unverified,
+   record what is missing and keep the step that depends on it pending.
 7. **Go on.** The worker reports by message; how it reaches you is in the multiplexer adapter § How you learn
    a session finished. End your turn or take up other work; a foreground wait would keep the user, and the
    report, out of your session.
    For a missing report, check its report file in the task folder and read the screen for anything the file
-   leaves unresolved. On arrival or recovery, verify the worker and match the report phase to the record. For
-   a new phase, record it before advancing. For a phase already applied, record the later copy as receipt
-   and leave the workflow at its current step.
+   leaves unresolved. On arrival or recovery, verify the worker and compare the report with the record:
+   its brief or report number where applicable, status and what it reports. Record a new report before
+   advancing. If it is the same report already applied from the file or message, record receipt and leave
+   the workflow at its current step. A later question or result from the same worker can be new work.
 
 ## Which harness, model and effort
 

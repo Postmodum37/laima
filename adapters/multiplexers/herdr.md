@@ -120,8 +120,8 @@ worker's command expands to the worker's address.
 
 ```
 Before each send, run hc read <Laima's address> --lines 0. Look for the intended agent's main prompt
-with empty input. It can be working. Leave any draft, picker or Side chat in place and rely on the
-report file if you cannot confirm the prompt is clear.
+with empty input. It can be working. If the user is engaged there or you see a draft, picker or Side
+chat, leave it in place and use the report file. Use the file if you cannot confirm a clear prompt.
 The send:
     m=$(cat '<message file>') && [ -n "$m" ] && hc send <Laima's address> "$m"
 A missing or empty message file stops the command before it sends. Write the file first.
