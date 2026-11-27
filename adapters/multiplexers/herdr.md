@@ -42,8 +42,10 @@ For a preset that shares the harness name, see
 Herdr's agent list groups sessions under their space's name.
 
 1. Record the returned JSON `address` in the task record.
-2. Find the tab by that exact address in the chosen space. The lookup can be empty for a few seconds after
-   launch. Retry during that interval. If it stays empty, check the space ID before renaming.
+2. Use `hc get <address> --json` to check the worker's `foreground.cwd` and `foreground.argv` once the harness
+   is running. Match the project-required flags to the live argv. Find the tab by that exact address in the
+   chosen space. The lookup can be empty for a few seconds after launch. Retry during that interval. If it stays
+   empty, check the space ID before renaming.
 
    ```sh
    herdr-app ls | jq -r --arg space "<space-id>" --arg address "<address>" '
@@ -117,12 +119,15 @@ Copy this block into the worker brief with your literal address from `echo "$HC_
 worker's command expands to the worker's address.
 
 ```
-Before each send, read the receiver's prompt as this adapter's Message a session section says.
-Leave a draft, picker or Side chat in place and rely on the report file if the input is occupied.
+Before each send, run hc read <Laima's address> --lines 0. Look for the intended agent's main prompt
+with empty input. It can be working. Leave any draft, picker or Side chat in place and rely on the
+report file if you cannot confirm the prompt is clear.
 The send:
     m=$(cat '<message file>') && [ -n "$m" ] && hc send <Laima's address> "$m"
 A missing or empty message file stops the command before it sends. Write the file first.
-Exit 0 describes submission. For an unclear result, check receipt before retrying.
+Exit 0 describes submission. Check the receiver's screen for the exact report in its main conversation
+or its acknowledgement. For an unclear result, leave the report file unless you can show the attempt
+missed its target and the prompt is clear.
 Exit 5 means Laima is starting and nothing was typed. Try again after a few seconds.
 Exit 9 means a blocked dialog refused the send and nothing was typed. Wait 30 seconds as a command of its
 own (`sleep 30` or your harness's timer), then recheck, up to 30 times. Send when the prompt is clear.

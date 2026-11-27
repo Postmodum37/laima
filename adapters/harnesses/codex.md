@@ -134,8 +134,8 @@ Codex reports status only from inside a turn, so some of its screens never show 
 once after every launch, and whenever a Codex session is `done` or `idle` without a report.
 
 - **Question picker.** An acknowledgement that the picker opened leaves the decision pending until the user answers.
-  Under Herdr, an expanded question can show `status: working` and a send can be submitted as free text.
-  Follow [Herdr § Message a session](../multiplexers/herdr.md#message-a-session) when the prompt is unclear.
+  Under Herdr, an expanded question can show `status: working`. For delivery and how choices can be
+  affected, see [Herdr § Message a session](../multiplexers/herdr.md#message-a-session).
 - **Side chat on Codex CLI 0.172.0 under Herdr.** The pane can show `Side chat` and receive a send meant for
   `Main [default]`. In a task-owned worker, when input is empty with no dialog or user engagement,
   `hc keys <address> ctrl+/` can return to Main. Read the screen again to confirm Main and a clear prompt.

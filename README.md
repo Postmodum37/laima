@@ -80,7 +80,7 @@ She is built on four goals:
 | [cmux](adapters/multiplexers/cmux.md) | Earlier task and adapter smoke tests, including a request-to-finish fixture with a Claude Code lead. | Start inside a cmux terminal under its default policy. A message can queue at a dialog or leave an idle Codex waiting. |
 
 Those checks cover the named paths. Combined harness and multiplexer behavior, lead recovery and prompt handling
-have narrower coverage. Each adapter gives its `Version checked:` pin and the actions that still need a run.
+have narrower coverage. Each adapter gives its `Version checked:` pin and notes for its tool.
 Other harnesses and multiplexers can be added with an adapter. [Authoring guide](docs/authoring.md#adapter-document)
 
 ## Start
@@ -170,7 +170,8 @@ project and the review steps exercised during the week.
 - A workflow, role or skill of your own: `local/Laima/workflows/`, `local/Laima/roles/`, `local/Laima/skills/`.
   These live in your private vault and survive core updates. For example, you can add a recipe to oversee a
   group of workers, teach in a separate tab, or scout for information on demand. A fresh clone ships the six
-  workflows listed above. Set up any such recipe locally. [Vault guide](local/Laima/AGENTS.md#the-users-own-workflows-roles-and-skills)
+  workflows listed above. Set up any such recipe locally.
+  [Vault guide](local/Laima/AGENTS.md#the-users-own-workflows-roles-and-skills)
 - Notes of your own beside hers: keep the folder in `local/` as a plain folder (the vault's git would hold a
   repository of its own as a pointer only) and list it in `local/Laima/user.md` § Notes areas with who writes there and
   how. She reads it, writes there only as that line says, and commits it with the vault at each wrap-up.

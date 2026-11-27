@@ -79,19 +79,21 @@ How each action is done with the tools on this machine is in two adapters, named
    when there is one; a `launched` line in today's log that names the model, the effort and why that row. Add the
    session id (harness adapter § Session id) to `sessions` and to that Timeline line once you have it. Done when the
    record and the log both show the session.
-6. **See it working:** check its folder, actual placement against the chosen space or tab where applicable, and
-   project-required flags against the running session using the adapters' listing and screen checks. Verify the
-   intended brief in the worker's conversation or from the worker's acknowledgement, including after a typed
-   first command. A session in a folder the harness has not seen can stop at a trust prompt (harness adapter
-   § Gotchas says when). `AGENTS.md` § Authority says when that prompt is yours to answer, and which other dialog
-   is theirs. A session that failed to start gets a `failed` line in the log and the record. Done when the running
-   session and its brief match the launch, or the remaining wait or failure is recorded.
+6. **See it working:** check its folder and actual placement against the chosen space or tab where applicable.
+   For project-required flags, read the live process arguments using the multiplexer adapter or check the
+   effective behavior in the worker. Record a flag as unverified when neither is available. Verify the intended
+   brief in the worker's conversation or from its acknowledgement, including after a typed first command.
+   A session in a folder the harness has not seen can stop at a trust prompt (harness adapter § Gotchas).
+   Use `AGENTS.md` § Authority for trust and other dialogs. Record a failed start in the log and task record
+   with a `failed` line. Done when the running session and its brief match the launch, or the wait or failure
+   is recorded.
 7. **Go on.** The worker reports by message; how it reaches you is in the multiplexer adapter § How you learn
    a session finished. End your turn or take up other work; a foreground wait would keep the user, and the
    report, out of your session.
-   When an expected report is missing, check its report file in the task folder and read the screen for
-   anything the file leaves unresolved. Verify the worker and phase before using the result. Keep a later
-   tagged copy as receipt for that phase, and advance the workflow once.
+   For a missing report, check its report file in the task folder and read the screen for anything the file
+   leaves unresolved. On arrival or recovery, verify the worker and match the report phase to the record. For
+   a new phase, record it before advancing. For a phase already applied, record the later copy as receipt
+   and leave the workflow at its current step.
 
 ## Which harness, model and effort
 
@@ -153,10 +155,10 @@ The message:
     Evidence: <commands with results; where the change is (files, commit, pull request); the report file's path>
     Needs: <the decision or input you need, or "nothing">
 Send one message per report, complete in itself, and no progress updates. Follow the send block's retry
-instructions for known refusals. For an ambiguous result use the adapter's readback guidance before retrying.
-For other failures, retry after a few seconds, up to three times, once you have checked the earlier attempt
-did not arrive. Then stop: Laima reads the report file. Start no other agent sessions; the subagents of your
-own harness, such as a review skill's, are not sessions.
+instructions for known refusals. If a send result is ambiguous, check the target when you can do so safely.
+Retry other failures after a few seconds, up to three times, only when you can show the earlier attempt
+did not arrive and the prompt is clear. Then stop: Laima reads the report file. Start no other agent sessions;
+the subagents of your own harness, such as a review skill's, are not sessions.
 ```
 
 ## Resume a closed session
