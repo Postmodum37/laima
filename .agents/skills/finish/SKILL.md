@@ -51,23 +51,28 @@ user or on other people; the task then stays open and you return here later.
    the listing shows none of the record's sessions of yours.
 5. **Remove the workspace:** whatever the record says was made for the task alone (a worktree, a branch, a
    reviewer's copy) and the task folder. First show that nothing would be lost.
-   - A worktree of the task, under git: after `git fetch --prune` where there is a remote, `git status --short`
-     is empty, the ignored files (`git status --short --ignored`) hold nothing to keep, and, where the project
-     ships to a remote, `git log --oneline HEAD --not --remotes` prints nothing, or the project's own tool shows
-     the delivery done: the pull request merged with its head at the commit that was reviewed (on GitHub,
-     `gh pr view <pr> --json state,headRefOid` shows `MERGED` and the commit `git rev-parse HEAD` prints). A
-     squash or rebase merge puts other commits on the remote, so only that second form shows it.
+   - A worktree of the task, under git: `git status --short --untracked-files=all` is empty, and the ignored files
+     (`git status --short --untracked-files=all --ignored`) hold nothing to keep.
+     - For a standalone Review, confirm delivery is complete, this is the recorded detached reviewer copy, and
+       no other task uses it. Confirm `git rev-parse HEAD` matches the pin in the task record, original review
+       brief or report. The clean copy at its recorded pin can be removed without a remote check.
+     - For other worktrees, run `git fetch --prune` where there is a remote. Where the project ships to a remote,
+       verify `git log --oneline HEAD --not --remotes` prints nothing or the project's own tool shows delivery done:
+       the pull request merged with its head at the commit that was reviewed (on GitHub,
+       `gh pr view <pr> --json state,headRefOid` shows `MERGED` and the commit `git rev-parse HEAD` prints).
+       A squash or rebase merge puts other commits on the remote, so only that second form shows it.
    - A change made in a place the project keeps (its folder, its checkout, a kept worktree): the place is in
      the state its rules ask for, committed where they ask for commits, and nothing is removed there.
    - Without version control: each file the builder listed is in the project's folder, and none exists only in
      the task folder.
 
-   Then remove what was made for the task, with the project's own command when it has one. Delete a local
-   branch that was merged, once no checkout is on it (`git branch -D` for one the tool showed merged by a squash
-   or rebase, since git does not count it as merged). Before deleting the task folder, search the other open tasks'
-   briefs in the task folders configured in `local/Laima/setup.md` for paths into it. Delete the folder only after
-   the search is complete, any references are resolved, and nothing in it is still needed. Anything uncommitted,
-   unpushed or unexplained stops this step and becomes a question to the user.
+   Then remove what was made for the task, with the project's own command when it has one. For a standalone Review copy,
+   use `git worktree remove` without force. Delete a local branch that was merged, once no checkout is on it
+   (`git branch -D` for one the tool showed merged by a squash or rebase, since git does not count it as merged).
+   Before deleting the task folder, search the other open tasks' briefs in the task folders configured in
+   `local/Laima/setup.md` for paths into it. Delete the folder only after the search is complete, any references are
+   resolved, and nothing in it is still needed. Anything uncommitted, unpushed or unexplained stops this step
+   and becomes a question to the user.
    Done when nothing made for the task alone is left, the task folder is gone and the record's `worktree`
    field is empty.
 6. **Record follow-ups and close.** Before setting `closed` and `outcome`, give each accepted, unresolved obligation
@@ -82,4 +87,4 @@ user or on other people; the task then stays open and you return here later.
    the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-22, Claude Code 2.1.330 and Codex 0.170.0, on herdr (hc 0.1.21). Not yet run: review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome.
+Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.330 (earlier). Not yet run: the revised remote-free cleanup in a live session; review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome.

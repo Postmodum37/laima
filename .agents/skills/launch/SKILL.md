@@ -39,11 +39,11 @@ How each action is done with the tools on this machine is in two adapters, named
      time; when no place is free, the task waits and you tell the user.
    - **Every other role changes nothing in the project:** it works in the project's folder, or where the work
      under review is, and writes its notes and report in the task folder. When the work to review is checked
-     out nowhere, give the reviewer its own copy by the project's means (under git, a detached worktree at
-     that commit), and note it in the record so that `finish` removes it.
+     out nowhere, give the reviewer its own copy by the project's means and note its path in the task record for
+     `finish`. Under git, make a detached worktree at the review pin and record the pin too.
 
-   Done when the task folder exists and the brief says where the change is made or that the builder sets the
-   place up.
+   Done when the task folder exists, the brief says where the change is made or that the builder sets the place
+   up, and any detached reviewer copy has its path and pin in the task record.
 3. **Write the brief** to `<task folder>/brief-<role>.md` (§ The brief); when the task folder already holds a brief for
    that role, number the new one and its report file: `brief-<role>-2.md`, `report-<role>-2.md`. Done when every check
    there holds or plainly does not apply, and the file on disk holds no character you did not mean:
@@ -165,4 +165,4 @@ folder went with the workspace and the adapter has you recreate it, write it int
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-21, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0 to 0.171.0, on herdr (hc 0.1.21) and cmux 0.65.2. Not yet run: using the moved setup, registry and private roles in a launch; a reviewer's own copy; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send; flags added on resume from the rule search.
+Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.327 to 2.1.330 (earlier). Not yet run: using the moved setup, registry and private roles in a launch; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send; flags added on resume from the rule search.
