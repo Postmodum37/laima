@@ -32,6 +32,9 @@ waits; it does not start building.
 - For a change that adds or moves structure, the plan shows the code's shape, briefly: the file-tree diff, the call
   path that changes and the signatures of new types and functions; for a change to a screen, a rough mockup. A
   shape the user sees in the plan costs less to change than one they first meet in review.
+- For a risky or materially revised plan, show the smallest change that preserves the agreed behavior,
+  the existing path it reuses, and the check that would catch the failure under the accepted invariant.
+  Compare a larger option when an unresolved tradeoff could change the choice.
 - The plan file's path, and that the file is the whole deliverable.
 - "Write the plan to the file and report. Use no plan-mode dialog": the dialog differs per harness and leaves the
   session waiting where a report cannot be sent.

@@ -70,25 +70,28 @@ How each action is done with the tools on this machine is in two adapters, named
    skill the project closes to the model, that command is the first prompt in the argv, and you send the brief, report
    block included, in the same turn as the launch: record the session first (step 5), with "brief pending" on its
    Timeline line, then send the brief once its input is free, at its prompt with no dialog open, whether the command
-   is still running or has finished (a running turn counts where the harness takes typed input while it works). Clear
-   the entry once the send is confirmed; while it stands, send at each next look at the sessions. Without the brief
-   that session never reports, and nothing else brings you back.
+   is still running or has finished (a running turn counts where the harness takes typed input while it works).
+   While "brief pending" stands, check for receipt at the next look and retry a failed send using the adapter's
+   message guidance. Clear the entry only when step 6 verifies the intended brief reached the worker.
 5. **Record it** as soon as the start command returns, before anything else can go wrong: a Timeline line with the role,
    address, harness, model, effort, mode, each flag step 4 added and the folder it started in; the `worktree` field once
    a place was made for this task alone (at once when you made it, from the builder's report when it did), and `branch`
    when there is one; a `launched` line in today's log that names the model, the effort and why that row. Add the
    session id (harness adapter § Session id) to `sessions` and to that Timeline line once you have it. Done when the
    record and the log both show the session.
-6. **See it working:** the listing shows the session and its screen shows it on the brief, or on its first command
-   with the brief sent. A session in a folder the harness has not seen can stop at a trust prompt (harness adapter
-   § Gotchas says when).
-   `AGENTS.md` § Authority says when that prompt is yours to answer, and which other dialog is. A session that
-   failed to start gets a `failed` line in the log and the record.
+6. **See it working:** check its folder, actual placement against the chosen space or tab where applicable, and
+   project-required flags against the running session using the adapters' listing and screen checks. Verify the
+   intended brief in the worker's conversation or from the worker's acknowledgement, including after a typed
+   first command. A session in a folder the harness has not seen can stop at a trust prompt (harness adapter
+   § Gotchas says when). `AGENTS.md` § Authority says when that prompt is yours to answer, and which other dialog
+   is theirs. A session that failed to start gets a `failed` line in the log and the record. Done when the running
+   session and its brief match the launch, or the remaining wait or failure is recorded.
 7. **Go on.** The worker reports by message; how it reaches you is in the multiplexer adapter § How you learn
    a session finished. End your turn or take up other work; a foreground wait would keep the user, and the
    report, out of your session.
-   A worker that stops without reporting is found when you next look at the sessions: read its report file in
-   the task folder, then its screen.
+   When an expected report is missing, check its report file in the task folder and read the screen for
+   anything the file leaves unresolved. Verify the worker and phase before using the result. Keep a later
+   tagged copy as receipt for that phase, and advance the workflow once.
 
 ## Which harness, model and effort
 
@@ -121,7 +124,13 @@ how it works. The brief adds the task and what the worker cannot load, once.
    and copied from that output, because the worker builds on the brief as true: what a file contains from a print
    that shows every character, such as Python's `repr()` (`od -c` and rendered Markdown make a run of spaces
    hard to count), and what code returns from running it.
-4. **Authority:** from the role file, as what the session may change. Quote the grant for anything beyond it.
+4. **Authority:** state what the role may change. When a step depends on a recorded decision, outward action
+   or project grant, quote the applicable choice or rule and its source. Give the actor, action and effect,
+   with its target or stage. For an open gate, name the decision owner, the exact held step and what releases it.
+   For a standing project grant, include its conditions, exceptions and report-back. Carry these into resumed
+   or changed instructions and check for newer decisions before releasing a step. Send any outward proposal
+   beyond the grant privately to the lead for a draft or decision. Hold that action and continue independent
+   work. The named internal report route in item 8 is the worker's handback.
 5. **Evidence:** what must be shown before reporting done. Name a command only for a gate the project requires.
 6. **Role extras:** the role file's "In the brief" list.
 7. **Their own way:** each skill, command, gate and rule from step 1 that covers part of this step, by name,
@@ -143,10 +152,11 @@ The message:
     <what you did or found, in at most five lines>
     Evidence: <commands with results; where the change is (files, commit, pull request); the report file's path>
     Needs: <the decision or input you need, or "nothing">
-Send one message per report, complete in itself, and no progress updates. If the send command fails, wait a
-few seconds and send again, three times at most (a wait the lines above ask for is not one of them); then stop:
-Laima reads the report file. Start no other agent sessions; the subagents of your own harness, such as a review
-skill's, are not sessions.
+Send one message per report, complete in itself, and no progress updates. Follow the send block's retry
+instructions for known refusals. For an ambiguous result use the adapter's readback guidance before retrying.
+For other failures, retry after a few seconds, up to three times, once you have checked the earlier attempt
+did not arrive. Then stop: Laima reads the report file. Start no other agent sessions; the subagents of your
+own harness, such as a review skill's, are not sessions.
 ```
 
 ## Resume a closed session
@@ -169,4 +179,4 @@ folder went with the workspace and the adapter has you recreate it, write it int
 
 An adopted session is the user's conversation: read it freely, and message or close it only when they ask.
 
-Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.327 to 2.1.330 (earlier). Not yet run: a session named `<subject>-<name word>` from step 4, as now worded; using the moved setup, registry and private roles in a launch; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send; flags added on resume from the rule search.
+Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.327 to 2.1.330 (earlier). Not yet run: a session named `<subject>-<name word>` from step 4, as now worded; using the moved setup, registry and private roles in a launch; a worktree the project keeps; a worker whose send is refused; a worker's question dialog answered from the record; a worker's wait for Laima's dialog in a real brief, on any multiplexer; the worker's send block from the Herdr and cmux adapters in a real brief; the report block's line on subagents, as now worded; a numbered second brief; the record's `worktree` field filled from a builder's report; the message file and its `[report …]` first line in a real brief on Herdr and cmux; an agy launch without its brief in an untrusted folder, from this skill; a usage reading for one provider; a recreated worktree recorded at resume; a fresh session that takes today's usage line without a reading of its own; a typed command as the first prompt with the brief as the next message, as now worded; a launch flag taken from the project's or the user's rules; a brief re-sent after a refused or deferred first send; flags added on resume from the rule search; receipt and required flags at readiness, late tagged copies after file recovery, and scoped authority across handoffs.
