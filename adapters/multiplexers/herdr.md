@@ -38,7 +38,8 @@ On `spawn_failed`, see
 [Server PATH](herdr/gotchas.md#hc-run-finds-a-program-on-the-servers-path-not-yours).
 For a preset that shares the harness name, see
 [Preset name collisions](herdr/gotchas.md#a-preset-named-like-a-program-starts-in-its-place).
-Shorten `<task-id>-<role>` to a unique live name of 1–32 characters from `a-z 0-9 - _`.
+`<name>` is `launch` step 4's, unique among live sessions, 1–32 characters from `a-z 0-9 - _`. It carries no project:
+Herdr's agent list groups sessions under their space's name.
 
 1. Record the returned JSON `address` in the task record.
 2. Find the tab by that exact address in the chosen space. The lookup can be empty for a few seconds after

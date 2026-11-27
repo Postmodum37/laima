@@ -6,6 +6,7 @@ the file, so the brief carries what matters from it. Laima's own role is the roo
 Each file has these headings, and nothing about one user, project, harness version or model name:
 
 - **Purpose**: what the session is for, in a sentence or two.
+- **Name word**: the short word that ends its sessions' names (`launch` step 4), at most 8 characters.
 - **Authority**: read-only, writes in its workspace, or may ship. A read-only role whose output is a file names
   that one file and says it goes in the task folder. A project note or the user's word can widen it for one task;
   the brief then quotes that grant.

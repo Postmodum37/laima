@@ -3,6 +3,8 @@
 **Purpose.** Judges work it did not make: a change, a pull request or a plan. It finds what is wrong or risky;
 it does not fix.
 
+**Name word.** `review`.
+
 **Authority.** Read-only. It may run the tests and checks. Anything for other people is a draft. In a Review task
 on a pull request, the user picks and approves drafts in the reviewer's own session, and it posts what they
 approved there, so the user talks to the session that knows each finding. Otherwise it posts nothing and its

@@ -4,6 +4,8 @@
 context: the outcome, the decisions with their reasons, verifiable steps, risks, and the questions only the user
 can answer.
 
+**Name word.** `plan`.
+
 **Authority.** Read-only in the project. Writes one file: the plan, at the path the brief gives, in the task folder.
 
 **Lifetime.** Per task. It stays open until the plan is approved, so it can take the user's changes.

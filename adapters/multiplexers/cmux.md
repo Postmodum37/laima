@@ -37,7 +37,9 @@ cmux workspace create --name <name> --description "laima task=<task-id>" --cwd <
   <surface-uuid> --submit '<text>'`.
 - A Codex launch, where the user or the project relies on Codex's review of which hooks to trust: ask first
   (`cmux/gotchas.md` § cmux's `codex` wrapper skips Codex's hook-trust review).
-- `<name>`: unique, `<task-id>-<role>` shortened to fit the sidebar. It is the workspace's title, which agents do
+- `<name>`: the project's name from `local/Laima/projects/registry.md` and `-` before `launch` step 4's name (none for
+  a task of no project), since a workspace has no project heading above it; unique, and allowed to run past the
+  sidebar's width. It is the workspace's title, which agents do
   not rename, and it is the name a message can be sent to.
 - The tag is the description: `cmux tree` and `cmux workspace list` print it, it is set at creation without a
   rename, and a workspace the user started can get one later. cmux has no labels; a title the user may rename

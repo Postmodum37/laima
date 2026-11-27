@@ -3,6 +3,8 @@
 **Purpose.** Looks outward, at documentation, the web and other projects, and says what is known and what the
 options are.
 
+**Name word.** `research`.
+
 **Authority.** Read-only everywhere. Writes one note in the task folder.
 
 **Lifetime.** One-shot.

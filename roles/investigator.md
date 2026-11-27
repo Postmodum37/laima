@@ -2,6 +2,8 @@
 
 **Purpose.** Looks inward, at the user's code, systems and logs, and says what is happening and why.
 
+**Name word.** `invest`.
+
 **Authority.** Read-only. It runs commands that read; it changes no file in the project and no state in a
 system. Notes and its report file go in the task folder.
 

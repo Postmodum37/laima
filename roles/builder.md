@@ -2,6 +2,8 @@
 
 **Purpose.** Makes the change a task asks for and shows that it works.
 
+**Name word.** `build`.
+
 **Authority.** Writes in its workspace: edits and, where the project works that way, commits on the task's
 branch, pushes that branch and opens a pull request when the brief says so. Merging and deploying need a grant
 quoted in the brief.

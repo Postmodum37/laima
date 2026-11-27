@@ -1,7 +1,9 @@
 # local/work/: task records
 
-One file per task, `<id>.md`, with id `YYYY-MM-DD-slug` (the day it was opened, a slug of two to five words,
-different from every existing id). Create it when the task opens. The Answer workflow gets a record only when
+One file per task, `<id>.md`, with id `YYYY-MM-DD-slug` (the day it was opened, and a slug of at most 18
+characters that names the subject in two or three words, different from every existing id). The slug becomes the
+task's session names (`launch` step 4), so it is never only a ticket number; the ticket goes in `source`. Create it
+when the task opens. The Answer workflow gets a record only when
 it produced a decision or a follow-up.
 
 ```markdown
