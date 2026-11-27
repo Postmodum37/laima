@@ -44,14 +44,19 @@ What happened, with evidence: commands and their results, and where the change i
 - **Status is read from the record and the multiplexer.** Empty `closed` means open. Read pending decisions with
   `.agents/skills/wrap-up/scripts/open-tasks --needs-user`. What a session is doing comes from the multiplexer.
 - **Ask and answer in the record.** Before sending, write the full question verbatim in "Questions and answers"
-  and, in the same edit, set a scalar such as `needs_user: "2026-01-31 15:02 — Approve the change"`. For a batch,
+  and, in the same edit, set a scalar such as `needs_user: "2026-01-31 15:02 — Approve login fallback so review can start"`. The cue belongs to an
+  outstanding question you asked. Clear it if the question was never sent. For a choice in another tab, name
+  the tab as the user sees it and who acts, in the cue and the prompt. For a batch,
   use one cue for the outstanding decisions in that section. Record each answer verbatim and keep the cue current
   until the last answer, then clear it to `needs_user:`. A missing field also means no pending decision. Use
   an open follow-up record when the parent has closed or the decision needs to outlast its closure.
 - **A date or a wait is a field,** so that it can be listed: `.agents/skills/wrap-up/scripts/open-tasks` prints
   the open records as overdue, due today, arrived, open, waiting or later, and no written list of them is kept.
-  A wait gets a `not_before` for the next look. Take a date from `date`, not from arithmetic in your head; when
-  the look or the wait is over, clear the field or set the next one.
+  Use `waiting_on` for a real dependency outside the user's decisions. A wait gets a `not_before` for the next
+  look. Take a date from `date`. When the look or wait is over, clear the field or set the next one.
+- **Accepted follow-ups** name the next actor and observable trigger in Follow-ups. Add a date when agreed or
+  useful for the next check. For an explicit deferral, put one line there starting `parked:` with the actor and
+  resumption trigger. The scanner still lists it as open. Wrap-up uses that line to decide when to resume.
 - `outcome` is one of `delivered`, `answered`, `dropped`, `failed` (ended without its result), set with
   `closed` by the `finish` skill.
 - Session ids are kept because they resume a session and find its transcript. Paths are leads that break.

@@ -18,7 +18,8 @@ user or on other people; the task then stays open and you return here later.
    holds how a result is delivered; a workflow adds only what is its own.
    - An answer or findings go to the user.
    - A message a session drafted for the user to send to other people is delivered once it is in the record and
-     the user has been told where it is: sending it is theirs, so neither the task nor its session waits for it.
+     the user has been told where it is. Sending the copied draft is the user's step. For text still in a live
+     input, use the hold in step 4.
    - A reviewed change ships the way the project ships one. Where that is a pull request: the branch pushed and
      the pull request opened, then merged; tell the user it is ready. Where the change is made in place: tell
      the user what changed and what was checked. Any other way (a commit, a push) goes as far as the project's
@@ -42,13 +43,26 @@ user or on other people; the task then stays open and you return here later.
    task folder first: to where the user keeps such files when they said where, otherwise into `local/` (a
    knowledge note, or the record itself); the record names its final path. Done when the record makes sense to a
    reader who has no transcript and no workspace, and no deliverable is left in the task folder.
-4. **Close the sessions you launched** for the task, by the ids its record holds: read each one's screen, confirm
-   it is idle with nothing unreported, then close it (multiplexer adapter § Close a session). A reviewer that
-   `workflows/review.md` keeps open for posting is in use until the record holds its posting outcome. For a task being
-   dropped, a session still working or at a dialog is closed as well, once step 3 holds what its screen shows. An
-   adopted session is the user's and stays: tell them the task is closed. A session tagged with the task id that
-   the record does not name is not one you can show is yours: leave it and tell the user it is there. Done when
-   the listing shows none of the record's sessions of yours.
+4. **Release a worker** at handoff, during a delivery wait, or at final cleanup. Check the report against
+   facts. For a final result or decision, give the user a synthesis they can use before closing. For an
+   intermediate result, preserve it and hand it to the verified next owner first. If a required artifact is
+   missing, use `launch` step 7 and hold the handoff until it is recovered or replaced with a verified durable source.
+   - Confirm ownership from the record and live listing. Read the screen, last task or user action and any
+     downstream references. If the user is reading or discussing, there is text in the live input, this tab holds
+     a decision or next action, or the user asked you to keep it, record the tab or address, its use and its
+     release event in the Timeline. Keep the parent chain of a held descendant. Ask when use or authority still
+     needs a decision.
+   - Recheck at the recorded event (the approval, next relevant report or turn, or wrap-up). If the user set the
+     hold, release it only on their stated event or instruction. Once delivery is settled and the owned session
+     is idle with nothing unreported and no hold on it or a descendant, close it (multiplexer adapter § Close a
+     session), then check the listing. A reviewer that `workflows/review.md` keeps open for posting is in use until
+     the reviewer reports the settled outcome and you verify and record it.
+   - For a task being dropped, a session still working or at a dialog is closed as well, once step 3 holds what
+     its screen shows and any live user hold has released. An adopted session is the user's and stays: tell them
+     the task is closed. A session tagged with the task id that the record does not name is not one you can show
+     is yours: leave it and tell the user it is there.
+   Done when the listing confirms each eligible session closed and the Timeline shows any hold and its recheck.
+   At final cleanup, wait for any held owned sessions to release before step 5.
 5. **Remove the workspace:** whatever the record says was made for the task alone (a worktree, a branch, a
    reviewer's copy) and the task folder. First show that nothing would be lost.
    - A worktree of the task, under git: `git status --short --untracked-files=all` is empty, and the ignored files
@@ -66,15 +80,18 @@ user or on other people; the task then stays open and you return here later.
    - Without version control: each file the builder listed is in the project's folder, and none exists only in
      the task folder.
 
+   Before retiring the workspace, search the other open tasks' briefs in the task folders configured in
+   `local/Laima/setup.md` for references into it. Check that each needed artifact exists and matches its pin
+   where recorded. Read the durable copy back and update the referring brief before removing its source. If a
+   reference remains or the artifact is missing, keep the workspace and record the referring task or brief and
+   the event that permits removal. Anything uncommitted, unpushed or unexplained stops this step and becomes
+   a question to the user.
+
    Then remove what was made for the task, with the project's own command when it has one. For a standalone Review copy,
    use `git worktree remove` without force. Delete a local branch that was merged, once no checkout is on it
    (`git branch -D` for one the tool showed merged by a squash or rebase, since git does not count it as merged).
-   Before deleting the task folder, search the other open tasks' briefs in the task folders configured in
-   `local/Laima/setup.md` for paths into it. Delete the folder only after the search is complete, any references are
-   resolved, and nothing in it is still needed. Anything uncommitted, unpushed or unexplained stops this step
-   and becomes a question to the user.
-   Done when nothing made for the task alone is left, the task folder is gone and the record's `worktree`
-   field is empty.
+   Done when nothing made for the task alone is left, the task folder is gone and the record's `worktree` field
+   is empty. Verify this separately from terminal closure in step 4.
 6. **Record follow-ups and close.** Before setting `closed` and `outcome`, give each accepted, unresolved obligation
    an open record. Reuse the record for the same deliverable or open one. Include the parent link in its `source`,
    preserving existing provenance. Keep the actor or dependency, next verifiable step and dates in that record,
@@ -87,4 +104,4 @@ user or on other people; the task then stays open and you return here later.
    the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.330 (earlier). Not yet run: the revised remote-free cleanup in a live session; review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome.
+Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.330 (earlier). Not yet run: the revised remote-free cleanup in a live session; review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome; worker release and recheck during a task, held descendants, and separate terminal and dependent artifact disposition.

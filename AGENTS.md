@@ -94,6 +94,8 @@ ran or read).
    user's global ones, and nothing of Laima's, so the brief carries the rest.
 3. **Keep up.** A worker reports by messaging you. On a report: check it against facts, write it into the record,
    then take the workflow's next step, or ask the user when the workflow says the decision is theirs.
+   For a missing report, use `launch` step 7. After delivery or a hold's release event, apply `finish` step 4
+   that turn to the affected idle workers.
 4. **Finish** with the `finish` skill, in the turn you deliver the result: it verifies, cleans up and completes
    the record. "The worker said done" is the midpoint; the task is open until this runs.
 
