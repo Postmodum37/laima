@@ -20,9 +20,10 @@ Runs on request and from `wrap-up`, never on a schedule. Read `local/Laima/knowl
      map in `local/Laima/index.md`;
    - a way Laima herself should work differently → tell the user; the core changes only through `authoring`;
    - a review finding about a project's code that a record from an earlier task holds too, and that a linter, type
-     checker or test could catch → propose to the user a Build task that adds that check to the project, with both
-     records as its source; it starts on their yes.
-   Log `promoted` for each, pointing at the task it came from.
+     checker or test could catch → propose a Build with the exact check. Since consolidation has no task, put the ask
+     in an open follow-up for that project and link both reviews as sources. See "Ask and answer in the record" in
+     [the task records guide](../../../local/work/AGENTS.md#localwork-task-records).
+   Log `promoted` for the moves described in `local/Laima/log/AGENTS.md`, pointing at the source task.
 4. **Repair what went stale.** A note, registry line or setup row that a task showed to be wrong is corrected or
    deleted now, with the task as the reason. Update the knowledge and project pointers in the reference map
    when their targets change.
@@ -40,4 +41,4 @@ Runs on request and from `wrap-up`, never on a schedule. Read `local/Laima/knowl
 
 Done when steps 1 to 7 each have a result you can state, "nothing to do" included.
 
-Verified: 2026-11-19, Claude Code 2.1.327/2.1.328 and Codex 0.170.0. Not yet run: consolidation in the Laima/ layout; the route for a review finding seen in two tasks; step 6; folding logs on real files; records read from the archive; a month skipped as done.
+Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.327/2.1.328 (earlier). Not yet run: the shortened follow-up route in a live session; step 6; folding logs on real files; a month skipped as done.
