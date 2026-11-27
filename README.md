@@ -13,19 +13,10 @@ Herdr, Rex and cmux; Requirements, below, says what each has run as.
 
 The name is the Baltic goddess of fate and good fortune; in Lithuanian it is kin to *laimė*: luck, happiness.
 
-**Status:** early. The core is built, and a test task has run from request to finish under each of the three
-multiplexers. Daily use is starting; expect it to change.
-
-An illustration of a day, with invented projects:
-
-```
-you     Add a --json option to the report command in billing-tools. I want to see the design first.
-Laima   Opened as a planned build. The planner has its own tab; I'll bring you the plan when it has been reviewed.
-
-you     What needs me?
-Laima   One thing: the --json plan is ready, with two questions and my recommendation on each.
-        Running: the flaky-test investigation in web-app. Finished today: the README fix, merged as #212.
-```
+**Status:** early, with a workweek of daily use on Herdr. Claude Code led most of the work, and Codex CLI ran
+workers and led some live tasks. That week exercised investigations with evidence read back, planned changes
+through review and deployment, pull request reviews with selected comments, and follow-ups carried between
+sessions in the same vault. See [Requirements](#requirements) for the scope of the tool checks.
 
 ## Why
 
@@ -48,8 +39,8 @@ Laima is an assistant for that:
 She is built on four goals:
 
 - **Lean.** Plain Markdown in a fixed folder structure, and nothing to keep running.
-- **Any harness, any multiplexer.** The core describes the work in general terms; one adapter document per tool
-  says how that tool does each step. A new tool needs a new document.
+- **Portable by design.** The core describes the work in general terms. An adapter explains how each
+  supported tool handles the steps, and a new tool can be added with its own adapter.
 - **Structure for everyone, the rest yours.** The core is the same for every user. Everything about you, your
   projects and your additions lives in `local/`, which never leaves your machine.
 - **Fits what you already have.** She works under your global instructions and skills and each project's rules,
@@ -73,33 +64,24 @@ She is built on four goals:
 
 ## Requirements
 
-- macOS. It is the only system she has run on; Linux is untried.
-- A harness. One is enough; with more, each role can run where it suits, and a review can come from a provider
-  that did not write the change. What each has run as so far:
-  - [Claude Code](https://claude.com/product/claude-code): Laima's own session, and workers.
-  - [Codex CLI](https://github.com/openai/codex): workers, and Laima's own session in tests: it started a session
-    and ran a task from request to finish, but also did part of its workers' steps itself, beside them.
-  - Google's [Antigravity CLI](https://antigravity.google) (`agy`): workers, and Laima's own session in tests: it
-    started a session, took the right workflow for six requests and ran a task from request to finish. Read its
-    adapter's note on consumer plans before using it.
+- macOS. It is the only system she has run on. Linux is untried.
+- A harness and a terminal multiplexer. One of each is enough. With multiple harnesses, a reviewer can use a
+  different provider from the builder. Give Laima's own session a top-tier model. In a fixture, a small model
+  skipped the task record and took over the worker's work.
+- `jq` and git to clone and update Laima herself. Your projects use their existing tools.
 
-  Laima's own session needs a model of the harness's top tier: in tests a small model opened no task record and
-  did the work itself.
-- A terminal multiplexer. A test task has run from request to finish under each of these three; Claude Code and
-  Codex workers have run from her briefs under each, and agy workers have run under each.
-  - [Herdr](https://github.com/herdrdev/herdr-app), with its core [herdr-core](https://github.com/herdrdev/herdr-core),
-    is the default suggestion and holds a slight edge for now: it is open source (Apache-2.0), and it splits into
-    workspaces, with an agent view for each.
-  - [Rex](https://www.superlogical.com/rex) is as strong an option. It is in invite-only beta; you can apply for it
-    on its site.
-  - [cmux](https://github.com/manaflow-ai/cmux) is supported too. On a default cmux she has to run in a cmux
-    terminal.
-- `jq`, and git to clone and update Laima herself. Your projects need neither git nor pull requests: she works
-  with what each one already uses.
+| Tool | What has run | Limits to check |
+|---|---|---|
+| [Claude Code](adapters/harnesses/claude-code.md) | The main lead during the week on Herdr, with Claude Code and Codex workers. Earlier request-to-finish fixtures on all three multiplexers. | Project-specific skills and permission choices follow your setup. |
+| [Codex CLI](adapters/harnesses/codex.md) | Workers and scoped live lead use on Herdr, including receipt of a Claude Code worker's report after a lead switch. Earlier lead fixtures exercised a full task. | One early lead fixture duplicated worker steps. Vault-first startup was checked with memories off. Chooser and delivery behavior vary with the prompt and multiplexer. |
+| [Antigravity CLI](adapters/harnesses/agy.md) (`agy`) | Worker launches and reports, and earlier lead smoke tests. | The current launcher-based lead has an observed startup and question dialog in bypass mode. Its default-permission path and use of the Launch and Finish skills remain unverified. Read the adapter's consumer-plan note. |
+| [Herdr](adapters/multiplexers/herdr.md) | The suggested starting point and the host for the workweek. Earlier request-to-finish and dialog fixtures. | A clear prompt can receive a report during work. Check actual receipt, especially with Codex Side chat or a picker. |
+| [Rex](adapters/multiplexers/rex.md) | Earlier task and adapter smoke tests, including a request-to-finish fixture with a Claude Code lead. | Sends type into the prompt. A picker can take the submit key. Codex can leave sent text in its input, so check the screen before another Enter. |
+| [cmux](adapters/multiplexers/cmux.md) | Earlier task and adapter smoke tests, including a request-to-finish fixture with a Claude Code lead. | Start inside a cmux terminal under its default policy. A message can queue at a dialog or leave an idle Codex waiting. |
 
-Each tool's adapter is in `adapters/harnesses/` or `adapters/multiplexers/`, with the version it was last checked
-against on its `Version checked:` line. Any other harness or multiplexer needs an adapter document, and
-`docs/authoring.md` lists the questions it has to answer.
+Those checks cover the named paths. Combined harness and multiplexer behavior, lead recovery and prompt handling
+have narrower coverage. Each adapter gives its `Version checked:` pin and the actions that still need a run.
+Other harnesses and multiplexers can be added with an adapter. [Authoring guide](docs/authoring.md#adapter-document)
 
 ## Start
 
@@ -113,11 +95,11 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
      [ -f "$d/$f" ] && [ "$d/$f" != "$HOME/.claude/CLAUDE.md" ] && echo "$d/$f"; done
      [ "$d" = / ] && break; d=$(dirname "$d"); done
    ```
-2. Open a tab in your multiplexer and run [`bin/laima`](bin/laima) from the clone. See `bin/laima -h` for model
-   and effort overrides when switching harnesses. For a shell alias, use the script's absolute path.
-   Claude Code (`claude`) is the tested lead.
-   Codex CLI (`codex`) and Antigravity CLI (`agy`) have run as Laima in tests only: read Requirements and the
-   harness's adapter before you use one as her. The harness asks once whether you trust the folder.
+2. Open a tab in your multiplexer and run [`bin/laima`](bin/laima) from the clone. The launcher uses
+   Claude Code by default on a fresh clone. For a shell alias, use the script's absolute path.
+   When changing harnesses, pass a model and effort for that harness. For example, if your Codex account
+   offers this model, `bin/laima codex -m gpt-6.2-sol -e high`. Use `bin/laima -h` for options and `-n`
+   to preview the exact arguments. Some harnesses ask you to trust the folder on first launch.
 3. Say hello. She answers as Laima, and on the first run she runs set-up: she finds your harnesses and tools, and
    the folders you work in from your harnesses' session history (folders and times only, never what you typed),
    asks a few questions, and writes `local/`. A plain answer means the root `AGENTS.md` did not load: in Claude
@@ -147,6 +129,21 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
   pushes a branch and opens a pull request. **Only on your word** does she merge or deploy. Your rules or a
   project note can widen or narrow this: `AGENTS.md` § Authority.
 
+### Walk through a pull request review
+
+You ask, “Review the retry change in the file importer before it merges.” This example uses an invented
+project and the review steps exercised during the week.
+
+1. Laima opens a task record and pins the reviewer to the pull request head. The reviewer checks that
+   revision in its own tab and drafts findings there. One shows how a retry can upload a file twice.
+2. You discuss that finding in the reviewer's tab and approve only its inline comment. The reviewer posts
+   the approved text on the pinned head and reports the link to Laima.
+3. Laima checks the posted comment and reviewed head, tells you the outcome, and records it. She keeps the
+   reviewer available if you are still using the tab and closes it when that hold ends. Any code change
+   or merge follows its own project rules.
+
+[Review workflow](workflows/review.md)
+
 ## What is where
 
 - `AGENTS.md`: how Laima works, written for her. The entry point; start here to understand or change her.
@@ -171,7 +168,9 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
 - Who she is to you: `local/Laima/persona.md`. Your rules: `local/Laima/user.md`. The harness and model for each role:
   `local/Laima/setup.md`. Rules for one project: a note in `local/Laima/projects/`.
 - A workflow, role or skill of your own: `local/Laima/workflows/`, `local/Laima/roles/`, `local/Laima/skills/`.
-  They add to the core, are never pushed, and an update of the core does not touch them. Ask her to make one.
+  These live in your private vault and survive core updates. For example, you can add a recipe to oversee a
+  group of workers, teach in a separate tab, or scout for information on demand. A fresh clone ships the six
+  workflows listed above. Set up any such recipe locally. [Vault guide](local/Laima/AGENTS.md#the-users-own-workflows-roles-and-skills)
 - Notes of your own beside hers: keep the folder in `local/` as a plain folder (the vault's git would hold a
   repository of its own as a pointer only) and list it in `local/Laima/user.md` § Notes areas with who writes there and
   how. She reads it, writes there only as that line says, and commits it with the vault at each wrap-up.
