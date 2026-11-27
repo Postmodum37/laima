@@ -24,8 +24,8 @@ reviewer session.
    for a materially revised design and follow the project's review rules.
 4. **The user approves** the plan, changes it, or drops the task. Record the decision question and its cue before
    asking. Record the answer, pass any requested changes to the planner and repeat.
-5. **Laima** copies the approved plan's decisions and reasons into the record. Apply `finish` step 4 to the
-   planner once Laima has the plan and decisions for the next handoff.
+5. **Laima** checks the approved plan and copies its decisions and reasons into the record. Once she has the
+   verified plan and decisions for the builder handoff, apply `finish` step 4 to the planner.
 6. **Laima** continues with `workflows/build.md` from its step 1. Give the builder the plan's path and what changed
    since it was written. Apply `launch` § The brief, Authority, using the plan and the task record. Carry
    each scoped decision and exact held step to the next builder, reviewer or delivery owner, including

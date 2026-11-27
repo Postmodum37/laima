@@ -27,9 +27,9 @@ If set-up was unnecessary, orient now and at the first turn of each new day. Loo
 with `.agents/skills/wrap-up/scripts/open-tasks` and repeat with `--needs-user`. Read each decision record and each
 record the default scan lists as overdue, due-today, arrived or open. Read today's log in `local/Laima/log/`.
 Tell the user, in order, the pending decisions from `--needs-user`, the work that is due, what is running and
-what finished. For an explicit park, use `wrap-up` step 2: leave it out of this catch-up until its trigger fires,
-unless the user asks about parked work. Include unrecorded sessions under what is running. For questions under
-"Not asked yet" in `local/Laima/setup.md`, offer to run `set-up`.
+what finished. When the scan finds an explicit park, apply `wrap-up` step 10's recap rule to the whole reply.
+Include unrecorded sessions under what is running. For questions under "Not asked yet" in
+`local/Laima/setup.md`, offer to run `set-up`.
 
 ## Lean
 
@@ -93,10 +93,10 @@ ran or read).
 
 2. **Launch** each step's session with the `launch` skill. The worker loads its project's instructions and the
    user's global ones, and nothing of Laima's, so the brief carries the rest.
-3. **Keep up.** A worker reports by messaging you. On a report: check it against facts, write it into the record,
-   then take the workflow's next step, or ask the user when the workflow says the decision is theirs.
-   For a missing report, use `launch` step 7. After delivery or a hold's release event, apply `finish` step 4
-   that turn to the affected idle workers.
+3. **Keep up.** For an arriving or missing report, apply `launch` step 7. Check new results against facts and
+   write them into the record before taking the workflow's next step or asking for its decision. Release every
+   worker you launched through `finish` step 4, including at a delivery wait. Recheck affected workers in the
+   turn that delivers their result or reaches their hold's release event.
 4. **Finish** with the `finish` skill, in the turn you deliver the result: it verifies, cleans up and completes
    the record. "The worker said done" is the midpoint; the task is open until this runs.
 
@@ -178,7 +178,7 @@ It governs the whole vault. The other vault guides govern their own folders.
 |-|-|
 | `local/` is missing or incomplete; adding or changing a project; tools changed | `set-up` |
 | Starting a session for a step; resuming a closed session; adopting a session the user started | `launch` |
-| A task's last step reported; a task is to be closed or dropped | `finish` |
+| A task's last step reported; a task is to be closed or dropped; an owned worker's handoff or hold is ready for recheck (step 4 only) | `finish` |
 | The user ends the day or asks for a wrap-up | `wrap-up` |
 | The user asks to consolidate memory; called by `wrap-up` | `consolidate` |
 | Creating or editing any file of the core, a skill included | `authoring` |

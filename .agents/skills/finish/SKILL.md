@@ -1,6 +1,6 @@
 ---
 name: finish
-description: Use when a task's last step has reported, when the user says a task is done or should be dropped, or when a task found at wrap-up should be closed.
+description: Use when a task's last step has reported, when the user says a task is done or should be dropped, or when a task found at wrap-up should be closed. Use step 4 alone to release an owned worker after its handoff or recheck it when a hold's release event arrives.
 ---
 
 # Finish
@@ -33,9 +33,10 @@ user or on other people; the task then stays open and you return here later.
    release, an update to the issue), use it. What the project asks at the end of a task is part of delivery: the
    issue updated or closed and the standing duties, as its note's § Done means and § Obligations say. A delivery step
    that needs the user's word becomes a question with your recommendation, naming the commit or the files: write it in
-   the record with `needs_user` as `local/work/AGENTS.md` describes, log `asked`, and stop here. Done when the
-   delivery the record's "Done when" names is shown: the user has the answer, the change is where the project's
-   definition of done puts it (on the remote's main branch, in the folder), or the user has taken the work over.
+   the record with `needs_user` as `local/work/AGENTS.md` describes, log `asked`, and ask. While task delivery
+   waits, apply step 4 alone to any worker with a verified result or a hold to recheck. Resume task closure
+   when delivery is shown: the user has the answer, the change is where the project's definition of done puts
+   it (on the remote's main branch, in the folder), or the user has taken the work over.
 3. **Copy out** before anything is removed. From the reports and the files in the workspace into the record: the
    outcome with evidence, decisions with reasons, verification commands with results, each review finding in a
    line with what became of it, follow-ups. A file the
@@ -45,21 +46,23 @@ user or on other people; the task then stays open and you return here later.
    reader who has no transcript and no workspace, and no deliverable is left in the task folder.
 4. **Release a worker** at handoff, during a delivery wait, or at final cleanup. Check the report against
    facts. For a final result or decision, give the user a synthesis they can use before closing. For an
-   intermediate result, preserve it and hand it to the verified next owner first. If a required artifact is
-   missing, use `launch` step 7 and hold the handoff until it is recovered or replaced with a verified durable source.
+   intermediate result, preserve it and hand it to the verified next owner first. Preserve the evidence
+   needed after the terminal closes. If a required artifact is missing, use `launch` step 7 and hold the
+   handoff until it is recovered or replaced with a verified durable source.
    - Confirm ownership from the record and live listing. Read the screen, last task or user action and any
      downstream references. If the user is reading or discussing, there is text in the live input, this tab holds
      a decision or next action, or the user asked you to keep it, record the tab or address, its use and its
      release event in the Timeline. Keep the parent chain of a held descendant. Ask when use or authority still
      needs a decision.
    - Recheck at the recorded event (the approval, next relevant report or turn, or wrap-up). If the user set the
-     hold, release it only on their stated event or instruction. Once delivery is settled and the owned session
-     is idle with nothing unreported and no hold on it or a descendant, close it (multiplexer adapter § Close a
-     session), then check the listing. A reviewer that `workflows/review.md` keeps open for posting is in use until
-     the reviewer reports the settled outcome and you verify and record it.
+     hold, release it only on their stated event or instruction. When the owned session's handoff is complete,
+     it is idle or ended with nothing unreported, neither it nor a descendant is held, and the workflow permits
+     release, close it (multiplexer adapter § Close a session) and check the listing.
+     A reviewer that `workflows/review.md` keeps open for posting is in use until the reviewer reports the
+     settled outcome and you verify and record it.
    - For a task being dropped, a session still working or at a dialog is closed as well, once step 3 holds what
-     its screen shows and any live user hold has released. An adopted session is the user's and stays: tell them
-     the task is closed. A session tagged with the task id that the record does not name is not one you can show
+     its screen shows and any live user hold has released. An adopted session is the user's and stays. Tell them
+     when the task closes. A session tagged with the task id that the record does not name is not one you can show
      is yours: leave it and tell the user it is there.
    Done when the listing confirms each eligible session closed and the Timeline shows any hold and its recheck.
    At final cleanup, wait for any held owned sessions to release before step 5.

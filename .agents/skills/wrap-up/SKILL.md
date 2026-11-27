@@ -11,8 +11,10 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
    `--needs-user` modes. Read each pending decision record and each record listed as overdue, due-today, arrived
    or open. Pair sessions to tasks by the ids the records hold (`sessions`, and the addresses on their Timeline), not
    by the tag alone. Done when each session and each record is in one of the cases of step 2.
-2. **Settle each one:** reconcile the records in this pass against current state and recorded decisions.
-   Use `finish` step 4 to recheck idle workers, delivered drafts and holds whose release event has arrived.
+2. **Settle each one:** reconcile each record you read in step 1 against current state and recorded
+   decisions. Clear stale dependencies and cues. Restore missing cues for questions actually asked and still
+   unanswered, with the full question as `local/work/AGENTS.md` describes. Use `finish` step 4 to recheck idle
+   workers, delivered drafts and holds whose release event has arrived.
    - An open record with a `parked:` line in Follow-ups: resume its workflow once evidence shows the named
      trigger fired, and clear the line when it resumes. Until then, leave it open and skip stalled classification.
    - A task whose work is done but which is not closed: run `finish`.
@@ -37,10 +39,8 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
    actionable. If several rolled records need the same review, check the evidence together and group the
    choices with each record's own next actor and trigger. Done when each record has a current disposition.
 3. **Check the writes** for each task touched since the last wrap-up. Every launch has a session id in the
-   record and a `launched` line in the log. For the records checked, clear stale dependencies and cues and repair
-   missing cues for questions actually asked and still unanswered. Match each to its full question as
-   `local/work/AGENTS.md` describes. Each closed task
-   has an outcome with evidence. Add what is missing, marked "(added at wrap-up)". Then search for times written
+   record and a `launched` line in the log. Each closed task has an outcome with evidence. Add what is missing,
+   marked "(added at wrap-up)". Then search for times written
    with a placeholder digit, such as `17:3x`, which `local/Laima/AGENTS.md` § Writing here, "Times", rules out:
    `grep -n -E '[0-9]:[0-9xX][xX]' local/work/*.md local/Laima/index.md local/Laima/log/*.md`
    Correct each one in place, with a time taken as that rule says, marked "(time set at wrap-up)". In the log this
@@ -60,7 +60,7 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
    $(date '+%F %H:%M')"`; a day without writes prints `nothing to commit`. Where `local/.git` is missing, run
    `set-up`, which makes it. Done when `git -C local status --short` prints nothing.
 10. **Tell the user**, in this order: what needs them, what comes due tomorrow, what runs on without them,
-    and the IDs and outcomes collected in step 4. Apply step 2's park check to the recap. Leave unfired parks
-    out unless the user asks about parked work. Then sign off.
+    and the IDs and outcomes collected in step 4. Apply step 2's park check. Omit unfired parks from the
+    whole reply, including counts and side notes, unless the user asks about parked work. Then sign off.
 
 Verified: 2026-11-27, Claude Code 2.1.332 on Herdr (explicit park disposition); 2026-11-23, Claude Code 2.1.330 (step 3's time search); 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: both scans and the archive-to-report flow in a session; the retargeted time search in a session; with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable; the quiet recap for unfired parks; archive destination readback and reconciled decisions in a session.
