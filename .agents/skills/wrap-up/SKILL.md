@@ -60,6 +60,7 @@ description: Use when the user ends the day, asks for a wrap-up or a check that 
    $(date '+%F %H:%M')"`; a day without writes prints `nothing to commit`. Where `local/.git` is missing, run
    `set-up`, which makes it. Done when `git -C local status --short` prints nothing.
 10. **Tell the user**, in this order: what needs them, what comes due tomorrow, what runs on without them,
-    and the IDs and outcomes collected in step 4. Then sign off.
+    and the IDs and outcomes collected in step 4. Apply step 2's park check to the recap. Leave unfired parks
+    out unless the user asks about parked work. Then sign off.
 
-Verified: 2026-11-23, Claude Code 2.1.330 (step 3's time search); 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: both scans and the archive-to-report flow in a session; the retargeted time search in a session; with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable; explicit parks with fired and unfired triggers; archive destination readback and reconciled decisions in a session.
+Verified: 2026-11-27, Claude Code 2.1.332 on Herdr (explicit park disposition); 2026-11-23, Claude Code 2.1.330 (step 3's time search); 2026-11-22, Claude Code 2.1.327 to 2.1.330 and Codex 0.170.0. Not yet run: both scans and the archive-to-report flow in a session; the retargeted time search in a session; with workers still running; step 8 with commits ahead; step 9 on a vault that already has its repository; a tagged session no record names; a record listed as unreadable; the quiet recap for unfired parks; archive destination readback and reconciled decisions in a session.

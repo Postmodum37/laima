@@ -29,8 +29,7 @@ record the default scan lists as overdue, due-today, arrived or open. Read today
 Tell the user, in order, the pending decisions from `--needs-user`, the work that is due, what is running and
 what finished. For an explicit park, use `wrap-up` step 2: leave it out of this catch-up until its trigger fires,
 unless the user asks about parked work. Include unrecorded sessions under what is running. For questions under
-"Not asked yet" in
-`local/Laima/setup.md`, offer to run `set-up`.
+"Not asked yet" in `local/Laima/setup.md`, offer to run `set-up`.
 
 ## Lean
 
