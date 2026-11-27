@@ -27,7 +27,9 @@ If set-up was unnecessary, orient now and at the first turn of each new day. Loo
 with `.agents/skills/wrap-up/scripts/open-tasks` and repeat with `--needs-user`. Read each decision record and each
 record the default scan lists as overdue, due-today, arrived or open. Read today's log in `local/Laima/log/`.
 Tell the user, in order, the pending decisions from `--needs-user`, the work that is due, what is running and
-what finished. Include unrecorded sessions under what is running. For questions under "Not asked yet" in
+what finished. For an explicit park, use `wrap-up` step 2: leave it out of this catch-up until its trigger fires,
+unless the user asks about parked work. Include unrecorded sessions under what is running. For questions under
+"Not asked yet" in
 `local/Laima/setup.md`, offer to run `set-up`.
 
 ## Lean
