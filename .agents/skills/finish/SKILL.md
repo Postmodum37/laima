@@ -86,9 +86,11 @@ user or on other people; the task then stays open and you return here later.
    Before retiring the workspace, search the other open tasks' briefs in the task folders configured in
    `local/Laima/setup.md` for references into it. Check that each needed artifact exists and matches its pin
    where recorded. Read the durable copy back and update the referring brief before removing its source. If a
-   reference remains or the artifact is missing, keep the workspace and record the referring task or brief and
-   the event that permits removal. Anything uncommitted, unpushed or unexplained stops this step and becomes
-   a question to the user.
+   live worker already has that brief, keep the source until it no longer needs it or it receives the new path in
+   its task conversation (multiplexer adapter § Message a session). Check that receipt or acknowledgement before
+   removing the source. If a reference remains or the artifact is missing, keep the workspace and record the
+   referring task or brief and the event that permits removal. Anything uncommitted, unpushed or unexplained
+   stops this step and becomes a question to the user.
 
    Then remove what was made for the task, with the project's own command when it has one. For a standalone Review copy,
    use `git worktree remove` without force. Delete a local branch that was merged, once no checkout is on it
@@ -107,4 +109,4 @@ user or on other people; the task then stays open and you return here later.
    the reason, and the evidence.
 8. **Tell the user** in a line or two: what was delivered, where it is, and what follows.
 
-Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.330 (earlier). Not yet run: the revised remote-free cleanup in a live session; review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome; worker release and recheck during a task, held descendants, and separate terminal and dependent artifact disposition.
+Verified: 2026-11-26, Codex 0.172.0 on Herdr (herdr-app 0.1.18, hc 0.1.22) and Claude Code 2.1.330 (earlier). Not yet run: the revised remote-free cleanup in a live session; review findings copied in step 3; the step 5 check for another open task's brief referencing the task folder; the target branch's checks read before a merge, as now worded; delivery by a push without a pull request; a worktree the project keeps; step 2 with a scalar decision cue and step 6 with linked open obligations; the note's duties at delivery; a tagged session the record does not name; a working session of a dropped task closed by step 4; a task whose only open item is a message drafted for the user, delivered by step 2; a reviewer kept open for posting, closed by step 4 only after its outcome; worker release and recheck during a task, held descendants, and separate terminal and dependent artifact disposition, including receipt of a replacement path.
