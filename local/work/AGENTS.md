@@ -45,8 +45,9 @@ What happened, with evidence: commands and their results, and where the change i
   `.agents/skills/wrap-up/scripts/open-tasks --needs-user`. What a session is doing comes from the multiplexer.
 - **Ask and answer in the record.** Before sending, write the full question verbatim in "Questions and answers"
   and, in the same edit, set a scalar such as `needs_user: "2026-01-31 15:02 — Approve login fallback for review"`.
-  The cue belongs to an outstanding question you asked. Clear it if the question was never sent. For a choice
-  in another tab, name the tab as the user sees it and who acts, in the cue and the prompt. For a batch,
+  The cue belongs to an outstanding question you asked. Clear it if the question was never sent. A voluntary
+  tab hold stays in the Timeline (`finish` step 4). If the user must answer or act in another tab, name that
+  tab as they see it and who acts, in the cue and the prompt. For a batch,
   use one cue for the outstanding decisions in that section. Record each answer verbatim and keep the cue current
   until the last answer, then clear it to `needs_user:`. A missing field also means no pending decision. Use
   an open follow-up record when the parent has closed or the decision needs to outlast its closure.
