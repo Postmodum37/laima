@@ -113,7 +113,9 @@ against on its `Version checked:` line. Any other harness or multiplexer needs a
      [ -f "$d/$f" ] && [ "$d/$f" != "$HOME/.claude/CLAUDE.md" ] && echo "$d/$f"; done
      [ "$d" = / ] && break; d=$(dirname "$d"); done
    ```
-2. Open a tab in that folder in your multiplexer and start your harness. Claude Code (`claude`) is the tested lead.
+2. Open a tab in your multiplexer and run [`bin/laima`](bin/laima) from the clone. See `bin/laima -h` for model
+   and effort overrides when switching harnesses. For a shell alias, use the script's absolute path.
+   Claude Code (`claude`) is the tested lead.
    Codex CLI (`codex`) and Antigravity CLI (`agy`) have run as Laima in tests only: read Requirements and the
    harness's adapter before you use one as her. The harness asks once whether you trust the folder.
 3. Say hello. She answers as Laima, and on the first run she runs set-up: she finds your harnesses and tools, and

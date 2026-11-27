@@ -15,6 +15,7 @@
 # that starts with "my-". The links are not tracked.
 /.agents/skills/my-*
 /.claude/skills/my-*
-# agy's agent for Laima's own session, written from persona.md at each start (adapters/harnesses/agy.md § Gotchas).
+# agy's agent for Laima's own session, written by bin/laima.
 /.agents/agents/laima.md
+/.agents/agents/.laima.*
 .DS_Store

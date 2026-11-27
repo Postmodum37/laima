@@ -1,0 +1,128 @@
+#!/bin/sh
+set -eu
+
+usage() {
+  cat <<'EOF'
+Usage: laima [claude|codex|agy] [-m model] [-e effort] [-n] [-- extra harness args]
+
+Start Laima in the repository that contains this script. Use -n to print the
+harness argv as a JSON array without starting it or writing its files.
+
+The trusted local/Laima/launch.env shell file can set LAIMA_HARNESS, LAIMA_MODEL,
+LAIMA_EFFORT and LAIMA_MODE. Command-line choices override the first three.
+Use -m and -e if the saved choices are for a different harness. Without a
+setting, use Claude Code and the selected harness's own model, effort and
+permission defaults. Set LAIMA_MODE=bypass to opt in for any harness.
+EOF
+}
+
+usage_error() {
+  printf 'laima: %s\nTry laima -h for usage.\n' "$1" >&2
+  exit 2
+}
+
+write_agy_agent() (
+  mkdir -p .agents/agents
+  agent_file=$(mktemp .agents/agents/.laima.XXXXXX)
+  trap 'rm -f "$agent_file"' 0
+  {
+    cat <<'EOF'
+---
+name: laima
+description: Laima's interactive lead session.
+mainAgent: true
+subagent: false
+tools:
+  - read_file
+  - run_command
+  - write_file
+  - edit_file
+  - search_web
+  - ask_question
+commandExecutionPolicy: eager
+---
+
+EOF
+    printf '%s %s %s %s %s\n\n' \
+      "This is Laima's own session." \
+      'Follow the startup order, authority, delegation, reporting and worker cleanup rules in the Laima root AGENTS.md.' \
+      'Apply the persona below and its local additions to user-facing conversation.' \
+      'Use the harness question dialog for a user-owned decision with named options when available.' \
+      'Use local/Laima/ for durable memory.'
+    cat persona.md
+  } > "$agent_file"
+  mv -f "$agent_file" .agents/agents/laima.md
+)
+
+harness= model= effort= dry_run=0
+while [ "$#" -gt 0 ]; do
+  case $1 in
+    -h|--help) usage; exit 0 ;;
+    -m|-e)
+      case ${2:-} in ''|-*) usage_error "$1 needs a value" ;; esac
+      case $1 in -m) model=$2 ;; -e) effort=$2 ;; esac
+      shift
+      ;;
+    -n) dry_run=1 ;;
+    --) shift; break ;;
+    -*) usage_error "unknown option: $1" ;;
+    '') usage_error 'unknown harness: empty name' ;;
+    *)
+      [ -z "$harness" ] || usage_error "unexpected argument: $1"
+      harness=$1
+      ;;
+  esac
+  shift
+done
+
+script=$0
+while [ -L "$script" ]; do
+  target=$(readlink "$script")
+  case $target in
+    /*) script=$target ;;
+    *) script=$(dirname "$script")/$target ;;
+  esac
+done
+CDPATH= cd -P "$(dirname "$script")/.."
+LAIMA_HARNESS= LAIMA_MODEL= LAIMA_EFFORT= LAIMA_MODE=
+if [ -f local/Laima/launch.env ]; then
+  . ./local/Laima/launch.env
+fi
+harness=${harness:-${LAIMA_HARNESS:-claude}}
+model=${model:-${LAIMA_MODEL:-}}
+effort=${effort:-${LAIMA_EFFORT:-}}
+mode=${LAIMA_MODE:-}
+case $mode in ''|bypass) ;; *) usage_error 'LAIMA_MODE must be empty or bypass' ;; esac
+
+case $harness in
+  claude|agy)
+    [ -z "$effort" ] || set -- --effort "$effort" "$@"
+    [ -z "$model" ] || set -- --model "$model" "$@"
+    [ "$mode" != bypass ] || set -- --dangerously-skip-permissions "$@"
+    [ "$harness" != agy ] || set -- --agent laima "$@"
+    ;;
+  codex)
+    [ -z "$effort" ] || set -- -c "model_reasoning_effort=$effort" "$@"
+    [ -z "$model" ] || set -- -m "$model" "$@"
+    [ "$mode" != bypass ] || set -- --dangerously-bypass-approvals-and-sandbox "$@"
+    instructions=$(jq -n --rawfile persona persona.md --args \
+      '$ARGS.positional | join(" ") + "\n\n" + $persona' \
+      "This is Laima's own session." \
+      'Follow the startup order, authority, delegation, reporting and worker cleanup rules in the Laima root AGENTS.md.' \
+      'Apply the persona below and its local additions to user-facing conversation.' \
+      "Apply completion and persistence to Laima's role, including delivering before worker cleanup" \
+      'and yielding after a handoff or while awaiting a user decision.' \
+      'Use the harness question dialog for a user-owned decision with named options when available.' \
+      'Look durable facts up in local/Laima/ first and write them there; Codex memories come after the vault.')
+    set -- --no-daemon -c 'personality="none"' -c "developer_instructions=$instructions" "$@"
+    ;;
+  *) usage_error "unknown harness: $harness" ;;
+esac
+
+if [ "$dry_run" = 1 ]; then
+  exec jq -cn --args '$ARGS.positional' -- "$harness" "$@"
+fi
+if [ "$harness" = agy ]; then
+  write_agy_agent
+fi
+exec "$harness" "$@"

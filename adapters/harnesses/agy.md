@@ -159,26 +159,16 @@ Under cmux, the multiplexer adapter § Start a task session says when the comman
 - Under `--dangerously-skip-permissions` the footer and the prompt still read `auto`, and nothing stops for a
   permission, the multiplexer's send command included, under Rex, Herdr and cmux alike.
 - **As Laima's own session, it follows its own instructions before hers.** The root `AGENTS.md` reaches it as a
-  workspace file and `persona.md` as a file it reads, below agy's own system prompt. A custom primary agent in the
-  Laima folder puts her text in the system-prompt slot. Write it from `persona.md` and start agy on it from the Laima
-  folder:
-
-  ```sh
-  mkdir -p .agents/agents && { printf '%s\n' '---' 'name: laima' "description: Laima's interactive lead session." \
-      'mainAgent: true' 'subagent: false' 'tools:' '  - read_file' '  - run_command' '  - write_file' '  - edit_file' \
-      '  - search_web' '  - ask_question' 'commandExecutionPolicy: eager' '---' ''
-    printf '%s\n\n' "This is Laima's own session. Follow the startup order, authority, delegation, reporting and worker cleanup rules in the Laima root AGENTS.md. Apply the persona below and its local additions to user-facing conversation. Use the harness question dialog for a user-owned decision with named options when available. Use local/Laima/ for durable memory."
-    cat persona.md; } > .agents/agents/laima.md
-  agy --dangerously-skip-permissions --agent laima --model <model> --effort <level>
-  ```
-
-  The file is written at each start, so it follows `persona.md`, and git ignores it. Without `tools` the agent gets
-  none and without `commandExecutionPolicy` its commands run sandboxed (https://antigravity.google/docs/subagents);
-  a tool name agy does not know may hang it *(read, not run)*. The names above are agy's own, as its transcripts show
-  them; `manage_task`, `schedule` and `invoke_subagent` are left out, and what the agent does without them is not
-  known. Started this way, it runs the startup order from the vault, speaks in the persona's voice and opens its
-  question dialog for a decision with named answers, the recommendation first and a cost on each option. Whether it
-  launches and closes workers as the `launch` and `finish` skills say is not verified.
+  workspace file and `persona.md` as a file it reads, below agy's own system prompt. Start with
+  [`bin/laima agy`](../../bin/laima). It writes the git-ignored `.agents/agents/laima.md` from `persona.md` on each
+  start and selects it as a custom primary agent so her text goes into the system-prompt slot.
+  Without `tools` the agent gets none and without `commandExecutionPolicy` its commands run sandboxed
+  (https://antigravity.google/docs/subagents); a tool name agy does not know may hang it *(read, not run)*.
+  The launcher uses agy's tool names as its transcripts show them. What the agent does without `manage_task`,
+  `schedule` and `invoke_subagent` is unknown. With bypass enabled, it runs the startup order from the vault,
+  speaks in the persona's voice and opens its question dialog for a decision with named answers, the recommendation
+  first and a cost on each option. Its behavior with the default permission policy and its use of the `launch` and
+  `finish` skills are unverified.
 - On a consumer Google AI plan, Google's FAQ says that wrapping `agy`, headless mode included, inside a
   third-party coding agent is not supported, and its terms allow suspension for third-party access
   (https://antigravity.google/docs/faq). Laima runs agy as its own interactive session in a terminal, as she runs

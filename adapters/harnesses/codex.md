@@ -152,23 +152,14 @@ once after every launch, and whenever a Codex session is `done` or `idle` withou
   replies come as dense lists with a link on each item and no recommendation, and it finishes a task and closes its
   worker as soon as the report arrives, before the user has seen the result. It also launches a worker and then runs
   its own reads and tests of the same question, waiting in its turn until the report comes. Where the user keeps
-  Codex memories, it searches that store before the vault and quotes it in its replies. So start Laima's own Codex
-  session from the Laima folder with:
-
-  ```sh
-  codex --no-daemon -c 'personality="none"' -c "developer_instructions=$( {
-    printf '%s\n\n' "This is Laima's own session. Follow the startup order, authority, delegation, reporting and worker cleanup rules in the Laima root AGENTS.md. Apply the persona below and its local additions to user-facing conversation. Apply completion and persistence to Laima's role, including delivering before worker cleanup and yielding after a handoff or while awaiting a user decision. Use the harness question dialog for a user-owned decision with named options when available. Look durable facts up in local/Laima/ first and write them there; Codex memories come after the vault."
-    cat persona.md; } | jq -Rs .)"
-  ```
-
-  `personality="none"` takes out the built-in style section and leaves the rest of Codex's instructions;
-  `developer_instructions` puts the text above and `persona.md` among the developer messages. Codex memories stay
-  on: the vault is the store every harness shares, and the text above puts it first. `codex <the same flags> debug
-  prompt-input 'x'` prints the model's input without a turn: it shows no `# Personality` heading and shows the
-  persona. Started this way, with memories off, it followed the startup order, led with a recommendation, kept
-  delivery before closing a worker and looked facts up in the vault; with memories on, whether it reads the vault
-  first is not verified. It still writes in bold-led lists, and it does not open its question dialog for a decision
-  with named answers: ask in words there.
+  Codex memories, it searches that store before the vault and quotes it in its replies. Start Laima's own session with
+  [`bin/laima codex`](../../bin/laima). The launcher sets `personality="none"` to remove the built-in style section
+  and supplies launch guidance and `persona.md` as `developer_instructions`. The guidance puts the vault first
+  because every harness shares it. Inspect the input without a turn with `bin/laima codex -- debug prompt-input x`.
+  It includes the persona and omits the `# Personality` heading. Started this way, with memories off, it followed
+  the startup order, led with a recommendation, kept delivery before closing a worker and looked facts up in the
+  vault. Whether it reads the vault first with memories on is unverified. It still writes in bold-led lists, and it
+  does not open its question dialog for a decision with named answers: ask in words there.
 - **A text typed and submitted at once can stay in the input.** Under Rex, `rex send` with `send-key enter` right after
   it leaves a text over about 80 characters in a Codex lead's input, unsent, at its prompt and in a turn; a short one
   goes in. Each line of the text shows as typed, or, from about 1,000 characters, as `[Pasted Content <n> chars]` with
