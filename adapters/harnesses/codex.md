@@ -134,8 +134,12 @@ Codex reports status only from inside a turn, so some of its screens never show 
 once after every launch, and whenever a Codex session is `done` or `idle` without a report.
 
 - **Question picker.** An acknowledgement that the picker opened leaves the decision pending until the user answers.
-  Under Herdr, an expanded question can show `status: working`. For peer reports during a question, see
-  [Herdr § How you learn a session finished](../multiplexers/herdr.md#how-you-learn-a-session-finished).
+  Under Herdr, an expanded question can show `status: working` and a send can be submitted as free text.
+  Follow [Herdr § Message a session](../multiplexers/herdr.md#message-a-session) when the prompt is unclear.
+- **Side chat on Codex CLI 0.172.0 under Herdr.** The pane can show `Side chat` and receive a send meant for
+  `Main [default]`. In a task-owned worker, when input is empty with no dialog or user engagement,
+  `hc keys <address> ctrl+/` can return to Main. Read the screen again to confirm Main and a clear prompt.
+  For a held or unclear input, preserve it and use the pending brief or report file.
 - **Trust this folder?** opens at start in a folder inside a git repository Codex has not trusted, in bypass mode too,
   and reports no status; the brief runs once it is answered. A plain folder outside git shows none, so a launch there
   runs at once. `1. Trust and continue` is selected first; the selected line is marked `›`, and the answer is kept in
@@ -153,13 +157,15 @@ once after every launch, and whenever a Codex session is `done` or `idle` withou
   worker as soon as the report arrives, before the user has seen the result. It also launches a worker and then runs
   its own reads and tests of the same question, waiting in its turn until the report comes. Where the user keeps
   Codex memories, it searches that store before the vault and quotes it in its replies. Start Laima's own session with
-  [`bin/laima codex`](../../bin/laima). The launcher sets `personality="none"` to remove the built-in style section
-  and supplies launch guidance and `persona.md` as `developer_instructions`. The guidance puts the vault first
-  because every harness shares it. Inspect the input without a turn with `bin/laima codex -- debug prompt-input x`.
-  It includes the persona and omits the `# Personality` heading. Started this way, with memories off, it followed
-  the startup order, led with a recommendation, kept delivery before closing a worker and looked facts up in the
-  vault. Whether it reads the vault first with memories on is unverified. It still writes in bold-led lists, and it
-  does not open its question dialog for a decision with named answers: ask in words there.
+  [`bin/laima`](../../bin/laima). When changing harnesses, pass the model and effort for this Codex session
+  from `local/Laima/setup.md`, for example `bin/laima codex -m '<Codex model>' -e '<effort>'`. Put any extra
+  harness flags called for by setup after `--`. The launcher sets `personality="none"` and supplies startup
+  guidance and `persona.md` as `developer_instructions`. That guidance puts the shared vault first. Inspect
+  the input without a turn with `bin/laima codex -m '<Codex model>' -e '<effort>' -- debug prompt-input x`.
+  It includes the persona and omits the `# Personality` heading. With memories off, the lead can follow
+  startup order, recommend an action, deliver before closing and look facts up in the vault. Vault-first
+  lookup with memories on remains unverified. Codex can still use bold-led lists or ask a decision in prose.
+  Use the native picker when available and prose when it is unavailable.
 - **A text typed and submitted at once can stay in the input.** Under Rex, `rex send` with `send-key enter` right after
   it leaves a text over about 80 characters in a Codex lead's input, unsent, at its prompt and in a turn; a short one
   goes in. Each line of the text shows as typed, or, from about 1,000 characters, as `[Pasted Content <n> chars]` with

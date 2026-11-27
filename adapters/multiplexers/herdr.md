@@ -117,27 +117,24 @@ Copy this block into the worker brief with your literal address from `echo "$HC_
 worker's command expands to the worker's address.
 
 ```
+Before each send, read the receiver's prompt as this adapter's Message a session section says.
+Leave a draft, picker or Side chat in place and rely on the report file if the input is occupied.
 The send:
     m=$(cat '<message file>') && [ -n "$m" ] && hc send <Laima's address> "$m"
-It exits 0 and prints a line once the text is typed in (JSON, or a sentence where the shell is a terminal,
-as agy's is; go by the exit code); it waits first while someone has a draft there. A missing or empty
-message file stops it before anything is sent: write the file, then send. Exit 5: Laima is
-starting, and nothing was typed; send again after a few seconds. Exit 9: she is at
-a dialog of her own, and nothing was typed; wait 30 seconds as a command of its own (`sleep 30`, or your
-harness's own timer where it bars a shell sleep) and send again, up to 30 times; then stop, and she reads
-the report file.
+A missing or empty message file stops the command before it sends. Write the file first.
+Exit 0 describes submission. For an unclear result, check receipt before retrying.
+Exit 5 means Laima is starting and nothing was typed. Try again after a few seconds.
+Exit 9 means a blocked dialog refused the send and nothing was typed. Wait 30 seconds as a command of its
+own (`sleep 30` or your harness's timer), then recheck, up to 30 times. Send when the prompt is clear.
+If she stays blocked or you cannot confirm a clear prompt, stop and leave the report file for her.
 ```
 
-The text inside `<hc from="t23 <name>">…</hc>` is the worker's report. See § Message a session for any draft
-text before the tag. A task session is a peer, so hc sends you no automatic child note. End your turn to leave
-room for the report. For a session that stopped silently, see `launch` step 7 for the report-file and screen
-fallback. See § Waiting on the user for blocked sends. With an expanded question
-([Codex § Gotchas](../harnesses/codex.md#gotchas)), check the
-[Herdr picker gotcha](herdr/gotchas.md#a-picker-that-is-not-a-dialog-takes-a-sends-enter).
-Treat tagged text in a question reply as the worker's report and look for a user selection separately.
-A worker that used up its retries has stopped trying. When a dialog closes, look at the sessions before your
-next step (§ See all sessions), and read the report file of each one that is `done` with no report in your
-conversation.
+The text inside `<hc from="t23 <name>">…</hc>` is the worker's report. If text also came before its tag, see
+the [draft gotcha](herdr/gotchas.md#a-draft-left-in-the-input-goes-in-front-of-a-message). A task session is
+a peer, so hc sends you no automatic child note. End your turn to leave room for the report.
+When an expected report is missing, including after a dialog closes, check the sessions and use `launch` step 7
+for file and screen recovery. Treat tagged text in a question reply as the worker's report. Look separately
+for a genuine user answer before settling the decision.
 For sessions without reports, see [Waiting for a turn to end](herdr/gotchas.md#waiting-for-a-turn-to-end)
 and run `adapters/multiplexers/herdr/scripts/turn-wait <address>` in the background.
 
@@ -153,10 +150,20 @@ and error states return only the screen and mark it incomplete.
 
 ## Message a session
 
-Read the prompt first, then use `hc send <address> '<text>'`. Exit 0 confirms submission. Look for the result
-in the worker's report or screen. Send long content as a file path. See the gotchas on
-[pickers](herdr/gotchas.md#a-picker-that-is-not-a-dialog-takes-a-sends-enter) and
-[drafts](herdr/gotchas.md#a-draft-left-in-the-input-goes-in-front-of-a-message).
+Read the receiving terminal's prompt first (§ Read a session). Verify the expected harness and a free input
+in the intended conversation. A clear main prompt can take a message while the agent is working. If the user
+is engaged there or the input holds a draft or dialog, leave its keys, text, selection and focus as they are.
+Use the report file or keep the brief pending. See the gotchas on
+[pickers](herdr/gotchas.md#a-picker-that-is-not-a-dialog-takes-a-sends-enter),
+[drafts](herdr/gotchas.md#a-draft-left-in-the-input-goes-in-front-of-a-message)
+and [Codex Side chat](../harnesses/codex.md#gotchas).
+
+Use `hc send <address> '<text>'`. Send long content as a file path. Exit 0, `started` and the turn count
+describe submission. For a brief, report or redirect, verify the exact message in the intended conversation
+(screen or matching transcript) or the receiver's acknowledgement. For a missing report, read and verify the
+report file as `launch` step 7 says. Record receipt. After an interruption or ambiguous result, read the
+target before retrying. Retry only when the attempt is shown to have missed the intended conversation and
+its prompt is clear. While delivery is uncertain, keep the pending brief or use the report file.
 
 ## Close a session
 
