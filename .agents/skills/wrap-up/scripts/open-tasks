@@ -1,11 +1,13 @@
 #!/bin/sh
 # Lists the open task records in local/work/ from their frontmatter, most pressing first.
-# Usage: open-tasks [--needs-user] [DIR]. The flag lists pending decisions by record filename, without .md.
+# Usage: open-tasks [--needs-user] [DIR]. The flag lists pending decisions.
+# Both modes identify records by filename, without .md.
 # A record is open while `closed` is empty. Nothing is stored: each state is worked out from
-# `not_before`, `due` and `waiting_on` against the clock. Runs from any folder. A trailing comment in a field
-# starts with two spaces and a `#`, so that a value such as "pull request #12" is kept whole; in a date field
-# one space before the `#` is enough. Quotes around a value are taken off, and `null`, `~` and `""` read as
-# empty. The default scan lists records with missing frontmatter as unreadable.
+# `not_before`, `due` and `waiting_on` against the clock. Runs from any folder. Outside quotes, a trailing
+# comment starts with two spaces and a `#`, so that a value such as "pull request #12" is kept whole.
+# In a date field one space before the `#` is enough. Quotes around a value are taken off, and `null`,
+# `~` and `""` read as empty. The default scan lists empty records and records with missing frontmatter as unreadable.
+# A scan or read error leaves available results on stdout, reports the error on stderr and exits nonzero.
 needs_user_only=0
 if [ "${1:-}" = "--needs-user" ]; then
   needs_user_only=1
@@ -16,60 +18,104 @@ if [ "$#" -gt 1 ]; then
   printf '%s\n' 'Usage: open-tasks [--needs-user] [DIR]' >&2
   exit 2
 fi
-dir="${1:-$(cd "$(dirname "$0")/../../../.." && pwd)/local/work}"
-set -- "$dir"/[0-9]*.md
-[ -e "$1" ] || {
-  [ "$needs_user_only" = 1 ] || echo "no task records in $dir"
-  exit 0
-}
-{
-if [ "$needs_user_only" = 0 ]; then
-  for r in "$@"; do [ -s "$r" ] || echo "9 unreadable  $r  (empty file)"; done
+dir=${1:-}
+if [ -z "$dir" ]; then
+  root=$(CDPATH= cd "$(dirname "$0")/../../../.." && pwd) || exit 1
+  dir=$root/local/work
 fi
-awk -v needs_user_only="$needs_user_only" -v now="$(date '+%Y-%m-%d %H:%M')" -v today="$(date '+%Y-%m-%d')" '
-function finish_file() {
-  if (!needs_user_only && file != "" && seen < 2) print "9 unreadable  " file "  (no frontmatter block)"
-}
-FNR == 1 {
-  finish_file(); file = FILENAME; seen = 0; split("", f)
-  if ($0 !~ /^---[ \t]*$/) { finish_file(); file = ""; nextfile }
-}
-/^---[ \t]*$/ {
-  seen++
-  if (seen == 2) {
-    if (needs_user_only) {
-      id = FILENAME
-      sub(/^.*\//, "", id); sub(/\.md$/, "", id)
-      # Pad the ID for the same two-column strip used by the ranked scan.
-      if (f["closed"] == "" && f["needs_user"] != "") print "  " id
-    } else if (f["closed"] == "") {
-      nb = f["not_before"]; due = f["due"]; w = f["waiting_on"]
-      if (due != "" && substr(due, 1, 10) < today)       { rank = 1; state = "overdue" }
-      else if (due != "" && substr(due, 1, 10) == today) { rank = 2; state = "due-today" }
-      else if (nb != "" && nb <= now)                    { rank = 3; state = "arrived" }
-      else if (w != "")                                  { rank = 5; state = "waiting" }
-      else if (nb != "")                                 { rank = 6; state = "later" }
-      else                                               { rank = 4; state = "open" }
-      detail = ""
-      if (nb != "")  detail = detail "  not before " nb
-      if (due != "") detail = detail "  due " due
-      if (w != "")   detail = detail "  waiting on " w
-      printf "%d %-10s %s  %s, %s%s\n", rank, state, f["id"], f["project"], f["workflow"], detail
-    }
-    file = ""
-    nextfile
+# Give find a path it cannot mistake for an expression.
+case $dir in
+  /*) scan_dir=$dir ;;
+  *) scan_dir=./$dir ;;
+esac
+
+# List task names relative to the scan directory. Prefix non-files with ! to keep awk from opening them.
+status=0
+paths=$(
+  CDPATH= cd "$scan_dir" 2>/dev/null || { find -H "$scan_dir/." -prune >/dev/null; exit 1; }
+  find . ! -name . -prune -name '[0-9]*.md' \
+    \( -type f -o -type l -exec test -f {} \; -o -exec printf '!' \; \) -print
+) || status=$?
+now=$(date '+%Y-%m-%d %H:%M') || exit 1
+records=$(printf '%s\n' "$paths" | OPEN_TASKS_DIR="$dir" \
+  awk -v needs_user_only="$needs_user_only" -v now="$now" -v today="${now%% *}" '
+function list_record(f, name, nb, due, w, rank, state, detail) {
+  if (f["closed"] != "") return
+  sub(/\.md$/, "", name)
+  if (needs_user_only) {
+    # Pad the filename stem for the same two-column strip used by the ranked scan.
+    if (f["needs_user"] != "") print "  " name
+    return
   }
-  next
+  nb = f["not_before"]; due = f["due"]; w = f["waiting_on"]
+  if (due != "" && substr(due, 1, 10) < today)       { rank = 1; state = "overdue" }
+  else if (due != "" && substr(due, 1, 10) == today) { rank = 2; state = "due-today" }
+  else if (nb != "" && nb <= now)                    { rank = 3; state = "arrived" }
+  else if (w != "")                                  { rank = 5; state = "waiting" }
+  else if (nb != "")                                 { rank = 6; state = "later" }
+  else                                               { rank = 4; state = "open" }
+  detail = ""
+  if (nb != "")  detail = detail "  not before " nb
+  if (due != "") detail = detail "  due " due
+  if (w != "")   detail = detail "  waiting on " w
+  printf "%d %-10s %s  %s, %s%s\n", rank, state, name, f["project"], f["workflow"], detail
 }
-seen == 1 && /^[a-z_]+:/ {
-  key = $0; sub(/:.*/, "", key)
-  val = $0; sub(/^[a-z_]+:[ \t]*/, "", val); sub(/[ \t][ \t]+#.*$/, "", val); sub(/^#.*$/, "", val)
-  if (key == "not_before" || key == "due" || key == "closed" || key == "opened") sub(/[ \t]#.*$/, "", val)
-  sub(/[ \t]+$/, "", val)
-  if (val ~ /^".*"$/ || val ~ /^\047.*\047$/) val = substr(val, 2, length(val) - 2)
-  if (val == "null" || val == "Null" || val == "NULL" || val == "~") val = ""
-  f[key] = val
+
+function read_error(file) {
+  print "open-tasks: cannot read " file > "/dev/stderr"
+  failed = 1
 }
-END { finish_file() }
-' "$@"
-} | sort | cut -c3-
+
+function read_record(path, name, file, line, result, seen, key, val, quoted, f) {
+  name = path; sub(/^.*\//, "", name)
+  file = ENVIRON["OPEN_TASKS_DIR"] "/" name
+  if (path ~ /^!/) {
+    read_error(file)
+    return
+  }
+  while ((result = (getline line < file)) > 0) {
+    sub(/\r$/, "", line)
+    if (!seen && line !~ /^---[ \t]*$/) break
+    if (line ~ /^---[ \t]*$/) {
+      if (++seen == 2) break
+    } else if (line ~ /^[a-z_]+:/) {
+      key = line; sub(/:.*/, "", key)
+      val = line; sub(/^[a-z_]+:[ \t]*/, "", val)
+      # Keep the quoted prefix intact while looking for a trailing comment.
+      quoted = ""
+      if (match(val, /^("([^"\\]|\\.)*"|\047([^\047]|\047\047)*\047)/)) {
+        quoted = substr(val, 1, RLENGTH)
+        val = substr(val, RLENGTH + 1)
+      }
+      sub(/[ \t][ \t]+#.*$/, "", val)
+      if (quoted == "") sub(/^#.*$/, "", val)
+      if (key == "not_before" || key == "due" || key == "closed" || key == "opened") sub(/[ \t]#.*$/, "", val)
+      val = quoted val
+      sub(/[ \t]+$/, "", val)
+      if (val ~ /^".*"$/ || val ~ /^\047.*\047$/) val = substr(val, 2, length(val) - 2)
+      if (val == "null" || val == "Null" || val == "NULL" || val == "~") val = ""
+      f[key] = val
+    }
+  }
+  if (close(file) != 0 || result < 0) {
+    read_error(file)
+  } else if (seen == 2) {
+    list_record(f, name)
+  } else if (!needs_user_only) {
+    print "9 unreadable  " file (result == 0 && !seen ? "  (empty file)" : "  (no frontmatter block)")
+  }
+}
+
+NF { read_record($0) }
+END { exit (failed ? 1 : 0) }
+') || status=$?
+
+if [ -z "$records" ]; then
+  if [ "$status" = 0 ] && [ "$needs_user_only" = 0 ]; then
+    printf 'no task records in %s\n' "$dir"
+  fi
+  exit "$status"
+fi
+sorted=$(printf '%s\n' "$records" | sort) || exit $?
+printf '%s\n' "$sorted" | cut -c3- || exit $?
+exit "$status"
