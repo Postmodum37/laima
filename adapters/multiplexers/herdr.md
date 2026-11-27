@@ -119,15 +119,17 @@ Copy this block into the worker brief with your literal address from `echo "$HC_
 worker's command expands to the worker's address.
 
 ```
-Before each send, run hc read <Laima's address> --lines 0. Look for the intended agent's main prompt
-with empty input. It can be working. If the user is engaged there or you see a draft, picker or Side
-chat, leave it in place and use the report file. Use the file if you cannot confirm a clear prompt.
+Before each send, run hc read <Laima's address> --lines 0. Send at the intended agent's empty main
+prompt, including during a turn. An expanded Codex picker can still show "working". If the user is
+engaged there, or a draft, picker, dialog or Side chat is visible, leave the input and focus as they are
+and use the report file. Use the file whenever the prompt is unclear.
 The send:
     m=$(cat '<message file>') && [ -n "$m" ] && hc send <Laima's address> "$m"
 A missing or empty message file stops the command before it sends. Write the file first.
-Exit 0 describes submission. Check the receiver's screen for the exact report in its main conversation
-or its acknowledgement. For an unclear result, leave the report file unless you can show the attempt
-missed its target and the prompt is clear.
+Exit 0 describes submission. Run hc read <Laima's address> --lines 0 again to look for the exact
+tagged report in the main conversation or its acknowledgement. After an interruption or unclear
+result, use that same read before retrying. Retry only when you can show the report missed the intended
+conversation and the prompt is clear. When receipt remains uncertain, leave the report file.
 Exit 5 means Laima is starting and nothing was typed. Try again after a few seconds.
 Exit 9 means a blocked dialog refused the send and nothing was typed. Wait 30 seconds as a command of its
 own (`sleep 30` or your harness's timer), then recheck, up to 30 times. Send when the prompt is clear.
