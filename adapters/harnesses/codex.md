@@ -14,7 +14,7 @@ run.
 
 ```sh
 codex --no-daemon --dangerously-bypass-approvals-and-sandbox -m <model> -c model_reasoning_effort=<level> \
-  "Read <brief-file> and carry it out."
+  "Read <brief-file> by itself as your first lookup, then carry it out."
 ```
 
 - `--no-daemon` on every launch and resume, because Herdr's manual asks for it: a session served by Codex's shared
@@ -27,8 +27,10 @@ codex --no-daemon --dangerously-bypass-approvals-and-sandbox -m <model> -c model
 - The brief travels as a file: give its absolute path in a one-line prompt, as above. `@file` is not expanded.
 - Keep it interactive. `codex exec` ends after one answer: nothing to watch, message or ask again.
 - Add `-c mcp_servers.<name>.enabled=false` for each stdio MCP server that `local/Laima/setup.md` lists as unused
-  by workers, on launch and resume. Codex starts every enabled stdio server when the session starts, even one it
-  never calls, and a session that does not exit cleanly leaves it running (§ End a session).
+  by workers, on launch and resume. An optional stdio server with a cached tool catalog can start on its first
+  tool call, and required servers connect at startup *(read, not run)*. An enabled server waiting for its
+  first call can have no child process at launch *(read, not run)*. A session that exits uncleanly can leave
+  the servers it started running (§ End a session).
 
 ## Instruction files it loads
 
@@ -57,10 +59,16 @@ find ~/.codex/sessions -name 'rollout-*.jsonl' -newer <brief-file> -exec sh -c '
 
 One id: record `codex:<id>`. None: a startup prompt is still up, or the first turn has not started; look again
 after it. More than one, as when the user started Codex in the same folder since: leave the id pending in the
-record and take it from the running session, as for a session the user started: the Codex process keeps its
-session file open, so `lsof -p <pid> | grep -o 'rollout-.*\.jsonl'` names it, the id being the UUID at the end of
-the name, with `<pid>` from the multiplexer (Rex: its adapter § Start a task session says where; Herdr:
-`foreground.pid` in `hc get <address> --json`).
+record and check the running session, as for a session the user started. Run
+`lsof -p <pid> | grep -o 'rollout-.*\.jsonl'` with `<pid>` from the multiplexer. For Rex, see its adapter
+§ Start a task session. For Herdr, use `foreground.pid` from `hc get <address> --json`.
+
+If it lists one distinct rollout, record `codex:<id>` using the UUID at the end of its name. If it lists several,
+the PID alone cannot identify the main session. In that case, for a Herdr terminal you own, read the screen
+(Herdr adapter § Read a session). Enter `/status` as a slash command only when you can confirm the main Codex view
+is at an idle prompt with empty input and no dialog (Herdr companion skill § Agent launch: permissions and plan).
+Record `codex:<id>` from the `Session` UUID in the resulting panel. If you cannot establish the id, leave it
+pending and check later.
 
 ## Resume from a session id
 
@@ -125,6 +133,9 @@ when the line comes back empty, ask the user for the figure.
 Codex reports status only from inside a turn, so some of its screens never show in a listing. Read the screen
 once after every launch, and whenever a Codex session is `done` or `idle` without a report.
 
+- **Question picker.** An acknowledgement that the picker opened leaves the decision pending until the user answers.
+  Under Herdr, an expanded question can show `status: working`. For peer reports during a question, see
+  [Herdr § How you learn a session finished](../multiplexers/herdr.md#how-you-learn-a-session-finished).
 - **Trust this folder?** opens at start in a folder inside a git repository Codex has not trusted, in bypass mode too,
   and reports no status; the brief runs once it is answered. A plain folder outside git shows none, so a launch there
   runs at once. `1. Trust and continue` is selected first; the selected line is marked `›`, and the answer is kept in

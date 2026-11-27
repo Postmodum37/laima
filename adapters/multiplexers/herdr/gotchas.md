@@ -21,7 +21,8 @@ with exit 5 and types nothing. Retry a refused send once the session has settled
 
 hc refuses to send to a `blocked` terminal, but a picker or menu that is not a dialog (Claude Code's `/model`, a
 list of slash commands) reports no block, and the send's Enter chooses in it: a send into an open `/model` picker
-saves a new default model in the user's settings. Send only to a terminal you have seen at its prompt.
+saves a new default model in the user's settings. With an expanded Codex question, `hc send` can exit 0 and submit
+the message as a free-text answer. Send only to a terminal you have seen at its prompt.
 
 ## Waiting for a turn to end
 

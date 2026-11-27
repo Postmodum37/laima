@@ -130,9 +130,13 @@ the report file.
 The text inside `<hc from="t23 <name>">…</hc>` is the worker's report. See § Message a session for any draft
 text before the tag. A task session is a peer, so hc sends you no automatic child note. End your turn to leave
 room for the report. For a session that stopped silently, see `launch` step 7 for the report-file and screen
-fallback. While your own question dialog is open, every send to you is refused with exit 9, and a worker
-that used up its retries has stopped trying. So when a dialog closes, look at the sessions before your next step
-(§ See all sessions), and read the report file of each one that is `done` with no report in your conversation.
+fallback. See § Waiting on the user for blocked sends. With an expanded question
+([Codex § Gotchas](../harnesses/codex.md#gotchas)), check the
+[Herdr picker gotcha](herdr/gotchas.md#a-picker-that-is-not-a-dialog-takes-a-sends-enter).
+Treat tagged text in a question reply as the worker's report and look for a user selection separately.
+A worker that used up its retries has stopped trying. When a dialog closes, look at the sessions before your
+next step (§ See all sessions), and read the report file of each one that is `done` with no report in your
+conversation.
 For sessions without reports, see [Waiting for a turn to end](herdr/gotchas.md#waiting-for-a-turn-to-end)
 and run `adapters/multiplexers/herdr/scripts/turn-wait <address>` in the background.
 

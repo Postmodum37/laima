@@ -84,8 +84,10 @@ for it only when the named model fails as well.
    finished gives for a session that does not report (with Herdr, `adapters/multiplexers/herdr/scripts/turn-wait`).
    With Herdr a turn arrives as `<hc from="<your address>">…</hc>`, which the test session takes as another
    session's message and acts on as the user's: read a scenario that turns on the user's own word with that in
-   mind. A question it asks comes as a dialog: the session shows blocked, a send is refused, and you answer with
-   keys as the adapter's § Waiting on the user describes. When it launched a worker and ended its turn,
+   mind. Answer questions with keys as the adapter's § Waiting on the user describes. Herdr refuses sends while a
+   question shows `blocked`. For an expanded Codex question, see
+   [Herdr § How you learn a session finished](../adapters/multiplexers/herdr.md#how-you-learn-a-session-finished).
+   When it launched a worker and ended its turn,
    `turn-wait` without a text returns at once; to wait for the turn the worker's report starts, wait until `turn`
    in `hc get <t> --json` has gone up or the status is blocked.
 4. **Read what it did:** its screen, or its transcript (harness adapter § Transcripts says where);
